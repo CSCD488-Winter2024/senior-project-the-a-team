@@ -1,36 +1,27 @@
-Project Name
-Project summary
-One-sentence description of the project
-TODO: A 20-second elevator pitch of your project - its core idea summarized in one sentence.
-Additional information about the project
-TODO: Write a compelling/creative/informative project description / summary
-Installation
-Prerequisites
-TODO: List what a user needs to have installed before running the installation instructions below (e.g.,
-git, which versions of Ruby/Rails)
-Add-ons
-TODO: List which add-ons are included in the project, and the purpose each add-on serves in your app.
-Installation Steps
-TODO: Describe the installation process (making sure you mention bundle install).
-Instructions need to be such that a user can just copy/paste the commands to get things set up and
-running.
-Functionality
+# Welcome to Cheney Mobile App
+## Project summary
+A mobile app to help connect the citizens of Cheney to their community.
+
+"Welcome to Cheney" is a non-profit organization with a vital mission: to enhance community engagement and communication within the city of Cheney. Recognizing the challenges of disseminating timely and accurate information to residents through conventional social media channels, which often result in vital updates being lost amidst the digital noise, the organization has embarked on an ambitious project. The development of a dedicated mobile application aims to establish a direct, reliable communication channel to keep the Cheney community informed and connected.
+
+## Installation
+### Prerequisites
+A windows machine.
+
+### Installation Steps
+1. Install flutter.
+2. Install vscode and android studio.
+3. Open the project in vscode.
+4. Run flutter doctor in the terminal to install dependencies.
+5. Make sure emulator exists and set it as the running enviroment.
+6. Run the project in main.dart.
+## Functionality
 TODO: Write usage instructions. Structuring it as a walkthrough can help structure this section,
 and showcase your features.
-Known Problems
-TODO: Describe any known issues, bugs, odd behaviors or code smells.
-Provide steps to reproduce the problem and/or name a file or a function where the problem lives.
-Contributing
-TODO: Leave the steps below if you want others to contribute to your project.
-1. Fork it!
-2. Create your feature branch: git checkout -b my-new-feature
-3. Commit your changes: git commit -am 'Add some feature'
-4. Push to the branch: git push origin my-new-feature
-5. Submit a pull request :D
-Additional Documentation
-TODO: Provide links to additional documentation that may exist in the repo, e.g.,
-* Sprint reports
-* User links
-License
-If you haven't already, add a file called LICENSE.txt with the text of the appropriate license.
-We recommend using the MIT license: https://choosealicense.com/licenses/mit/
+## Known Problems
+None currently.
+## Additional Documentation
+* [Flutter installation](https://docs.flutter.dev/get-started/install)
+* More to come
+## License
+MIT license: https://choosealicense.com/licenses/mit/
