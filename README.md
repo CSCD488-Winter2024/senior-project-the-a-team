@@ -16,8 +16,7 @@ A windows machine.
 5. Make sure emulator exists and set it as the running enviroment.
 6. Run the project in main.dart.
 ## Functionality
-TODO: Write usage instructions. Structuring it as a walkthrough can help structure this section,
-and showcase your features.
+Current functionality: Navbar and mock posts on main page.
 ## Known Problems
 None currently.
 ## Additional Documentation
