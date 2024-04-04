@@ -12,7 +12,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome to Cheney'),
+        title: const Text('Welcome to Cheney'),
       ),
       drawer: () {
         return Drawer(
@@ -20,19 +20,43 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               const DrawerHeader(
-                child: Text('Menu'),
+                child: const Text('Menu'),
                 decoration: BoxDecoration(
                   color: Colors.red,
                 ),
               ),
               ListTile(
-                title: Text('Item 1'),
+                title: const Text('Home'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: Text('Item 2'),
+                title: const Text('Alerts'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Jobs'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Volunteer'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Account'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Create Post'),
                 onTap: () {
                   Navigator.pop(context);
                 },
