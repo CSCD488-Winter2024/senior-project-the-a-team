@@ -10,18 +10,37 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: preferredHeight,
-      child: AppBar(
-        title: const Text('Welcome To Cheney'),
-        centerTitle: true,
-        backgroundColor: Colors.red,
-        leading: IconButton(icon: const Icon(Icons.menu), 
-        onPressed: () {
-
-        })
-      )
-      
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Welcome to Cheney'),
+      ),
+      drawer: () {
+        return Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              const DrawerHeader(
+                child: Text('Menu'),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+              ),
+              ListTile(
+                title: Text('Item 1'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      }(),
     );
   }
 }
