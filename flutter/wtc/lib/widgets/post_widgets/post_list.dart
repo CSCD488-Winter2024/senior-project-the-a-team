@@ -5,7 +5,7 @@ const Post post1 = Post(
   title: "Test1",
   body:
       "Lets see what happens when I write a huge amount of text. I mean like really write an absurd amount of text just to test this simple little feature. Because I need to be sure that this will work as it is intended too.",
-  tags: ["tag1", "tag2"],
+  tags: ["tag1", "tag2", "tag3"],
   isAlert: false,
   isEvent: false,
 );
@@ -19,61 +19,61 @@ const Post post2 = Post(
 const Post post3 = Post(
   title: "Test3",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
+  tags: ["tag1", "tag2", "tag7"],
   isAlert: false,
   isEvent: false,
 );
 const Post post4 = Post(
-  title: "Test3",
+  title: "Test4",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
   isEvent: false,
 );
 const Post post5 = Post(
-  title: "Test3",
+  title: "Test5",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
+  tags: ["tag1"],
   isAlert: false,
   isEvent: false,
 );
 const Post post6 = Post(
-  title: "Test3",
+  title: "Test6",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
+  tags: ["tag1", "tag2", "tag4", "tag5"],
   isAlert: false,
   isEvent: false,
 );
 const Post post7 = Post(
-  title: "Test3",
+  title: "Test7",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
   isEvent: false,
 );
 const Post post8 = Post(
-  title: "Test3",
+  title: "Test8",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
   isEvent: false,
 );
 const Post post9 = Post(
-  title: "Test3",
+  title: "Test9",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
   isEvent: false,
 );
 const Post post10 = Post(
-  title: "Test3",
+  title: "Test10",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
   isEvent: false,
 );
 const Post post11 = Post(
-  title: "Test3",
+  title: "Test11",
   body: "This is a test",
   tags: ["tag1", "tag2"],
   isAlert: false,
@@ -103,12 +103,12 @@ class PostList extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       itemCount: posts.length,
       itemBuilder: (BuildContext context, int index) {
-        return Column(
-          children: [
-            Text(posts[index].title),
-            Text('${posts[index].tags}'),
-            Text(posts[index].body)
-          ],
+        return Post(
+          title: posts[index].title,
+          tags: posts[index].tags,
+          body: posts[index].body,
+          isAlert: false,
+          isEvent: false,
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),

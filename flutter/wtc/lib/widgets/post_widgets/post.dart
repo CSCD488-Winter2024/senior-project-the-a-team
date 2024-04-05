@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/widgets/post_widgets/post_body_box.dart';
+import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
+import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
 class Post extends StatelessWidget {
   const Post(
@@ -20,11 +23,9 @@ class Post extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          title,
-        ),
-        Text('$tags'),
-        Text(body)
+        PostTitleBox(title: title),
+        PostTagBox(tags: tags),
+        PostBodyBox(body: body)
       ],
     );
   }
