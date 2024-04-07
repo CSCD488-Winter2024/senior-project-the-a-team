@@ -1,5 +1,6 @@
- import 'package:flutter/material.dart';
- 
+import 'package:flutter/material.dart';
+import 'package:wtc/widgets/post_widgets/post_list.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -8,24 +9,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-    @override
-    Widget build(BuildContext context) {
-       final ThemeData theme = Theme.of(context);
-        return Card(
-            shadowColor: Colors.transparent,
-            margin: const EdgeInsets.all(8.0),
-            child: SizedBox.expand(
-              child: Center(
-                child: Text(
-                  'Home Page',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ),
-            ),
-          );
-
-    }
-
+  @override
+  Widget build(BuildContext context) {
+    //final ThemeData theme = Theme.of(context);
+    return Card(
+      shadowColor: Colors.transparent,
+      margin: const EdgeInsets.all(8.0),
+      child: SizedBox.expand(
+        child: PostList(),
+      ),
+    );
+  }
 }
- 
- 
