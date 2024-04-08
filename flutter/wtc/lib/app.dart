@@ -6,6 +6,7 @@ import 'pages/alerts.dart';
 import 'pages/calendar.dart';
 import 'pages/map.dart';
 import 'widgets/topbar.dart';
+import 'pages/create_post.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -90,6 +91,10 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Create Post page
               Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CreatePostPage()),
+              );
             },
           ),
         ],
@@ -152,7 +157,7 @@ class _NavBars extends State<App> {
           NavButton(
               label: "Account",
               icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined)
+              outlinedIcon: Icons.manage_accounts_outlined),
         ],
       ),
       body: <Widget>[
@@ -173,7 +178,8 @@ class _NavBars extends State<App> {
         const MapPage(),
         const HomePage(),
         const CalendarPage(),
-        const AccountPage()
+        const AccountPage(),
+        const CreatePostPage()
       ][currentPageIndex],
     );
   }

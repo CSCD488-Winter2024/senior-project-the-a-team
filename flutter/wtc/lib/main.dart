@@ -21,4 +21,3 @@ class WTCApp extends StatelessWidget {
     );
   }
 }
-
