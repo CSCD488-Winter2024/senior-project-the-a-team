@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
-
-
 // ignore: must_be_immutable
 class AlertsList extends StatelessWidget {
   List<Post> postList;
