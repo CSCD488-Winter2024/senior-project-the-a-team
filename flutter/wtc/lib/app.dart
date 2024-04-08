@@ -179,7 +179,6 @@ class _NavBars extends State<App> {
         const HomePage(),
         const CalendarPage(),
         const AccountPage(),
-        const CreatePostPage()
       ][currentPageIndex],
     );
   }
