@@ -11,8 +11,15 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Welcome to Cheney'),
-      //Drawer handles the rest
-    );
+        backgroundColor: Colors.red,
+        title: const Align(
+          widthFactor: 1.3,
+          alignment: Alignment.center,
+          child: Text(
+            "Welcome to Cheney",
+          ),
+        )
+        //Drawer handles the rest
+        );
   }
 }
