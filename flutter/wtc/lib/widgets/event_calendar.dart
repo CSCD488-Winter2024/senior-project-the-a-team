@@ -41,16 +41,18 @@ class _EventCalendar extends State<EventCalendar> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
   Map<DateTime?, List<Post>> events = {
+    //used to add dots on the calendar
     event1.date: [event1, event2],
     event3.date: [event3]
   };
-  late final ValueNotifier<List<Post>> _selectedEvents;
+  List<Post> _selectedEvents =
+      []; //Actual list of events that will be displayed beneath the calendar
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _selectedEvents = _getEventsForDay(_selectedDay!);
   }
 
   List<Post> _getEventsForDay(DateTime day) {
@@ -73,7 +75,8 @@ class _EventCalendar extends State<EventCalendar> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // update `_focusedDay` here as well
+                _focusedDay = focusedDay;
+                _selectedEvents = _getEventsForDay(_selectedDay!);
               });
             },
             calendarFormat: _calendarFormat,
@@ -87,27 +90,21 @@ class _EventCalendar extends State<EventCalendar> {
             },
           ),
           Expanded(
-            child: ValueListenableBuilder<List<Post>>(
-                valueListenable: _selectedEvents,
-                builder: (context, value, _) {
-                  return ListView.builder(
-                      itemCount: value.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: ListTile(
-                                onTap: () => print(""),
-                                title: Text(
-                                    '${value[index].title} Date: ${value[index].date.toString()} Time: ${value[index].time.toString()}')));
-                      });
-                }),
+            child: _buildEventList(),
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildEventList() {
+    return ListView.builder(
+      itemCount: _selectedEvents.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: Text(
+                '${_selectedEvents[index].title} Date: ${_selectedEvents[index].date.toString().split(' ')[0]} Time: ${_selectedEvents[index].time.toString().split('(')[1].split(')')[0]}'));
+      },
     );
   }
 }
