@@ -10,18 +10,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: preferredHeight,
-      child: AppBar(
-        title: const Text('Welcome To Cheney'),
-        centerTitle: true,
+    return AppBar(
         backgroundColor: Colors.red,
-        leading: IconButton(icon: const Icon(Icons.menu), 
-        onPressed: () {
-
-        })
-      )
-      
-    );
+        title: const Align(
+          widthFactor: 1.3,
+          alignment: Alignment.center,
+          child: Text(
+            "Welcome to Cheney",
+          ),
+        )
+        //Drawer handles the rest
+        );
   }
 }

@@ -6,6 +6,7 @@ import 'pages/alerts.dart';
 import 'pages/calendar.dart';
 import 'pages/map.dart';
 import 'widgets/topbar.dart';
+import 'pages/create_post.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -26,12 +27,86 @@ class _NavBars extends State<App> {
     we want the user to be routed to page 2 [index 2] which is 
     the current location of the home page
   */
-  int currentPageIndex = 2; 
+  int currentPageIndex = 2;
+
+  Drawer getDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          const DrawerHeader(
+            child: Text('Menu', style: TextStyle(color: Colors.white)),
+            decoration: BoxDecoration(
+              color: Colors.red,
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              setState(() {
+                currentPageIndex = 2;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.warning),
+            title: const Text('Alerts'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              setState(() {
+                currentPageIndex = 0;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.work),
+            title: const Text('Jobs'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.volunteer_activism),
+            title: const Text('Volunteer'),
+            onTap: () {
+              // Navigate to Volunteer page
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: const Text('Account'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              setState(() {
+                currentPageIndex = 4;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.create),
+            title: const Text('Create Post'),
+            onTap: () {
+              // Navigate to Create Post page
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CreatePostPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const TopBar(preferredHeight: 70.0),
+      drawer: getDrawer(context),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -63,16 +138,26 @@ class _NavBars extends State<App> {
            * (to remove, simply remove a nav button from the list - but remember order matters!)
            */
           //Alerts Page Button
-          NavButton(label: "Alerts", icon: Icons.crisis_alert, outlinedIcon: Icons.crisis_alert_outlined),
+          NavButton(
+              label: "Alerts",
+              icon: Icons.crisis_alert,
+              outlinedIcon: Icons.crisis_alert_outlined),
           //Map Page Button
-          NavButton(label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
+          NavButton(
+              label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
           //Home Page Button
-          NavButton(label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
+          NavButton(
+              label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
           //Calendar Page Button
-          NavButton(label: "Calendar", icon: Icons.calendar_month, outlinedIcon: Icons.calendar_month_outlined),
+          NavButton(
+              label: "Calendar",
+              icon: Icons.calendar_month,
+              outlinedIcon: Icons.calendar_month_outlined),
           //Account Page Button
-          NavButton(label: "Account", icon: Icons.manage_accounts, outlinedIcon: Icons.manage_accounts_outlined)
-
+          NavButton(
+              label: "Account",
+              icon: Icons.manage_accounts,
+              outlinedIcon: Icons.manage_accounts_outlined),
         ],
       ),
       body: <Widget>[
@@ -93,7 +178,7 @@ class _NavBars extends State<App> {
         const MapPage(),
         const HomePage(),
         const CalendarPage(),
-        const AccountPage()
+        const AccountPage(),
       ][currentPageIndex],
     );
   }
