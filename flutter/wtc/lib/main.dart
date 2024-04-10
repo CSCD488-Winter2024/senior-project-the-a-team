@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:wtc/firebase_options.dart';
 import 'app.dart';
 
 /*
@@ -7,7 +9,11 @@ import 'app.dart';
 
 */
 
-void main() => runApp(const WTCApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const WTCApp());
+}
 
 class WTCApp extends StatelessWidget {
   const WTCApp({super.key});
