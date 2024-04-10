@@ -124,9 +124,15 @@ class _EventCalendar extends State<EventCalendar> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                          title: Text(
-                            _selectedEvents[index].title,
-                            textAlign: TextAlign.left,
+                          title: Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.all(
+                                    Radius.elliptical(20, 15))),
+                            child: Text(
+                              _selectedEvents[index].title,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           content: Column(
                             children: [
@@ -135,7 +141,6 @@ class _EventCalendar extends State<EventCalendar> {
                                     .date
                                     .toString()
                                     .split(' ')[0],
-                                textAlign: TextAlign.left,
                               ),
                               Text(
                                 _selectedEvents[index]
@@ -143,7 +148,6 @@ class _EventCalendar extends State<EventCalendar> {
                                     .toString()
                                     .split('(')[1]
                                     .split(')')[0],
-                                textAlign: TextAlign.left,
                               ),
                               PostTagBox(tags: _selectedEvents[index].tags),
                               PostBodyBox(body: _selectedEvents[index].body),
