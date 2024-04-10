@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
+import 'package:wtc/widgets/post_widgets/post_body_box.dart';
+import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 
 Post event1 = Post(
     title: "event 1",
@@ -90,7 +92,7 @@ class _EventCalendar extends State<EventCalendar> {
             },
           ),
           Expanded(
-            child: _buildEventList(),
+            child: _buildEventButtonList(),
           )
         ],
       ),
@@ -104,6 +106,55 @@ class _EventCalendar extends State<EventCalendar> {
         return ListTile(
             title: Text(
                 '${_selectedEvents[index].title} Date: ${_selectedEvents[index].date.toString().split(' ')[0]} Time: ${_selectedEvents[index].time.toString().split('(')[1].split(')')[0]}'));
+      },
+    );
+  }
+
+  Widget _buildEventButtonList() {
+    return ListView.builder(
+      itemCount: _selectedEvents.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => const Color(0xffd4bc93))),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                          title: Text(
+                            _selectedEvents[index].title,
+                            textAlign: TextAlign.left,
+                          ),
+                          content: Column(
+                            children: [
+                              Text(
+                                _selectedEvents[index]
+                                    .date
+                                    .toString()
+                                    .split(' ')[0],
+                                textAlign: TextAlign.left,
+                              ),
+                              Text(
+                                _selectedEvents[index]
+                                    .time
+                                    .toString()
+                                    .split('(')[1]
+                                    .split(')')[0],
+                                textAlign: TextAlign.left,
+                              ),
+                              PostTagBox(tags: _selectedEvents[index].tags),
+                              PostBodyBox(body: _selectedEvents[index].body),
+                            ],
+                          ));
+                    });
+              },
+              child: Text(
+                _selectedEvents[index].title,
+              )),
+        );
       },
     );
   }
