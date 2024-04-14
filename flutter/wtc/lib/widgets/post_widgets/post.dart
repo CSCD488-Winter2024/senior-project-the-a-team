@@ -1,24 +1,26 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/User/User.dart';
+import 'package:wtc/User/user.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
 class Post extends StatelessWidget {
-  const Post(
+  Post(
       {Key? key,
       required this.title,
       required this.body,
       required this.tags,
-      required this.postId,
       required this.header,
       required this.user,
       required this.interestCount,
-      required this.created})
+      required this.created,
+      required this.postId})
       : super(key: key);
 
-  final Guid postId;
+  Guid postId;
   final String title;
   final String header;
   final List<String> tags;

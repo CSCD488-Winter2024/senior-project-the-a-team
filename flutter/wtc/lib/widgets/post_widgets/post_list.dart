@@ -1,83 +1,121 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+import 'package:wtc/User/user.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
-const Post post1 = Post(
+User user =
+    User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
+
+Post post1 = Post(
   title: "Test1",
   body:
       "Lets see what happens when I write a huge amount of text. I mean like really write an absurd amount of text just to test this simple little feature. Because I need to be sure that this will work as it is intended too.",
-  tags: ["tag1", "tag2", "tag3"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2", "tag3"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post2 = Post(
+Post post2 = Post(
   title: "Test2",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post3 = Post(
+Post post3 = Post(
   title: "Test3",
   body: "This is a test",
-  tags: ["tag1", "tag2", "tag7"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2", "tag7"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post4 = Post(
+Post post4 = Post(
   title: "Test4",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post5 = Post(
+Post post5 = Post(
   title: "Test5",
   body: "This is a test",
-  tags: ["tag1"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post6 = Post(
+Post post6 = Post(
   title: "Test6",
   body: "This is a test",
-  tags: ["tag1", "tag2", "tag4", "tag5"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2", "tag4", "tag5"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post7 = Post(
+Post post7 = Post(
   title: "Test7",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post8 = Post(
+Post post8 = Post(
   title: "Test8",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post9 = Post(
+Post post9 = Post(
   title: "Test9",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post10 = Post(
+Post post10 = Post(
   title: "Test10",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
-const Post post11 = Post(
+Post post11 = Post(
   title: "Test11",
   body: "This is a test",
-  tags: ["tag1", "tag2"],
-  isAlert: false,
-  isEvent: false,
+  tags: const ["tag1", "tag2"],
+  postId: Guid.newGuid,
+  header: "The header",
+  user: user,
+  interestCount: 0,
+  created: DateTime.now(),
 );
 
 class PostList extends StatelessWidget {
@@ -104,11 +142,14 @@ class PostList extends StatelessWidget {
       itemCount: posts.length,
       itemBuilder: (BuildContext context, int index) {
         return Post(
+          postId: posts[index].postId,
+          header: posts[index].header,
+          user: posts[index].user,
+          interestCount: posts[index].interestCount,
+          created: posts[index].created,
           title: posts[index].title,
           tags: posts[index].tags,
           body: posts[index].body,
-          isAlert: false,
-          isEvent: false,
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
