@@ -8,6 +8,7 @@ import 'pages/map.dart';
 import 'widgets/topbar.dart';
 import 'pages/create_post.dart';
 import 'pages/jobs.dart';
+import 'pages/volunteering.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -76,6 +77,8 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
+              Navigator.push( context,
+                MaterialPageRoute(builder: (context) => const VolunteerPage()),);
             },
           ),
           ListTile(
