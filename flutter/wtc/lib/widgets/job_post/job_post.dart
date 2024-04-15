@@ -43,15 +43,10 @@ class JobPost extends Post  {
       PostBodyBox(body: body),
       Padding(padding: const EdgeInsets.all(15.0), child:Text("posted on: $month-$day-$year",
       textAlign: TextAlign.left,)
-      )
+      ),
+      JobWageBox(wageType: wageType, wage: wage)
     ]; 
       
-
-  // Conditionally add JobWageBox if not a volunteer
-    if (!volunteer) {
-      columnChildren.add(JobWageBox(wageType: wageType, wage: wage)); 
-    } 
-
     // Return the Column with all children
     return Column(
       children: columnChildren,

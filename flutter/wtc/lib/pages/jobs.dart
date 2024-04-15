@@ -21,7 +21,7 @@ JobPost jobPost1 = JobPost(
   created: DateTime.now(),
   wage: 9.75,
   wageType: "hourly",
-  volunteer: false,
+  volunteer: true,
 );
 
 JobPost jobPost2 = JobPost(
