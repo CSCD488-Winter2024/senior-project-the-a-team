@@ -32,12 +32,12 @@ class JobPost extends Post  {
  
   @override
   Widget build(BuildContext context) {
-      // Create a list to hold the children of the Column
-    int year = created.year;
-    int month = created.month;
-    int day = created.day;
+// Create a list to hold the children of the Column
+  int month = created.month;
+  int day = created.day;
+  int year = created.year;
 
-    List<Widget> columnChildren = [      
+  List<Widget> columnChildren = [      
       PostTitleBox(title: title),
       PostTagBox(tags: tags),
       PostBodyBox(body: body),
@@ -45,12 +45,13 @@ class JobPost extends Post  {
       textAlign: TextAlign.left,)
       ),
       JobWageBox(wageType: wageType, wage: wage)
-    ]; 
+  ]; 
       
     // Return the Column with all children
     return Column(
       children: columnChildren,
     );
+
   }
 }
 
