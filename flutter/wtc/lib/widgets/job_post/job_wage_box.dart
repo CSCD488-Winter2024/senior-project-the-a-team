@@ -32,7 +32,7 @@ class JobWageBox extends StatelessWidget {
       );
     }
 
-    return const Text("error getting wage info");
+    return const Text("");
   
   }
   
