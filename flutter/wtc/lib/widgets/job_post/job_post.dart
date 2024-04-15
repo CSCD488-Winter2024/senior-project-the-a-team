@@ -37,37 +37,21 @@ class JobPost extends Post  {
   int day = created.day;
   int year = created.year;
 
-  List<Widget> columnChildren = [
+  List<Widget> columnChildren = [      
+      PostTitleBox(title: title),
+      PostTagBox(tags: tags),
+      PostBodyBox(body: body),
+      Padding(padding: const EdgeInsets.all(15.0), child:Text("posted on: $month-$day-$year",
+      textAlign: TextAlign.left,)
+      ),
+      JobWageBox(wageType: wageType, wage: wage)
+  ]; 
+      
+    // Return the Column with all children
+    return Column(
+      children: columnChildren,
+    );
 
-  ];
-
-  // Conditionally add JobWageBox if not a volunteer
-  if (!volunteer) {
-  columnChildren = [      
-    PostTitleBox(title: title),
-    PostTagBox(tags: tags),
-    PostBodyBox(body: body),
-    JobWageBox(wageType: wageType, wage: wage),
-    Padding(padding: const EdgeInsets.all(16),
-    child:Text(textAlign: TextAlign.right, "Posted on: $month-$day-$year"))
-    
-    
-  ];
-} else {
-  columnChildren = [
-    PostTitleBox(title: title),
-    PostTagBox(tags: tags),
-    PostBodyBox(body: body),
-    Padding(padding: const EdgeInsets.all(16),
-    child:Text(textAlign: TextAlign.right, "Posted on: $month-$day-$year"))
-  ];
-  
-}
-
-  // Return the Column with all children
-  return Column(
-    children: columnChildren
-  );
   }
 }
 
