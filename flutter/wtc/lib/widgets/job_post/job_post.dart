@@ -33,11 +33,19 @@ class JobPost extends Post  {
   @override
   Widget build(BuildContext context) {
       // Create a list to hold the children of the Column
+    int year = created.year;
+    int month = created.month;
+    int day = created.day;
+
     List<Widget> columnChildren = [      
       PostTitleBox(title: title),
       PostTagBox(tags: tags),
       PostBodyBox(body: body),
-    ];
+      Padding(padding: const EdgeInsets.all(15.0), child:Text("posted on: $month-$day-$year",
+      textAlign: TextAlign.left,)
+      )
+    ]; 
+      
 
   // Conditionally add JobWageBox if not a volunteer
     if (!volunteer) {
