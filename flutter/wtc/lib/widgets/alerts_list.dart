@@ -12,9 +12,8 @@ class AlertsList extends StatelessWidget {
     List<Post> alerts = [];
 
     for (int i = 0; i < postList.length; i++) {
-      if (postList[i].tags.contains("alert")) {
         alerts.add(postList[i]);
-      }
+
     }
 
     return ListView.separated(
