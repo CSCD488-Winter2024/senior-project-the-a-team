@@ -40,6 +40,12 @@ class Event extends Post {
         children: [
           PostTitleBox(title: title),
           PostTagBox(tags: tags),
+          SizedBox(
+              width: 600,
+              child: Text(
+                "Posted on: ${created.toString().split(" ")[0]}\n",
+                textAlign: TextAlign.left,
+              )),
           PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
         ],
       ),
@@ -54,9 +60,10 @@ class Event extends Post {
             scrollable: true,
             title: PostTitleBox(title: title),
             content: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PostTagBox(tags: tags),
-                PostBodyBox(body: body),
+                PostBodyBox(body: "$body\n"),
                 SizedBox(
                     width: 600,
                     child: Text(
@@ -66,13 +73,13 @@ class Event extends Post {
                 SizedBox(
                     width: 600,
                     child: Text(
-                      "Where: $location",
+                      "Where: $location\n",
                       textAlign: TextAlign.left,
                     )),
                 SizedBox(
                     width: 600,
                     child: Text(
-                      "Attending: $attendingCount         Maybe Going: $maybeCount",
+                      "Attending: $attendingCount     Maybe Going: $maybeCount",
                       textAlign: TextAlign.center,
                     ))
               ],

@@ -39,6 +39,12 @@ class Post extends StatelessWidget {
         children: [
           PostTitleBox(title: title),
           PostTagBox(tags: tags),
+          SizedBox(
+              width: 600,
+              child: Text(
+                "Posted on: ${created.toString().split(" ")[0]}\n",
+                textAlign: TextAlign.left,
+              )),
           PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
         ],
       ),
