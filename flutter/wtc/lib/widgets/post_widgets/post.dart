@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_this
 
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -31,12 +31,35 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PostTitleBox(title: title),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body)
-      ],
+    return InkWell(
+      onTap: () {
+        showPostDialog(context);
+      },
+      child: Column(
+        children: [
+          PostTitleBox(title: title),
+          PostTagBox(tags: tags),
+          PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
+        ],
+      ),
     );
   }
+
+  void showPostDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              scrollable: true,
+              title: PostTitleBox(title: title),
+              content: Column(
+                  children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
+        });
+  }
+}
+
+extension UtilExtensions on String {
+  List<String> multiSplit(Iterable<String> delimeters) => delimeters.isEmpty
+      ? [this]
+      : this.split(RegExp(delimeters.map(RegExp.escape).join('|')));
 }
