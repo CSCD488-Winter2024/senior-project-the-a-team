@@ -32,30 +32,52 @@ class Event extends Post {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PostTitleBox(title: title),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body),
-        SizedBox(
-            width: 600,
-            child: Text(
-              "When: ${date.toString().split(" ")[0]} ${time.toString().split("(")[1].split(")")[0]}",
-              textAlign: TextAlign.left,
-            )),
-        SizedBox(
-            width: 600,
-            child: Text(
-              "Where: $location",
-              textAlign: TextAlign.left,
-            )),
-        SizedBox(
-            width: 600,
-            child: Text(
-              "Attending: $attendingCount         Maybe Going: $maybeCount",
-              textAlign: TextAlign.center,
-            ))
-      ],
+    return InkWell(
+      onTap: () {
+        showEventDialog(context);
+      },
+      child: Column(
+        children: [
+          PostTitleBox(title: title),
+          PostTagBox(tags: tags),
+          PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+        ],
+      ),
     );
+  }
+
+  void showEventDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            title: PostTitleBox(title: title),
+            content: Column(
+              children: [
+                PostTagBox(tags: tags),
+                PostBodyBox(body: body),
+                SizedBox(
+                    width: 600,
+                    child: Text(
+                      "When: ${date.toString().split(" ")[0]} ${time.toString().split("(")[1].split(")")[0]}",
+                      textAlign: TextAlign.left,
+                    )),
+                SizedBox(
+                    width: 600,
+                    child: Text(
+                      "Where: $location",
+                      textAlign: TextAlign.left,
+                    )),
+                SizedBox(
+                    width: 600,
+                    child: Text(
+                      "Attending: $attendingCount         Maybe Going: $maybeCount",
+                      textAlign: TextAlign.center,
+                    ))
+              ],
+            ),
+          );
+        });
   }
 }
