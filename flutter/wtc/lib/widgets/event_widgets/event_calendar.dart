@@ -193,6 +193,12 @@ class _EventCalendar extends State<EventCalendar> {
                               PostTagBox(tags: _selectedEvents[index].tags),
                               PostBodyBox(
                                   body: "\n${_selectedEvents[index].body}\n"),
+                              SizedBox(
+                                  width: 600,
+                                  child: Text(
+                                    "Attending: ${_selectedEvents[index].attendingCount}   Maybe Going: ${_selectedEvents[index].maybeCount}",
+                                    textAlign: TextAlign.center,
+                                  ))
                             ],
                           ));
                     });
