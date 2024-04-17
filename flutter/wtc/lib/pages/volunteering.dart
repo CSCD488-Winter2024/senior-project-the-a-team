@@ -1,19 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
 import 'package:wtc/widgets/volunteer_post/volunteer_list.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
-
 User user =
     User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
 
-
 JobPost v1 = JobPost(
   title: "Grocer Guy",
-  body: "Come be a grocer buy for free! This is a job designed to rob you of your dignity.",
-  tags: const["food/drink", "volunteer", "slave labor"],
+  body:
+      "Come be a grocer buy for free! This is a job designed to rob you of your dignity.",
+  tags: const ["food/drink", "volunteer", "slave labor"],
   postId: Guid.newGuid,
   header: "Grocery man is needed around here.",
   user: user,
@@ -24,8 +22,9 @@ JobPost v1 = JobPost(
 
 JobPost v2 = JobPost(
   title: "Food Bank Thief",
-  body: "We need a guy who will pose as a thief at the local food bank. You will be compensated with a bottle of water.",
-  tags: const["food/drink"],
+  body:
+      "We need a guy who will pose as a thief at the local food bank. You will be compensated with a bottle of water.",
+  tags: const ["food/drink"],
   postId: Guid.newGuid,
   header: "Food Bank Thief Needed",
   user: user,
@@ -44,19 +43,26 @@ class VolunteerPage extends StatefulWidget {
 }
 
 class _VolunteerPage extends State<VolunteerPage> {
-  
   List<JobPost> volunteerList = [v1, v2];
-  
+
   @override
   Widget build(BuildContext context) {
     //final ThemeData theme = Theme.of(context);
-    return Card(
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
-      child: SizedBox.expand(
-          child: VolunteerPostList(
-          volunteerList: volunteerList
-      )),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back)),
+          title: const Center(child: Text("Volunteer")),
+          backgroundColor: const Color(0xFF469AB8),
+        ),
+        body: Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+              child: VolunteerPostList(volunteerList: volunteerList)),
+        ));
   }
 }
