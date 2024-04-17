@@ -81,66 +81,68 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       appBar: AppBar(
         title: const Text('Create Job Post'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            SwitchListTile(
-              title: const Text('Volunteer Position'),
-              value: _isVolunteer,
-              onChanged: (bool value) {
-                setState(() {
-                  _isVolunteer = value;
-                });
-              },
-            ),
-            if (!_isVolunteer) ...[
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
               TextField(
-                controller: _wageController,
+                controller: _titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Wage',
-                  hintText: 'Enter wage amount',
+                  labelText: 'Title',
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
               ),
               const SizedBox(height: 16.0),
-              DropdownButton<String>(
-                value: _wageType,
-                items: <String>['hourly', 'salary'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              SwitchListTile(
+                title: const Text('Volunteer Position'),
+                value: _isVolunteer,
+                onChanged: (bool value) {
                   setState(() {
-                    if (newValue != null) {
-                      _wageType = newValue;
-                    }
+                    _isVolunteer = value;
                   });
                 },
               ),
+              if (!_isVolunteer) ...[
+                TextField(
+                  controller: _wageController,
+                  decoration: const InputDecoration(
+                    labelText: 'Wage',
+                    hintText: 'Enter wage amount',
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                ),
+                const SizedBox(height: 16.0),
+                DropdownButton<String>(
+                  value: _wageType,
+                  items: <String>['hourly', 'salary'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      if (newValue != null) {
+                        _wageType = newValue;
+                      }
+                    });
+                  },
+                ),
+              ],
+              const SizedBox(height: 32.0),
+              ElevatedButton(
+                onPressed: _submitPost,
+                child: const Text('Submit'),
+              ),
             ],
-            const SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: _submitPost,
-              child: const Text('Submit'),
-            ),
-          ],
+          ),
         ),
       ),
     );

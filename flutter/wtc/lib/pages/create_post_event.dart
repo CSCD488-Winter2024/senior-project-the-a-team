@@ -143,84 +143,86 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       appBar: AppBar(
         title: const Text('Create Event'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _addressController,
-              decoration: const InputDecoration(
-                labelText: 'Address',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Address',
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _dateController,
-              decoration: const InputDecoration(
-                labelText: 'Date',
-                hintText: 'YYYY-MM-DD',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _dateController,
+                decoration: const InputDecoration(
+                  labelText: 'Date',
+                  hintText: 'YYYY-MM-DD',
+                ),
+                keyboardType: TextInputType.datetime,
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(
+                      new FocusNode()); // to prevent keyboard from appearing
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2100),
+                  );
+                  if (picked != null) {
+                    _dateController.text =
+                        DateFormat('yyyy-MM-dd').format(picked);
+                  }
+                },
               ),
-              keyboardType: TextInputType.datetime,
-              onTap: () async {
-                FocusScope.of(context).requestFocus(
-                    new FocusNode()); // to prevent keyboard from appearing
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2100),
-                );
-                if (picked != null) {
-                  _dateController.text =
-                      DateFormat('yyyy-MM-dd').format(picked);
-                }
-              },
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _timeController,
-              decoration: const InputDecoration(
-                labelText: 'Time',
-                hintText: 'HH:MM',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _timeController,
+                decoration: const InputDecoration(
+                  labelText: 'Time',
+                  hintText: 'HH:MM',
+                ),
+                keyboardType: TextInputType.datetime,
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(
+                      new FocusNode()); // to prevent keyboard from appearing
+                  TimeOfDay? picked = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  if (picked != null) {
+                    _timeController.text = picked.format(context);
+                  }
+                },
               ),
-              keyboardType: TextInputType.datetime,
-              onTap: () async {
-                FocusScope.of(context).requestFocus(
-                    new FocusNode()); // to prevent keyboard from appearing
-                TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                );
-                if (picked != null) {
-                  _timeController.text = picked.format(context);
-                }
-              },
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: showTags,
-              child: const Text('Select Tags'),
-            ),
-            const SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: _submitPost,
-              child: const Text('Submit'),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: showTags,
+                child: const Text('Select Tags'),
+              ),
+              const SizedBox(height: 32.0),
+              ElevatedButton(
+                onPressed: _submitPost,
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );

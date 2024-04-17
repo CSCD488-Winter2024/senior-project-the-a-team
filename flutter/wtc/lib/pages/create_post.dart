@@ -108,44 +108,46 @@ class _CreatePostPageState extends State<CreatePostPage> {
       appBar: AppBar(
         title: const Text('Create Post'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                ),
               ),
-            ),
-            CheckboxListTile(
-              title: const Text('Alert'),
-              value: _isAlert,
-              onChanged: (bool? value) {
-                setState(() {
-                  _isAlert = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: showTags,
-              child: const Text('Select Tags'),
-            ),
-            //Submit button
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _submitPost,
-              child: const Text('Submit'),
-            ),
-          ],
+              CheckboxListTile(
+                title: const Text('Alert'),
+                value: _isAlert,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isAlert = value!;
+                  });
+                },
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: showTags,
+                child: const Text('Select Tags'),
+              ),
+              //Submit button
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: _submitPost,
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );
