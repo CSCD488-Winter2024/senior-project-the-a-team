@@ -7,6 +7,8 @@ import 'pages/calendar.dart';
 import 'pages/map.dart';
 import 'widgets/topbar.dart';
 import 'pages/create_post.dart';
+import 'pages/create_post_event.dart';
+import 'pages/create_post_job.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 
@@ -30,6 +32,63 @@ class _NavBars extends State<App> {
     the current location of the home page
   */
   int currentPageIndex = 2;
+
+  void showCreatePostOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Create Post"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Use min size for the content
+            crossAxisAlignment:
+                CrossAxisAlignment.center, // Center content horizontally
+            children: <Widget>[
+              ElevatedButton(
+                child: const Text("Normal Post"),
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreatePostPage()),
+                  );
+                },
+              ),
+              ElevatedButton(
+                child: const Text("Event Post"),
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreatePostEventPage()),
+                  );
+                },
+              ),
+              ElevatedButton(
+                child: const Text("Job Post"),
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreatePostJobPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Drawer getDrawer(BuildContext context) {
     return Drawer(
@@ -67,8 +126,10 @@ class _NavBars extends State<App> {
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push( context,
-                MaterialPageRoute(builder: (context) => const JobsPage()),);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const JobsPage()),
+              );
             },
           ),
           ListTile(
@@ -77,8 +138,10 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              Navigator.push( context,
-                MaterialPageRoute(builder: (context) => const VolunteerPage()),);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const VolunteerPage()),
+              );
             },
           ),
           ListTile(
@@ -95,12 +158,8 @@ class _NavBars extends State<App> {
             leading: const Icon(Icons.create),
             title: const Text('Create Post'),
             onTap: () {
-              // Navigate to Create Post page
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CreatePostPage()),
-              );
+              Navigator.pop(context); // Close the drawer
+              showCreatePostOptions(context);
             },
           ),
         ],
