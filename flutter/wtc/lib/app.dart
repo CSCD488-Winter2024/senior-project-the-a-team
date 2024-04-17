@@ -96,8 +96,9 @@ class _NavBars extends State<App> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            child: Text('Menu', style: TextStyle(color: Colors.white)),
+            child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
               color: Color(0xFF469AB8),
             ),
           ),
