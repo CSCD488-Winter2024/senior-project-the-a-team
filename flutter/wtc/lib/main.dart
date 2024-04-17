@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/app.dart';
 import 'package:wtc/auth/login_or_register.dart';
 //import 'app.dart';
 
@@ -18,7 +19,7 @@ class WTCApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
-      home: const LoginOrRegister() //App entry point
+      home: const App() //App entry point
     );
   }
 }

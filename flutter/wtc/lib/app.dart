@@ -126,10 +126,9 @@ class _NavBars extends State<App> {
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const JobsPage()),
-              );
+              setState(() {
+                currentPageIndex = 5;
+              });
             },
           ),
           ListTile(
@@ -138,10 +137,9 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const VolunteerPage()),
-              );
+              setState(() {
+                currentPageIndex = 6;
+              });
             },
           ),
           ListTile(
@@ -167,64 +165,71 @@ class _NavBars extends State<App> {
     );
   }
 
+ List<Widget> destinations = [
+  Container(
+    margin: const EdgeInsets.only(left: 0.0, right:5), // Adjust the spacing as needed
+    child: const NavButton(
+        label: "Alerts",
+        icon: Icons.crisis_alert,
+        outlinedIcon: Icons.crisis_alert_outlined),
+  ),
+  Container(
+    margin: const EdgeInsets.only(right: 5.0), // Adjust the spacing as needed
+    child: const NavButton(
+        label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
+  ),
+  Container(
+    margin: const EdgeInsets.only(right: 5.0), // Adjust the spacing as needed
+    child: const NavButton(
+        label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
+  ),
+  Container(
+    margin: const EdgeInsets.only(right: 0.0), // Adjust the spacing as needed
+    child: const NavButton(
+        label: "Calendar",
+        icon: Icons.calendar_month,
+        outlinedIcon: Icons.calendar_month_outlined),
+  ),
+  Container(
+    margin: const EdgeInsets.only(left: 5.0), // Adjust the spacing as needed
+    child: const NavButton(
+        label: "Account",
+        icon: Icons.manage_accounts,
+        outlinedIcon: Icons.manage_accounts_outlined),
+  ),
+  Container(margin: const EdgeInsets.only(left: 10.0)),
+  Container(margin: const EdgeInsets.only(right: 0.0))
+];
   @override
   Widget build(BuildContext context) {
+    int placeholder = 0;
     return Scaffold(
       appBar: const TopBar(preferredHeight: 70.0),
       drawer: getDrawer(context),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        indicatorColor: Colors.white,
-        backgroundColor: const Color(0xFF469AB8),
-        selectedIndex: currentPageIndex,
-        //beginning of bottom bar
-        destinations: const <Widget>[
-          /** -- NOTES PLEASE READ BEFORE PROCEEDING
-           * 'destinations' contains widgets -- or, in this case, the buttons 
-           * for our navbar
-           * 
-           * I made a custom Navigation Button widget for easy reuse 
-           * params order will be label [requires a string], an icon image for when selected [requires an IconData object]
-           * and an icon image for when not selected [requires an IconData object type]
-           * 
-           * -- you can see examples below
-           * 
-           * **NOTE: The order of buttons will matter!**
-           * The beginning of this list will indicate the left most position on the nav bar
-           * The end of this list will indicate the right most position on the nav bar
-           * 
-           * -- Please do not mess with the order unless it was decided so
-           * 
-           * To add another button (or remove) place comma at last widget in list followed by NavButton widget
-           * (to remove, simply remove a nav button from the list - but remember order matters!)
-           */
-          //Alerts Page Button
-          NavButton(
-              label: "Alerts",
-              icon: Icons.crisis_alert,
-              outlinedIcon: Icons.crisis_alert_outlined),
-          //Map Page Button
-          NavButton(
-              label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
-          //Home Page Button
-          NavButton(
-              label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
-          //Calendar Page Button
-          NavButton(
-              label: "Calendar",
-              icon: Icons.calendar_month,
-              outlinedIcon: Icons.calendar_month_outlined),
-          //Account Page Button
-          NavButton(
-              label: "Account",
-              icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined),
-        ],
+      bottomNavigationBar: 
+      
+      Container(
+        width: MediaQuery.of(context).size.width,
+        color: const Color(0xFF469AB8),
+        child: Container(
+        margin: const EdgeInsets.only(left: 20.0), // Adjust the value as needed
+        child: 
+        
+        NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          indicatorColor: Colors.white,
+          backgroundColor: Colors.blue.withOpacity(0.0),
+          selectedIndex: currentPageIndex,
+          //beginning of bottom bar
+          destinations: destinations,
+        ),
+  )
       ),
+      
       body: <Widget>[
         /**
          *  -- just like the previous list, order matters!
@@ -244,6 +249,8 @@ class _NavBars extends State<App> {
         const HomePage(),
         const CalendarPage(),
         const AccountPage(),
+        const JobsPage(),
+        const VolunteerPage()
       ][currentPageIndex],
     );
   }
