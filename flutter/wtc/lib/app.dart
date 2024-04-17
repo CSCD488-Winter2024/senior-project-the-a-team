@@ -98,7 +98,7 @@ class _NavBars extends State<App> {
           const DrawerHeader(
             child: Text('Menu', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: Color(0xFF469AB8),
             ),
           ),
           ListTile(
