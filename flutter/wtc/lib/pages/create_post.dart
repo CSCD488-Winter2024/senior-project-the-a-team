@@ -12,19 +12,81 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
+  Map<String, bool> tags = {
+    'Eastern': false,
+    'Traffic': false,
+    'Accident': false,
+    'Weather': false,
+    'Construction': false,
+    'Event': false,
+  };
+  bool _isAlert = false;
+  bool _isEvent = false;
 
   @override
   void dispose() {
     // Dispose controllers when the widget is removed from the widget tree
     _titleController.dispose();
     _descriptionController.dispose();
-    _tagsController.dispose();
     super.dispose();
   }
 
+  void showTags() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select Tags'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: tags.keys.map((String tag) {
+                  return CheckboxListTile(
+                    title: Text(tag),
+                    value: tags[tag],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        // Update the selection state of the tag
+                        tags[tag] = value!;
+                      });
+                    },
+                  );
+                }).toList(),
+              );
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _submitPost() {
-    // Here you would typically send the data to a backend or handle it as needed
-    // This example simply prints the values to the console
+    // Check if the title or description fields are empty
+    if (_titleController.text.isEmpty || _descriptionController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Title and description are required')),
+      );
+      return; // Exit the function if validation fails
+    }
+
+    bool anyTagSelected = tags.values.any((val) => val);
+    if (!anyTagSelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('At least one tag must be selected')),
+      );
+      return; // Exit the function if no tags are selected
+    }
+
+    // If validation passes, proceed with form submission
     print('Title: ${_titleController.text}');
     print('Description: ${_descriptionController.text}');
     print('Tags: ${_tagsController.text}');
@@ -63,12 +125,19 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 labelText: 'Description',
               ),
             ),
+            CheckboxListTile(
+              title: const Text('Alert'),
+              value: _isAlert,
+              onChanged: (bool? value) {
+                setState(() {
+                  _isAlert = value!;
+                });
+              },
+            ),
             const SizedBox(height: 16.0),
-            TextField(
-              controller: _tagsController,
-              decoration: const InputDecoration(
-                labelText: 'Tags(To be replaced with radio buttons)',
-              ),
+            ElevatedButton(
+              onPressed: showTags,
+              child: const Text('Select Tags'),
             ),
             //Submit button
             const SizedBox(height: 16.0),
