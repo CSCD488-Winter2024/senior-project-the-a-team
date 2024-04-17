@@ -11,7 +11,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
         title: const Align(
           widthFactor: 1.3,
           alignment: Alignment.center,

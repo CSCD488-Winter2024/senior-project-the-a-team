@@ -29,7 +29,7 @@ class _EditProfile extends State<EditProfile>{
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text('Edit Profile'),
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
       ),
       body: Center(
         child: SingleChildScrollView(

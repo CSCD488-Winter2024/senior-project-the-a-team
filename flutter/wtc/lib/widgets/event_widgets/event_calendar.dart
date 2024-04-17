@@ -167,7 +167,7 @@ class _EventCalendar extends State<EventCalendar> {
                           scrollable: true,
                           title: Container(
                             decoration: const BoxDecoration(
-                                color: Colors.red,
+                                color: Color(0xFF469AB8),
                                 borderRadius: BorderRadius.all(
                                     Radius.elliptical(20, 15))),
                             child: Text(

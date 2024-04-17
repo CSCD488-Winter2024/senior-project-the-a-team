@@ -58,7 +58,7 @@ class _AccountPage extends State<AccountPage> {
                 // Display name
                 Container(
                   decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: Color(0xFF469AB8),
                   borderRadius: BorderRadius.all(Radius.circular(250))
                   ),
                   

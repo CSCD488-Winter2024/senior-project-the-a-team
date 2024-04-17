@@ -179,7 +179,7 @@ class _NavBars extends State<App> {
           });
         },
         indicatorColor: Colors.white,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
         //beginning of bottom bar
         destinations: const <Widget>[

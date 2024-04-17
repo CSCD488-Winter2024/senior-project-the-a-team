@@ -21,7 +21,7 @@ class _EditTagsState extends State<EditTags> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text("Edit Tags"),
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
       ),
       body: Center(
         child: SingleChildScrollView(
