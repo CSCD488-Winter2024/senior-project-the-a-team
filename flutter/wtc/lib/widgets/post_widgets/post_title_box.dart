@@ -10,7 +10,7 @@ class PostTitleBox extends StatelessWidget {
     return Container(
       width: 600,
       decoration: const BoxDecoration(
-          color: Colors.red,
+          color: Color(0xFF469AB8),
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: Text(
         title,

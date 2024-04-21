@@ -1,9 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/app.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
-import 'package:wtc/pages/accountsettings.dart';
 import 'package:wtc/pages/forgot_password.dart';
 
 class LoginPage extends StatefulWidget{
@@ -24,15 +23,22 @@ class _LoginPageState extends State<LoginPage>{
 
   
 
-  void login(){
-    if(emailController.text != acc.email && passwordController.text != acc.password){
-      displayMessageToUser("Email:\njclarkson@gmail.com\nPassword:\npassword123", context);
+  void login() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      )
+    );
+
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+
+      if(context.mounted) Navigator.pop(context);
     }
-    else{
+    on FirebaseAuthException catch(e){
       Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const App()));
+      displayMessageToUser(e.code, context);
     }
   }
 

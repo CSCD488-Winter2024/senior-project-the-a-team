@@ -20,7 +20,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text("Forgot Password"),
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
       ),
       body: const Center(
         child: SingleChildScrollView(

@@ -96,9 +96,10 @@ class _NavBars extends State<App> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            child: Text('Menu', style: TextStyle(color: Colors.white)),
+            child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: Color(0xFF469AB8),
+              image: DecorationImage(image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
           ),
           ListTile(
@@ -179,7 +180,7 @@ class _NavBars extends State<App> {
           });
         },
         indicatorColor: Colors.white,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
         //beginning of bottom bar
         destinations: const <Widget>[

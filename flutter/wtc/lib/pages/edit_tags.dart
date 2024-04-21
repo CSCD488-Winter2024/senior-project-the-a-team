@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/accountsettings.dart';
 class EditTags extends StatefulWidget {
   const EditTags({super.key});
 
@@ -9,7 +8,7 @@ class EditTags extends StatefulWidget {
 
 class _EditTagsState extends State<EditTags> {
 
-  get tags => acc.tags;
+  //get tags => acc.tags;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +20,16 @@ class _EditTagsState extends State<EditTags> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text("Edit Tags"),
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF469AB8),
       ),
-      body: Center(
+      body: const Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(25.0),
             child: Column(
               children: [
-                const Text("Edit Tags Page"),
-                Text("Current Tags: $tags")
+                Text("Edit Tags Page"),
+                Text("Current Tags: ")
               ]
             )
           ),
