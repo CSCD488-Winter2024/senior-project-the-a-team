@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/components/textfield.dart';
-import 'package:wtc/pages/accountsettings.dart';
 
 class EditProfile extends StatefulWidget{
   const EditProfile({super.key});
@@ -11,8 +10,8 @@ class EditProfile extends StatefulWidget{
 
 class _EditProfile extends State<EditProfile>{
 
-  final TextEditingController fnameController = TextEditingController();
-  final TextEditingController lnameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmEmailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -45,7 +44,7 @@ class _EditProfile extends State<EditProfile>{
                   width: 120,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(200),
-                    child: acc.profilePic
+                    child: const Image(image: AssetImage('images/profile.jpg'), fit: BoxFit.cover,)
                   ),
                 ),
                 const Text("Edit Profile Picture"),
@@ -54,18 +53,18 @@ class _EditProfile extends State<EditProfile>{
 
                 //edit first name
                 MyTextField(
-                  hintText: 'Change First Name', 
+                  hintText: 'Change Username', 
                   obscureText: false, 
-                  controller: fnameController
+                  controller: usernameController
                 ),
 
                 const SizedBox(height: 10,),
 
                 //edit last name
                 MyTextField(
-                  hintText: 'Change Last Name', 
+                  hintText: 'Change Name', 
                   obscureText: false, 
-                  controller: lnameController
+                  controller: nameController
                 ),
 
                 const SizedBox(height: 25,),
