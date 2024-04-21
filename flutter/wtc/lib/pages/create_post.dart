@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+import 'package:intl/intl.dart';
 
 class CreatePostPage extends StatefulWidget {
   const CreatePostPage({super.key});
@@ -72,7 +75,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
     );
   }
 
-  void _submitPost() async {
+  Future<void> _submitPost() async {
     // Check if the title or description fields are empty
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
@@ -91,22 +94,34 @@ class _CreatePostPageState extends State<CreatePostPage> {
       return; // Exit the function if no tags are selected
     }
 
-    // If validation passes, proceed with form submission
-    print('Title: ${_titleController.text}');
-    print('Description: ${_descriptionController.text}');
-    print('Tags: ${_tagsController.text}');
-    CollectionReference posts = FirebaseFirestore.instance.collection('_posts');
+    Guid newGuid = Guid.newGuid;
+    Timestamp timestamp = Timestamp.fromDate(DateTime.now());
+    DateTime date = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
-    await posts.add({
+    var convertedTags = [];
+    for (String key in tags.keys) {
+      if (tags[key] == true) {
+        convertedTags.add(key);
+      }
+    }
+
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    await FirebaseFirestore.instance
+        .collection('_posts')
+        .doc(newGuid.toString())
+        .set({
       'body': _descriptionController.text,
-      'Header': _descriptionController.text,
-      'Tags': tags,
-      'Title': _titleController.text,
-      'Type': 'Post',
-      'createdAt': FieldValue.serverTimestamp(),
+      'header': _headerController.text,
+      'tags': convertedTags,
+      'title': _titleController.text,
+      'type': 'Post',
+      'createdAt': formattedDate,
       'interestCount': 0,
-      'user':
-          FirebaseFirestore.instance.collection('users').doc('user.username'),
+      'postID': newGuid.toString(),
+      'user': currentUser!.email,
+      //'user': FirebaseFirestore.instance.collection('users').doc('user.email')
     });
 
     // Clear the fields
