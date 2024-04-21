@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/firebase_options.dart';
-import 'app.dart';
+import 'package:wtc/auth/login_or_register.dart';
+//import 'app.dart';
 
 /*
   -- This will be the in point of our app
@@ -23,7 +24,8 @@ class WTCApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
-      home: const App(), //this is imported from app.dart
+      home: const LoginOrRegister() //App entry point
     );
   }
 }
+

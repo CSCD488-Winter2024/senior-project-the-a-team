@@ -7,7 +7,7 @@ class PostTagBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String tagList = "";
+    String tagList = "Tags: ";
     for (int i = 0; i < tags.length; i++) {
       if (i == (tags.length - 1)) {
         tagList += tags[i];
