@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
@@ -17,6 +18,7 @@ Post post1 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post2 = Post(
   title: "Test2",
@@ -27,6 +29,7 @@ Post post2 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post3 = Post(
   title: "Test3",
@@ -37,6 +40,7 @@ Post post3 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post4 = Post(
   title: "Test4",
@@ -47,6 +51,7 @@ Post post4 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post5 = Post(
   title: "Test5",
@@ -57,6 +62,7 @@ Post post5 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post6 = Post(
   title: "Test6",
@@ -67,6 +73,7 @@ Post post6 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post7 = Post(
   title: "Test7",
@@ -77,6 +84,7 @@ Post post7 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post8 = Post(
   title: "Test8",
@@ -87,6 +95,7 @@ Post post8 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post9 = Post(
   title: "Test9",
@@ -97,6 +106,7 @@ Post post9 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post10 = Post(
   title: "Test10",
@@ -107,6 +117,7 @@ Post post10 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Post post11 = Post(
   title: "Test11",
@@ -117,6 +128,7 @@ Post post11 = Post(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 Event event1 = Event(
   date: DateTime.now(),
@@ -132,6 +144,7 @@ Event event1 = Event(
   user: user,
   interestCount: 0,
   created: DateTime.now(),
+  userEmail: 'tester@gmail.com',
 );
 
 class PostList extends StatelessWidget {
@@ -150,46 +163,55 @@ class PostList extends StatelessWidget {
     event1
   ];
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   PostList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: posts.length,
-      itemBuilder: (BuildContext context, int index) {
-        //use if-else block to return the correct type of Post for the proper formatting
-        if (posts[index].runtimeType == Event) {
-          Event event = posts[index] as Event;
-          return Event(
-            postId: posts[index].postId,
-            header: posts[index].header,
-            user: posts[index].user,
-            interestCount: posts[index].interestCount,
-            created: posts[index].created,
-            title: posts[index].title,
-            tags: posts[index].tags,
-            body: posts[index].body,
-            date: event.date,
-            time: event.time,
-            location: event.location,
-            attendingCount: event.attendingCount,
-            maybeCount: event.maybeCount,
+    return StreamBuilder(
+        stream: _firestore.collection('_posts').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: snapshot.data?.docs.length ?? 0,
+            itemBuilder: (BuildContext context, int index) {
+              var document = snapshot.data?.docs[index];
+              String dateCreated = document?['createdAt'] as String;
+              var tempTags = document?['tags'] as List<dynamic>;
+              List<String> tags = [];
+
+              for (int i = 0; i < tempTags.length; i++) {
+                tags.add(tempTags[i]);
+              }
+              //use if-else block to return the correct type of Post for the proper formatting
+
+              return Post(
+                postId: Guid(document?['postID'] as String),
+                header: document?['header'] as String,
+                userEmail: document?['user'] as String,
+                interestCount: document?['interestCount'] as int,
+                created: DateTime(
+                    int.parse(dateCreated.split("-")[0]),
+                    int.parse(dateCreated.split("-")[1]),
+                    int.parse(dateCreated.split("-")[2])),
+                title: document?['title'] as String,
+                tags: tags,
+                body: document?['body'] as String,
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
           );
-        } else {
-          return Post(
-            postId: posts[index].postId,
-            header: posts[index].header,
-            user: posts[index].user,
-            interestCount: posts[index].interestCount,
-            created: posts[index].created,
-            title: posts[index].title,
-            tags: posts[index].tags,
-            body: posts[index].body,
-          );
-        }
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    );
+        });
   }
 }

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
-
 // ignore: must_be_immutable
 class VolunteerPostList extends StatelessWidget {
-  
   List<JobPost> volunteerList;
 
   VolunteerPostList({super.key, required this.volunteerList});
 
   @override
   Widget build(BuildContext context) {
-    List<JobPost> volunteerPosts = [];    
+    List<JobPost> volunteerPosts = [];
 
     for (int i = 0; i < volunteerList.length; i++) {
       if (volunteerList[i].volunteer) {
@@ -32,6 +30,7 @@ class VolunteerPostList extends StatelessWidget {
           title: volunteerPosts[index].title,
           tags: volunteerPosts[index].tags,
           body: volunteerPosts[index].body,
+          userEmail: volunteerPosts[index].userEmail,
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
