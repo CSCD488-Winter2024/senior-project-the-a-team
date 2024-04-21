@@ -95,7 +95,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
     }
 
     Guid newGuid = Guid.newGuid;
-    Timestamp timestamp = Timestamp.fromDate(DateTime.now());
     DateTime date = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
@@ -118,6 +117,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'title': _titleController.text,
       'type': 'Post',
       'createdAt': formattedDate,
+      'timestamp': FieldValue.serverTimestamp(),
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
