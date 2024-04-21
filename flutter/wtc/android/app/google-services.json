@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "520311768806",
+    "project_id": "welcometocheney-77d11",
+    "storage_bucket": "welcometocheney-77d11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520311768806:android:2a4aef921dd7901ebe9d27",
+        "android_client_info": {
+          "package_name": "com.example.wtc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ2ykB9EVfy58kbcrcKGTQ0YGaMSDnMuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

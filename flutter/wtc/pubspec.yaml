@@ -39,6 +39,10 @@ dependencies:
   flutter_guid: ^0.3.1
   uuid: ^3.0.7
   table_calendar: ^3.1.1
+  firebase_core: ^2.27.0
+  firebase_auth: ^4.17.8
+  cloud_firestore: ^4.15.8
+
 
 dev_dependencies:
   flutter_test:

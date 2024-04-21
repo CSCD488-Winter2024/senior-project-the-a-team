@@ -179,6 +179,7 @@ class _NavBars extends State<App> {
             currentPageIndex = index;
           });
         },
+        
         indicatorColor: Colors.white,
         backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
