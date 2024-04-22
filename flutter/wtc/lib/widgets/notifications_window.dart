@@ -9,7 +9,7 @@ User user =
     User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
 
 PostPreview post1 = PostPreview(
-    title: "The summer bash: Pig out in the park!",
+    title: "The summer bash - Pig out in the park!",
     user: user,
     created: DateTime.now());
 PostPreview post2 = PostPreview(
@@ -37,7 +37,15 @@ PostPreview post7 = PostPreview(
     user: user,
     created: DateTime.now());
 
-List<PostPreview> posts = <PostPreview>[];
+List<PostPreview> posts = <PostPreview>[
+  post1,
+  post2,
+  post3,
+  post4,
+  post5,
+  post6,
+  post7
+];
 
 class NotificationsWindow extends StatefulWidget {
   const NotificationsWindow({Key? key}) : super(key: key);

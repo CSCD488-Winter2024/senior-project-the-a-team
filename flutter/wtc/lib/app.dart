@@ -129,9 +129,8 @@ class _NavBars extends State<App> {
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              setState(() {
-                currentPageIndex = 5;
-              });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const JobsPage()));
             },
           ),
           ListTile(
@@ -140,9 +139,10 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              setState(() {
-                currentPageIndex = 6;
-              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const VolunteerPage()));
             },
           ),
           ListTile(

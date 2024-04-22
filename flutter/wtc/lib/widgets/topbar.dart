@@ -26,12 +26,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         child: Text("Welcome to Cheney", style: TextStyle(color: Colors.white)),
       ),
       actions: [
-        IconButton(
-          icon: showNotifications
-              ? const Icon(Icons.notifications)
-              : const Icon(Icons.notifications_outlined),
-          onPressed: onNotificationsPressed,
-        ),
+        Badge(
+          alignment: const AlignmentDirectional(0.5, 0),
+          label: const Text('3'),
+          child: IconButton(
+            icon: showNotifications
+                ? const Icon(Icons.notifications)
+                : const Icon(Icons.notifications_outlined),
+            onPressed: onNotificationsPressed,
+          ),
+        )
       ],
       //Drawer handles the rest
     );

@@ -18,7 +18,7 @@ class PostPreview extends StatelessWidget {
     int month = created.month;
     int day = created.day;
     int year = created.year;
-
+    String username = user.username;
     return Row(
       children: [
         const Padding(
@@ -29,12 +29,16 @@ class PostPreview extends StatelessWidget {
                 width: 64)),
         Column(
           children: [
-            Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                )),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 200),
+              child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    "$username posted: $title",
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  )),
+            ),
             Text('$day-$month-$year')
           ],
         )
