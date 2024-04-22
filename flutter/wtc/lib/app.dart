@@ -11,6 +11,7 @@ import 'pages/create_post_event.dart';
 import 'pages/create_post_job.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
+import 'widgets/notifications_window.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -32,7 +33,7 @@ class _NavBars extends State<App> {
     the current location of the home page
   */
   int currentPageIndex = 2;
-
+  bool showNotification = false;
   void showCreatePostOptions(BuildContext context) {
     showDialog(
       context: context,
@@ -127,10 +128,8 @@ class _NavBars extends State<App> {
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const JobsPage()),
-              );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const JobsPage()));
             },
           ),
           ListTile(
@@ -140,9 +139,9 @@ class _NavBars extends State<App> {
               // Navigate to Volunteer page
               Navigator.pop(context);
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const VolunteerPage()),
-              );
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const VolunteerPage()));
             },
           ),
           ListTile(
@@ -171,8 +170,28 @@ class _NavBars extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(preferredHeight: 70.0),
+      appBar: TopBar(
+        preferredHeight: 70.0,
+        onNotificationsPressed: () {
+          setState(() => showNotification = !showNotification);
+
+          print(showNotification);
+        },
+        showNotifications: showNotification,
+      ),
       drawer: getDrawer(context),
+      body: Stack(
+        children: [
+          // Main content of your app
+          getPageContent(currentPageIndex),
+          // Notification window (conditional rendering)
+          if (showNotification)
+            const Opacity(
+                opacity: 0.5, child: ModalBarrier(color: Colors.black)),
+
+          if (showNotification) NotificationsWindow()
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -182,70 +201,46 @@ class _NavBars extends State<App> {
         indicatorColor: Colors.white,
         backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
-        //beginning of bottom bar
         destinations: const <Widget>[
-          /** -- NOTES PLEASE READ BEFORE PROCEEDING
-           * 'destinations' contains widgets -- or, in this case, the buttons 
-           * for our navbar
-           * 
-           * I made a custom Navigation Button widget for easy reuse 
-           * params order will be label [requires a string], an icon image for when selected [requires an IconData object]
-           * and an icon image for when not selected [requires an IconData object type]
-           * 
-           * -- you can see examples below
-           * 
-           * **NOTE: The order of buttons will matter!**
-           * The beginning of this list will indicate the left most position on the nav bar
-           * The end of this list will indicate the right most position on the nav bar
-           * 
-           * -- Please do not mess with the order unless it was decided so
-           * 
-           * To add another button (or remove) place comma at last widget in list followed by NavButton widget
-           * (to remove, simply remove a nav button from the list - but remember order matters!)
-           */
-          //Alerts Page Button
           NavButton(
               label: "Alerts",
               icon: Icons.crisis_alert,
               outlinedIcon: Icons.crisis_alert_outlined),
-          //Map Page Button
           NavButton(
               label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
-          //Home Page Button
           NavButton(
               label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
-          //Calendar Page Button
           NavButton(
               label: "Calendar",
               icon: Icons.calendar_month,
               outlinedIcon: Icons.calendar_month_outlined),
-          //Account Page Button
           NavButton(
               label: "Account",
               icon: Icons.manage_accounts,
               outlinedIcon: Icons.manage_accounts_outlined),
         ],
       ),
-      body: <Widget>[
-        /**
-         *  -- just like the previous list, order matters!
-         *  -- the order of the pages here will need to line up with the nav buttons above
-         *  in terms of order!
-         * 
-         *  -- this is how we will route our pages for the nav bar
-         *  -- to edit a page, please go to the respective dart file! 
-         * The page may need to be completely changed - a page is current only formatted for the piece of 
-         * text that is displayed
-         * 
-         * -- you can add a page by placing a comma at the bottom of this list followed by a constant widget which will be a page widget (import to nav bar to add more)
-         * -- right now, pages will be unique widgets since they require very different configurations
-         */
-        const AlertsPage(),
-        const MapPage(),
-        const HomePage(),
-        const CalendarPage(),
-        const AccountPage(),
-      ][currentPageIndex],
     );
+  }
+
+  Widget getPageContent(int index) {
+    switch (index) {
+      case 0:
+        return AlertsPage();
+      case 1:
+        return MapPage();
+      case 2:
+        return HomePage();
+      case 3:
+        return CalendarPage();
+      case 4:
+        return AccountPage();
+      case 5:
+        return JobsPage();
+      case 6:
+        return VolunteerPage();
+      default:
+        return Container(); // Default empty container
+    }
   }
 }

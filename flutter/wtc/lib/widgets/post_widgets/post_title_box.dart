@@ -14,8 +14,8 @@ class PostTitleBox extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 24),
-        textAlign: TextAlign.left,
+        style: const TextStyle(fontSize: 24, color: Colors.white),
+        textAlign: TextAlign.center,
       ),
     );
   }

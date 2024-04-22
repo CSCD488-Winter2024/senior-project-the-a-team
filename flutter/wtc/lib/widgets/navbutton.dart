@@ -17,8 +17,9 @@ class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
     return NavigationDestination(
+      
       selectedIcon: Icon(widget.icon, color: Colors.black),
-      icon: Icon(widget.outlinedIcon, color: Colors.black),
+      icon: Icon(widget.outlinedIcon, color: Colors.white),
       label: widget.label,
     );
   }
