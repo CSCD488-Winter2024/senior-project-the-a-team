@@ -17,6 +17,7 @@ Post post1 = Post(
   body:
       "Lets see what happens when I write a huge amount of text. I mean like really write an absurd amount of text just to test this simple little feature. Because I need to be sure that this will work as it is intended too.",
   tags: ["tag1", "tag2", "tag3", "alert"],
+  userEmail: 'tester@gmail.com',
 );
 Post post2 = Post(
   postId: Guid.newGuid,
@@ -27,6 +28,7 @@ Post post2 = Post(
   title: "Test2",
   body: "This is a test",
   tags: ["tag1", "tag2"],
+  userEmail: 'tester@gmail.com',
 );
 Post post3 = Post(
   postId: Guid.newGuid,
@@ -37,6 +39,7 @@ Post post3 = Post(
   title: "Test3",
   body: "This is a test",
   tags: ["tag1", "tag2", "tag7", "alert"],
+  userEmail: 'tester@gmail.com',
 );
 Post post4 = Post(
   postId: Guid.newGuid,
@@ -47,6 +50,7 @@ Post post4 = Post(
   title: "Test4",
   body: "This is a test",
   tags: ["tag1", "tag2"],
+  userEmail: 'tester@gmail.com',
 );
 Post post5 = Post(
   postId: Guid.newGuid,
@@ -57,6 +61,7 @@ Post post5 = Post(
   title: "Test5",
   body: "This is a test",
   tags: ["tag1"],
+  userEmail: 'tester@gmail.com',
 );
 
 List<Post> posts = <Post>[

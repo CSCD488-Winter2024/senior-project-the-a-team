@@ -12,6 +12,7 @@ import 'package:wtc/firebase_options.dart';
   -- home is set to our nav bar since this will be housing our page
 
 */
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -27,6 +28,7 @@ class WTCApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(useMaterial3: true),
         home: const AuthPage() //App entry point
+
         );
   }
 }

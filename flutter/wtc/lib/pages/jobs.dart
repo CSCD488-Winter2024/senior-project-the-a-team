@@ -19,6 +19,7 @@ JobPost jobPost1 = JobPost(
   wage: 9.75,
   wageType: "hourly",
   volunteer: true,
+  userEmail: 'tester@gmail.com',
 );
 
 JobPost jobPost2 = JobPost(
@@ -34,6 +35,7 @@ JobPost jobPost2 = JobPost(
   volunteer: false,
   wageType: "salary",
   wage: 50000,
+  userEmail: 'tester@gmail.com',
 );
 
 class JobsPage extends StatefulWidget {
