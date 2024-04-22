@@ -14,7 +14,8 @@ class Post extends StatelessWidget {
       required this.body,
       required this.tags,
       required this.header,
-      required this.user,
+      required this.userEmail,
+      this.user,
       required this.interestCount,
       required this.created,
       required this.postId})
@@ -25,7 +26,8 @@ class Post extends StatelessWidget {
   final String header;
   final List<String> tags;
   final String body;
-  final User user;
+  User? user;
+  final String userEmail;
   final int interestCount;
   final DateTime created;
 

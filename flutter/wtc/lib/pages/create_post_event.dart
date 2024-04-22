@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
 class CreatePostEventPage extends StatefulWidget {
   const CreatePostEventPage({super.key});
@@ -11,6 +14,7 @@ class CreatePostEventPage extends StatefulWidget {
 class _CreatePostEventPageState extends State<CreatePostEventPage> {
   // Text editing controllers to capture input from text fields
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _headerController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -74,7 +78,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
     );
   }
 
-  void _submitPost() {
+  Future<void> _submitPost() async {
     // Check if any of the required fields are empty
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
@@ -117,15 +121,43 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       return; // Exit if no tags are selected
     }
 
-    // Proceed with form submission if all validations pass
-    print('Title: ${_titleController.text}');
-    print('Description: ${_descriptionController.text}');
-    print('Address: ${_addressController.text}');
-    print('Date: ${_dateController.text}');
-    print('Time: ${_timeController.text}');
+    Guid newGuid = Guid.newGuid;
+    DateTime date = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
+    var convertedTags = [];
+    for (String key in tags.keys) {
+      if (tags[key] == true) {
+        convertedTags.add(key);
+      }
+    }
+
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    await FirebaseFirestore.instance
+        .collection('_posts')
+        .doc(newGuid.toString())
+        .set({
+      'body': _descriptionController.text,
+      'header': _headerController.text,
+      'tags': convertedTags,
+      'title': _titleController.text,
+      'type': 'Event',
+      'address': _addressController.text,
+      'eventDate': _dateController.text,
+      'eventTime': _timeController.text,
+      'createdAt': formattedDate,
+      'timestamp': FieldValue.serverTimestamp(),
+      'attendingCount': 0,
+      'maybeCount': 0,
+      'interestCount': 0,
+      'postID': newGuid.toString(),
+      'user': currentUser!.email,
+    });
 
     // Clear the fields
     _titleController.clear();
+    _headerController.clear();
     _descriptionController.clear();
     _addressController.clear();
     _dateController.clear();
@@ -152,6 +184,13 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 controller: _titleController,
                 decoration: const InputDecoration(
                   labelText: 'Title',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _headerController,
+                decoration: const InputDecoration(
+                  labelText: 'Quick description',
                 ),
               ),
               const SizedBox(height: 16.0),

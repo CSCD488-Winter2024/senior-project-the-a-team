@@ -12,8 +12,7 @@ class AlertsList extends StatelessWidget {
     List<Post> alerts = [];
 
     for (int i = 0; i < postList.length; i++) {
-        alerts.add(postList[i]);
-
+      alerts.add(postList[i]);
     }
 
     return ListView.separated(
@@ -28,6 +27,7 @@ class AlertsList extends StatelessWidget {
             title: alerts[index].title,
             tags: alerts[index].tags,
             body: alerts[index].body,
+            userEmail: alerts[index].userEmail,
           );
         },
         separatorBuilder: (BuildContext context, int index) => const Divider(),

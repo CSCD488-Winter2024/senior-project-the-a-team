@@ -18,6 +18,7 @@ JobPost v1 = JobPost(
   interestCount: 245,
   created: DateTime.now(),
   volunteer: true,
+  userEmail: 'tester@gmail.com',
 );
 
 JobPost v2 = JobPost(
@@ -33,6 +34,7 @@ JobPost v2 = JobPost(
   volunteer: true,
   wageType: "salary",
   wage: 50000,
+  userEmail: 'tester@gmail.com',
 );
 
 class VolunteerPage extends StatefulWidget {
