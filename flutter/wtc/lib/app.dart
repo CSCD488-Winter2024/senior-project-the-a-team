@@ -99,9 +99,8 @@ class _NavBars extends State<App> {
           const DrawerHeader(
             child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
               color: Color(0xFF469AB8),
+              image: DecorationImage(image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
           ),
           ListTile(
