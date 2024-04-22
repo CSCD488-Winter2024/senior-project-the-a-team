@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:wtc/auth/auth.dart';
 import 'package:wtc/auth/login_or_register.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:wtc/firebase_options.dart';
+// Import the firebase_core package
 //import 'app.dart';
 
 /*
@@ -24,7 +27,8 @@ class WTCApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(useMaterial3: true),
-        home: const LoginOrRegister() //App entry point
+        home: const AuthPage() //App entry point
+
         );
   }
 }
