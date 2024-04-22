@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+import 'package:intl/intl.dart';
 
 class CreatePostJobPage extends StatefulWidget {
   const CreatePostJobPage({super.key});
@@ -10,6 +14,7 @@ class CreatePostJobPage extends StatefulWidget {
 class _CreatePostJobPageState extends State<CreatePostJobPage> {
   // Text editing controllers to capture input from text fields
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _headerController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   final TextEditingController _wageController = TextEditingController();
@@ -26,7 +31,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
     super.dispose();
   }
 
-  void _submitPost() {
+  Future<void> _submitPost() async {
     // Validation checks for required fields
     if (_titleController.text.isEmpty || _descriptionController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -54,15 +59,29 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       }
     }
 
-    // If validation passes, proceed with form submission
-    print('Title: ${_titleController.text}');
-    print('Description: ${_descriptionController.text}');
-    print('Tags: ${_tagsController.text}');
-    if (!_isVolunteer) {
-      print('Wage: ${_wageController.text}');
-      print('Wage Type: $_wageType');
-    }
+    Guid newGuid = Guid.newGuid;
+    DateTime date = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    await FirebaseFirestore.instance
+        .collection('_posts')
+        .doc(newGuid.toString())
+        .set({
+      'body': _descriptionController.text,
+      'header': _headerController.text,
+      'title': _titleController.text,
+      'type': _isVolunteer ? 'Volunteer' : 'Job',
+      'wage': _isVolunteer ? 0 : double.parse(_wageController.text),
+      'wageType': _isVolunteer ? 'N/A' : _wageType,
+      'isVolunteer': _isVolunteer,
+      'createdAt': formattedDate,
+      'timestamp': FieldValue.serverTimestamp(),
+      'interestCount': 0,
+      'postID': newGuid.toString(),
+      'user': currentUser!.email,
+    });
     // Clear the fields
     _titleController.clear();
     _descriptionController.clear();
@@ -90,6 +109,13 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
                 controller: _titleController,
                 decoration: const InputDecoration(
                   labelText: 'Title',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _headerController,
+                decoration: const InputDecoration(
+                  labelText: 'Quick description',
                 ),
               ),
               const SizedBox(height: 16.0),

@@ -121,7 +121,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
-      //'user': FirebaseFirestore.instance.collection('users').doc('user.email')
     });
 
     // Clear the fields
