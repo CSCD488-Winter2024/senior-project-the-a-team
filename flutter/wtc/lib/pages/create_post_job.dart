@@ -84,6 +84,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
     });
     // Clear the fields
     _titleController.clear();
+    _headerController.clear();
     _descriptionController.clear();
     _tagsController.clear();
     _wageController.clear();
