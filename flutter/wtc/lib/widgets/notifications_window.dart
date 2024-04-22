@@ -1,36 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/widgets/notifications_list.dart';
+import 'package:flutter_guid/flutter_guid.dart';
+import 'package:wtc/User/user.dart';
+import 'package:wtc/widgets/post_widgets/post.dart';
+import 'package:wtc/widgets/post_widgets/post_preview.dart';
 
-class NotificationWidget extends StatelessWidget {
-  final VoidCallback onClose;
+User user =
+    User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
 
-  const NotificationWidget({Key? key, required this.onClose}) : super(key: key);
+PostPreview post1 = PostPreview(
+    title: "The summer bash: Pig out in the park!",
+    user: user,
+    created: DateTime.now());
+PostPreview post2 = PostPreview(
+    title: "Starbuck's coffee making competition",
+    user: user,
+    created: DateTime.now());
+PostPreview post3 = PostPreview(
+    title: "Cheney highschool's motor bike relay",
+    user: user,
+    created: DateTime.now());
+PostPreview post4 = PostPreview(
+    title: "Pizza huts giving away pizza for 200k",
+    user: user,
+    created: DateTime.now());
+PostPreview post5 = PostPreview(
+    title: "Relishing the good days at hot dog joes!",
+    user: user,
+    created: DateTime.now());
+PostPreview post6 = PostPreview(
+    title: "Safeway stealing the chickens once again.",
+    user: user,
+    created: DateTime.now());
+PostPreview post7 = PostPreview(
+    title: "Bakery bill is stealing hot dogs from Hot Dog Joes again!",
+    user: user,
+    created: DateTime.now());
+
+List<PostPreview> posts = <PostPreview>[];
+
+class NotificationsWindow extends StatefulWidget {
+  const NotificationsWindow({Key? key}) : super(key: key);
 
   @override
+  State<NotificationsWindow> createState() => _NotificationsWindow();
+}
+
+class _NotificationsWindow extends State<NotificationsWindow> {
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Card(
-        elevation: 4.0,
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Icon(Icons.notifications),
-              SizedBox(width: 16.0),
-              Expanded(
-                child: Text(
-                  'New Notification!',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.close),
-                onPressed: onClose,
-              ),
-            ],
-          ),
-        ),
-      ),
+    //final ThemeData theme = Theme.of(context);
+    return Card(
+      shadowColor: Colors.transparent,
+      margin: const EdgeInsets.all(8.0),
+      child: SizedBox.expand(
+          child: NotificationList(
+        postList: posts,
+      )),
     );
   }
 }
