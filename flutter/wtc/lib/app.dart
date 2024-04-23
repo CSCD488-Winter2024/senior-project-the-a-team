@@ -34,6 +34,9 @@ class _NavBars extends State<App> {
   */
   int currentPageIndex = 2;
   bool showNotification = false;
+  bool showJobsPage = false;
+  bool showVolunteerPage =false;
+
   void showCreatePostOptions(BuildContext context) {
     showDialog(
       context: context,
@@ -110,6 +113,9 @@ class _NavBars extends State<App> {
               Navigator.pop(context); // Close the drawer
               setState(() {
                 currentPageIndex = 2;
+                showJobsPage = false;
+                showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -120,6 +126,9 @@ class _NavBars extends State<App> {
               Navigator.pop(context); // Close the drawer
               setState(() {
                 currentPageIndex = 0;
+                showJobsPage = false;
+                showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -128,8 +137,13 @@ class _NavBars extends State<App> {
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const JobsPage()));
+              /*Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const JobsPage()));*/
+              setState(() {
+                showJobsPage = !showJobsPage;
+                showVolunteerPage = false;
+                showNotification = false;
+              });
             },
           ),
           ListTile(
@@ -138,10 +152,11 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VolunteerPage()));
+              setState(()  {
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage  = !showVolunteerPage;
+              });
             },
           ),
           ListTile(
@@ -151,6 +166,9 @@ class _NavBars extends State<App> {
               Navigator.pop(context); // Close the drawer
               setState(() {
                 currentPageIndex = 4;
+                showJobsPage = false;
+                showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -160,6 +178,11 @@ class _NavBars extends State<App> {
             onTap: () {
               Navigator.pop(context); // Close the drawer
               showCreatePostOptions(context);
+              setState(()  {
+                showJobsPage = false;
+                showVolunteerPage = false;
+                showNotification = false;
+              });
             },
           ),
         ],
@@ -174,8 +197,11 @@ class _NavBars extends State<App> {
         preferredHeight: 70.0,
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
+          setState(() {
+            showJobsPage = false;
+            showVolunteerPage = false;
+          });
 
-          print(showNotification);
         },
         showNotifications: showNotification,
       ),
@@ -189,13 +215,20 @@ class _NavBars extends State<App> {
             const Opacity(
                 opacity: 0.5, child: ModalBarrier(color: Colors.black)),
 
-          if (showNotification) NotificationsWindow()
+          if (showNotification) const NotificationsWindow(),
+          if (showJobsPage) const JobsPage(),
+          if (showVolunteerPage) const VolunteerPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
+            setState(() {
+              showJobsPage = false;
+              showVolunteerPage = false;
+              showNotification = false;
+            });
           });
         },
         indicatorColor: Colors.white,
@@ -235,10 +268,7 @@ class _NavBars extends State<App> {
         return CalendarPage();
       case 4:
         return AccountPage();
-      case 5:
-        return JobsPage();
-      case 6:
-        return VolunteerPage();
+
       default:
         return Container(); // Default empty container
     }
