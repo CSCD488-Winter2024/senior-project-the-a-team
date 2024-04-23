@@ -17,7 +17,8 @@ class _EventCalendar extends State<EventCalendar> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   DateTime? _selectedDay;
-  DateTime _focusedDay = DateTime.now();
+  DateTime? today;
+  DateTime? _focusedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   List<Event>? eventPosts;
   Map<DateTime, List<Event>> events =
@@ -28,9 +29,10 @@ class _EventCalendar extends State<EventCalendar> {
   @override
   void initState() {
     super.initState();
-    _initializeEvents();
+    today = DateTime.now();
+    _focusedDay = DateTime.utc(today!.year, today!.month, today!.day);
     _selectedDay = _focusedDay;
-    _selectedEvents = _getEventsForDay(_selectedDay!);
+    _initializeEvents();
   }
 
   Future<void> _initializeEvents() async {
@@ -43,6 +45,7 @@ class _EventCalendar extends State<EventCalendar> {
           events[event.date] = [event];
         }
       }
+      _selectedEvents = _getEventsForDay(_selectedDay!);
     });
   }
 
@@ -56,7 +59,7 @@ class _EventCalendar extends State<EventCalendar> {
       child: Column(
         children: [
           TableCalendar(
-            focusedDay: _focusedDay,
+            focusedDay: _focusedDay!,
             firstDay: DateTime.utc(2024, 1, 1),
             lastDay: DateTime.utc(2024, 12, 31),
             eventLoader: _getEventsForDay,
