@@ -78,7 +78,7 @@ class _AccountPage extends State<AccountPage> {
                           width: 9999,
                           child: Text(
                             'Hello $username!',
-                            style: const TextStyle(fontSize: 24), 
+                            style: const TextStyle(fontSize: 24, color: Colors.white), 
                             textAlign: TextAlign.center),
                         ),
                       ),

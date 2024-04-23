@@ -115,6 +115,7 @@ class _NavBars extends State<App> {
                 currentPageIndex = 2;
                 showJobsPage = false;
                 showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -127,6 +128,7 @@ class _NavBars extends State<App> {
                 currentPageIndex = 0;
                 showJobsPage = false;
                 showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -140,6 +142,7 @@ class _NavBars extends State<App> {
               setState(() {
                 showJobsPage = !showJobsPage;
                 showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -151,6 +154,7 @@ class _NavBars extends State<App> {
               Navigator.pop(context);
               setState(()  {
                 showJobsPage = false;
+                showNotification = false;
                 showVolunteerPage  = !showVolunteerPage;
               });
             },
@@ -164,6 +168,7 @@ class _NavBars extends State<App> {
                 currentPageIndex = 4;
                 showJobsPage = false;
                 showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -176,6 +181,7 @@ class _NavBars extends State<App> {
               setState(()  {
                 showJobsPage = false;
                 showVolunteerPage = false;
+                showNotification = false;
               });
             },
           ),
@@ -221,6 +227,7 @@ class _NavBars extends State<App> {
             setState(() {
               showJobsPage = false;
               showVolunteerPage = false;
+              showNotification = false;
             });
           });
         },
