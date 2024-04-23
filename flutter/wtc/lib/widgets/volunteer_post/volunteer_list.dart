@@ -1,39 +1,59 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
 // ignore: must_be_immutable
 class VolunteerPostList extends StatelessWidget {
-  List<JobPost> volunteerList;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  VolunteerPostList({super.key, required this.volunteerList});
+  VolunteerPostList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<JobPost> volunteerPosts = [];
 
-    for (int i = 0; i < volunteerList.length; i++) {
-      if (volunteerList[i].volunteer) {
-        volunteerPosts.add(volunteerList[i]);
-      }
-    }
+    return StreamBuilder(
+        stream: _firestore
+            .collection('_posts')
+            .where('type', isEqualTo: 'Volunteer')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
 
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: volunteerPosts.length,
-      itemBuilder: (BuildContext context, int index) {
-        return JobPost(
-          postId: volunteerPosts[index].postId,
-          header: volunteerPosts[index].header,
-          user: volunteerPosts[index].user,
-          interestCount: volunteerPosts[index].interestCount,
-          created: volunteerPosts[index].created,
-          title: volunteerPosts[index].title,
-          tags: volunteerPosts[index].tags,
-          body: volunteerPosts[index].body,
-          userEmail: volunteerPosts[index].userEmail,
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    );
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: snapshot.data?.docs.length ?? 0,
+            itemBuilder: (BuildContext context, int index) {
+            var document = snapshot.data?.docs[index];
+
+            String dateCreated = document?['createdAt'] as String;
+
+            return JobPost(
+                  title: document?['title'] as String,
+                  body: document?['body'] as String,
+                  tags: const ["Volunteer"],
+                  header: document?['header'] as String,
+                  userEmail: document?['user'] as String,
+                  interestCount: document?['interestCount'] as int,
+                  created: DateTime(
+                      int.parse(dateCreated.split("-")[0]),
+                      int.parse(dateCreated.split("-")[1]),
+                      int.parse(dateCreated.split("-")[2])),
+                  postId: Guid(document?['postID'] as String),
+                  volunteer: true,
+                );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          );
+        });
   }
 }
