@@ -55,7 +55,7 @@ class _JobsPage extends State<JobsPage> {
       shadowColor: Colors.transparent,
       margin: const EdgeInsets.all(8.0),
       child: SizedBox.expand(
-          child: JobPostList(jobsList: jobsList))
+          child: JobPostList())
           );/*Scaffold(
         appBar: AppBar(
             leading: IconButton(

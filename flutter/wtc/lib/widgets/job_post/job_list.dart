@@ -1,41 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
-// ignore: must_be_immutable
-class JobPostList extends StatelessWidget {
-  List<JobPost> jobsList;
 
-  JobPostList({super.key, required this.jobsList});
+class JobPostList extends StatelessWidget {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  JobPostList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<JobPost> jobs = [];
+    return StreamBuilder(
+        stream: _firestore
+            .collection('_posts')
+            .where('type', isEqualTo: 'Job')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
 
-    for (int i = 0; i < jobsList.length; i++) {
-      if (!jobsList[i].volunteer) {
-        jobs.add(jobsList[i]);
-      }
-    }
-
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: jobs.length,
-      itemBuilder: (BuildContext context, int index) {
-        return JobPost(
-          postId: jobs[index].postId,
-          header: jobs[index].header,
-          user: jobs[index].user,
-          interestCount: jobs[index].interestCount,
-          created: jobs[index].created,
-          title: jobs[index].title,
-          tags: jobs[index].tags,
-          body: jobs[index].body,
-          wage: jobs[index].wage,
-          wageType: jobs[index].wageType,
-          userEmail: jobs[index].userEmail,
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    );
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: snapshot.data?.docs.length ?? 0,
+            itemBuilder: (BuildContext context, int index) {
+              var document = snapshot.data?.docs[index];
+              String dateCreated = document?['createdAt'] as String;
+              var wage = document?['wage'];
+                if (wage is int) {
+                  wage = wage.toDouble();
+                }
+             
+                return JobPost(
+                  title: document?['title'] as String,
+                  body: document?['body'] as String,
+                  tags: const ["Job"],
+                  header: document?['header'] as String,
+                  userEmail: document?['user'] as String,
+                  interestCount: document?['interestCount'] as int,
+                  created: DateTime(
+                      int.parse(dateCreated.split("-")[0]),
+                      int.parse(dateCreated.split("-")[1]),
+                      int.parse(dateCreated.split("-")[2])),
+                  postId: Guid(document?['postID'] as String),
+                  wage: wage,
+                  wageType: document?['wageType'] as String,
+                );
+            
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          );
+        });
   }
 }
