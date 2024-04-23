@@ -36,6 +36,8 @@ class _NavBars extends State<App> {
   bool showNotification = false;
   bool showJobsPage = false;
   bool showVolunteerPage =false;
+  String title = "Welcome To Cheney";
+  String prevTitle = "";
 
   void showCreatePostOptions(BuildContext context) {
     showDialog(
@@ -112,6 +114,8 @@ class _NavBars extends State<App> {
             onTap: () {
               Navigator.pop(context); // Close the drawer
               setState(() {
+                title = "Welcome to Cheney";
+                prevTitle = "Welcome to Cheney";
                 currentPageIndex = 2;
                 showJobsPage = false;
                 showVolunteerPage = false;
@@ -125,6 +129,8 @@ class _NavBars extends State<App> {
             onTap: () {
               Navigator.pop(context); // Close the drawer
               setState(() {
+                title = "Alerts";
+                prevTitle = "Alerts";
                 currentPageIndex = 0;
                 showJobsPage = false;
                 showVolunteerPage = false;
@@ -140,6 +146,8 @@ class _NavBars extends State<App> {
               /*Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const JobsPage()));*/
               setState(() {
+                title = "Jobs";
+                prevTitle = "Jobs";
                 showJobsPage = !showJobsPage;
                 showVolunteerPage = false;
                 showNotification = false;
@@ -153,6 +161,8 @@ class _NavBars extends State<App> {
               // Navigate to Volunteer page
               Navigator.pop(context);
               setState(()  {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
                 showJobsPage = false;
                 showNotification = false;
                 showVolunteerPage  = !showVolunteerPage;
@@ -165,6 +175,9 @@ class _NavBars extends State<App> {
             onTap: () {
               Navigator.pop(context); // Close the drawer
               setState(() {
+                title = "Account Settings";
+                prevTitle = "Account Settings";
+
                 currentPageIndex = 4;
                 showJobsPage = false;
                 showVolunteerPage = false;
@@ -194,10 +207,18 @@ class _NavBars extends State<App> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
+        title: title,
         preferredHeight: 70.0,
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
           setState(() {
+          
+            if (showNotification == false) {
+                title = prevTitle;
+            } else {
+                title = "Notifications";
+            }
+              
             showJobsPage = false;
             showVolunteerPage = false;
           });
@@ -224,11 +245,14 @@ class _NavBars extends State<App> {
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
-            setState(() {
+            title = setTitle(index);
+            prevTitle = setTitle(index);
+          });
+          
+          setState(() {
               showJobsPage = false;
               showVolunteerPage = false;
               showNotification = false;
-            });
           });
         },
         indicatorColor: Colors.white,
@@ -256,18 +280,30 @@ class _NavBars extends State<App> {
     );
   }
 
+  String setTitle (int index) {
+    switch (index) {
+      case 0: return "Alerts";
+      case 1: return "Maps";
+      case 2: return "Welcome to Cheney";
+      case 3: return "Calendar";
+      case 4: return "Account Settings";
+      default: return "Welcome to Cheney";
+    }
+  }
+
   Widget getPageContent(int index) {
     switch (index) {
       case 0:
-        return AlertsPage();
+
+        return const AlertsPage();
       case 1:
-        return MapPage();
+        return const MapPage();
       case 2:
-        return HomePage();
+        return const HomePage();
       case 3:
-        return CalendarPage();
+        return const CalendarPage();
       case 4:
-        return AccountPage();
+        return const AccountPage();
 
       default:
         return Container(); // Default empty container
