@@ -118,6 +118,8 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
                 decoration: const InputDecoration(
                   labelText: 'Quick description',
                 ),
+                minLines: 1,
+                maxLines: 2,
               ),
               const SizedBox(height: 16.0),
               TextField(
@@ -125,6 +127,8 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
                 decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
+                minLines: 1,
+                maxLines: 5,
               ),
               const SizedBox(height: 16.0),
               SwitchListTile(

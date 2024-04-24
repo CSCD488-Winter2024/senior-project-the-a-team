@@ -158,6 +158,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 decoration: const InputDecoration(
                   labelText: 'Quick description',
                 ),
+                minLines: 1,
+                maxLines: 2,
               ),
               const SizedBox(height: 16.0),
               TextField(
@@ -165,6 +167,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
+                minLines: 1,
+                maxLines: 5,
               ),
               CheckboxListTile(
                 title: const Text('Alert'),

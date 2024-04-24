@@ -192,6 +192,8 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 decoration: const InputDecoration(
                   labelText: 'Quick description',
                 ),
+                minLines: 1,
+                maxLines: 2,
               ),
               const SizedBox(height: 16.0),
               TextField(
@@ -199,6 +201,8 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
+                minLines: 1,
+                maxLines: 5,
               ),
               const SizedBox(height: 16.0),
               TextField(
