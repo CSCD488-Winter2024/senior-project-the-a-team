@@ -199,6 +199,17 @@ packages:
       sha256: "78eb209deea09858f5269f5a5b02be4049535f568c07b275096836f01ea323fa"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< Updated upstream
+=======
+    version: "0.6.7"
+  leak_tracker:
+    dependency: transitive
+    description:
+      name: leak_tracker
+      sha256: "78eb209deea09858f5269f5a5b02be4049535f568c07b275096836f01ea323fa"
+      url: "https://pub.dev"
+    source: hosted
+>>>>>>> Stashed changes
     version: "10.0.0"
   leak_tracker_flutter_testing:
     dependency: transitive
