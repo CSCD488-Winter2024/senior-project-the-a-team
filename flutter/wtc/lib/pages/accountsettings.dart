@@ -18,18 +18,16 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
 
-  User? currentUser = FirebaseAuth.instance.currentUser;
-  
+  User? currentUser = FirebaseAuth.instance.currentUser; 
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async{
     return await FirebaseFirestore.instance.collection("users").doc(currentUser!.email).get();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[400],
+      backgroundColor: Colors.grey[300],
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: getUserDetails(),
         builder: (context, snapshot){
@@ -78,7 +76,7 @@ class _AccountPage extends State<AccountPage> {
                           width: 9999,
                           child: Text(
                             'Hello $username!',
-                            style: const TextStyle(fontSize: 24, color: Colors.white), 
+                            style: const TextStyle(fontSize: 24), 
                             textAlign: TextAlign.center),
                         ),
                       ),
