@@ -1,12 +1,12 @@
 import firebase_admin
 from firebase_admin import auth, db, messaging, exceptions
-from firebase_functions import db_fn
+from firebase_functions import firestore_fn
 
 firebase_admin.initialize_app()
 
 
-@db_fn.on_value_written(reference=r"_posts/{PostUid}")
-def send_post_notification(event: db_fn.Event[db_fn.Change]) -> None:
+@firestore_fn.on_document_created(document="/_posts/{PostUid}")
+def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> None:
     """Triggers when a user gets a new follower and sends a notification.
 
     Followers add a flag to `/followers/{followedUid}/{followerUid}`.
@@ -23,7 +23,7 @@ def send_post_notification(event: db_fn.Event[db_fn.Change]) -> None:
         return
 
     print(f"Post {post_uid} is now posted")
-    tokens_ref = db.reference(f"users/tobVX4vfF2MjKuduwp6YyG/notificationTokens")
+    tokens_ref = firestore_fn.DocumentReference(f"users/tobVX4vfF2MjKuduwp6YyG/notificationTokens")
     notification_tokens = tokens_ref.get()
     if (not isinstance(notification_tokens, dict) or len(notification_tokens) < 1):
         print("There are no tokens to send notifications to.")
