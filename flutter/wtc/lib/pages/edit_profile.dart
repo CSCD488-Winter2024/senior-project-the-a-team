@@ -74,7 +74,7 @@ class _EditProfile extends State<EditProfile>{
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            
+            Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
         ),
