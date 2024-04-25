@@ -74,11 +74,15 @@ class _EditProfile extends State<EditProfile>{
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('Edit Profile'),
+        title: const Text('Edit Profile',
+          style: TextStyle(
+            color: Colors.white
+          ),
+        ),
         backgroundColor: const Color(0xFF469AB8),
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
