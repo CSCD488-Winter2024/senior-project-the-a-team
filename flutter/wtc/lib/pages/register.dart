@@ -25,6 +25,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
+  @override
+  void dispose(){
+    usernameController.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   void register() async{
     showDialog(
       context: context,
@@ -67,6 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': nameController.text,
         'tier': "Viewer",
         'tags': ['Eastern'],
+        'pfp': '',
       });
     }
   }
@@ -74,6 +85,18 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: widget.onTap, 
+          icon: const Icon(Icons.arrow_back_ios)
+        ),
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        //title: const Text("Register"),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -156,7 +179,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 // register
                 GestureDetector(
                   onTap: widget.onTap,
-                  child: const Text("Login Here"),
+                  child: const Text(
+                    "Already have an account?",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold
+                    ),
+                    ),
                 ),
               ]
             )
