@@ -111,7 +111,10 @@ class _EditProfile extends State<EditProfile>{
                   width: 120,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(200),
-                    child: Image.file(selectedImage!),
+                    child: Image.file(
+                      selectedImage!, 
+                      fit: BoxFit.cover,
+                    ),
                   )
                 )
                 :
