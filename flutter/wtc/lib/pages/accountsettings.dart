@@ -51,6 +51,8 @@ class _AccountPage extends State<AccountPage> {
               imageUrl: pfp,
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Image(image: AssetImage('images/profile.jpg')),
+              memCacheHeight: 120,
+              memCacheWidth: 120,
               fit: BoxFit.cover,
             );
 
