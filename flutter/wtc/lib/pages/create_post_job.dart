@@ -40,6 +40,25 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       return; // Exit the function if validation fails
     }
 
+    // Check if the text fields have at least 4 characters
+    if (_titleController.text.length < 4 ||
+        _descriptionController.text.length < 4 ||
+        _headerController.text.length < 4) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Each field must have at least 4 characters')),
+      );
+      return; // Exit the function if validation fails
+    }
+
+    if (_titleController.text.length > 60) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Title can have no more than 60 characters.')),
+      );
+      return; // Exit the function if validation fails
+    }
+
     if (!_isVolunteer) {
       // Check if wage is empty
       if (_wageController.text.isEmpty) {
