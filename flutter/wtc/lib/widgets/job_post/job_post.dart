@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/widgets/post_widgets/post_delete_edit_title_box.dart';
 
 import '../post_widgets/post.dart';
 import '../post_widgets/post_body_box.dart';
@@ -36,7 +37,7 @@ class JobPost extends Post {
     int year = created.year;
 
     List<Widget> columnChildren = [
-      PostTitleBox(title: title),
+      PostDeleteEditTitleBox(title: title, post: this),
       PostTagBox(tags: tags),
       PostBodyBox(body: body),
       Padding(

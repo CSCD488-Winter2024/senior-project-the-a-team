@@ -26,7 +26,7 @@ class PostDeleteEditTitleBox extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextButton(
                 onPressed: () {
-                  _showAlertDialog(context);
+                  _showDeleteDialog(context);
                 },
                 child: const Text("Delete",
                     style: TextStyle(fontSize: 24, color: Colors.red))),
@@ -40,7 +40,7 @@ class PostDeleteEditTitleBox extends StatelessWidget {
     );
   }
 
-  void _showAlertDialog(BuildContext context) {
+  void _showDeleteDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
