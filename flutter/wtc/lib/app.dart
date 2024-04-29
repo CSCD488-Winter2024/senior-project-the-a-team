@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'widgets/navbutton.dart';
+import 'User/user_service.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
 import 'pages/alerts.dart';
@@ -14,6 +13,7 @@ import 'pages/create_post_job.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
+import 'pages/specific_fillable_form.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -45,23 +45,14 @@ class _NavBars extends State<App> {
   @override
   void initState() {
     super.initState();
-    fetchUserTier(); // Fetch user tier on init
+    _initUserTier();
   }
 
-  Future<void> fetchUserTier() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null && currentUser.email != null) {
-      DocumentSnapshot<Map<String, dynamic>> userDetails =
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(currentUser.email)
-              .get();
-
-      setState(() {
-        userTier = userDetails.data()?['tier'] ??
-            'viewer'; // Store user tier or default to viewer
-      });
-    }
+  void _initUserTier() async {
+    String tier = await UserService().fetchUserTier(); // Await the Future
+    setState(() {
+      userTier = tier; // Assign the result within setState to trigger a rebuild
+    });
   }
 
   void showCreatePostOptions(BuildContext context) {
@@ -211,21 +202,33 @@ class _NavBars extends State<App> {
               });
             },
           ),
-          if (userTier == "Admin" ||
-              userTier == "Poster") // Conditional rendering
-            ListTile(
-              leading: const Icon(Icons.create),
-              title: const Text('Create Post'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                showCreatePostOptions(context);
-                setState(() {
-                  showJobsPage = false;
-                  showVolunteerPage = false;
-                  showNotification = false;
-                });
-              },
-            ),
+          (userTier == "Admin" || userTier == "Poster")
+              ? ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Create Post'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    showCreatePostOptions(context);
+                    setState(() {
+                      showJobsPage = false;
+                      showVolunteerPage = false;
+                      showNotification = false;
+                    });
+                  },
+                )
+              : ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Post for admin review.'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const SpecificFillableFormPage()),
+                    );
+                  },
+                ),
         ],
       ),
     );
