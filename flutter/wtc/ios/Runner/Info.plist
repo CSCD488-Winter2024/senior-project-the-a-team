@@ -52,5 +52,7 @@
 		<string>Camera usage</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Microphone usage</string>
+	<key>FLTEnableImpeller</key>
+	<false/>
 </dict>
 </plist>
