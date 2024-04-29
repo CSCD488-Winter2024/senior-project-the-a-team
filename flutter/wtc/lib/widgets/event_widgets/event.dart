@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
+import 'package:wtc/widgets/post_widgets/post_delete_edit_title_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
@@ -39,7 +40,7 @@ class Event extends Post {
       },
       child: Column(
         children: [
-          PostTitleBox(title: title),
+          PostDeleteEditTitleBox(title: title, post: this),
           PostTagBox(tags: tags),
           SizedBox(
               width: 600,
