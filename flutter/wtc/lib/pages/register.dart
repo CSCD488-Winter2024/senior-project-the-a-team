@@ -63,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GettingStartedPage(email: emailController.text, username: usernameController.text)
+              builder: (context) => GettingStartedPage(email: emailController.text, uid: userCredential.user!.uid)
             )
           );
         }

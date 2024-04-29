@@ -9,10 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:wtc/components/textfield.dart';
 
 class EditProfile extends StatefulWidget{
-  const EditProfile({super.key, required this.username, required this.name, required this.profilePic});
+  const EditProfile({super.key, required this.uid, required this.name, required this.profilePic, required this.username});
 
-   final String username;
+   final String uid;
    final String name;
+   final String username;
    final CachedNetworkImage? profilePic;
 
   @override
@@ -140,7 +141,7 @@ class _EditProfile extends State<EditProfile>{
 
                     Reference ref = FirebaseStorage.instance
                       .ref('profilePictures')
-                      .child('${widget.username}.jpg');
+                      .child('${widget.uid}.jpg');
 
                     await ref.putFile(File(image!.path));
 

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GettingStartedPage extends StatefulWidget {
-  const GettingStartedPage({super.key, required this.email, required this.username});
+  const GettingStartedPage({super.key, required this.email, required this.uid});
 
   final String email;
-  final String username;
+  final String uid;
 
   @override
   State<GettingStartedPage> createState() => _GettingStartedPageState();
@@ -27,7 +27,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
   Future<void> setAccountInfo(var tags, String profilePic){
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(widget.email)
+      .doc(widget.email.toLowerCase())
       .update({
       'tags': tags,
       'pfp': profilePic,
@@ -169,7 +169,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                               if(selectedImage != null){
                                 Reference ref = FirebaseStorage.instance
                                   .ref('profilePictures')
-                                  .child('${widget.username}.jpg');
+                                  .child('${widget.uid}.jpg');
 
                                 await ref.putFile(File(selectedImage!.path));
 
@@ -178,7 +178,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
                               await setAccountInfo(tags, profilePic);
 
-                              tags.clear();
+                              tags.clear(); 
 
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
