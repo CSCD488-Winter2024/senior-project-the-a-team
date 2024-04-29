@@ -91,6 +91,27 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       return; // Exit the function if validation fails
     }
 
+    // Check if the text fields have at least 4 characters
+    if (_titleController.text.length < 4 ||
+        _descriptionController.text.length < 4 ||
+        _headerController.text.length < 4) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Each field must have at least 4 characters')),
+      );
+      return; // Exit the function if validation fails
+    }
+
+    if (_titleController.text.length > 60 ||
+        _headerController.text.length > 60) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Title or quick description can have no more than 60 characters.')),
+      );
+      return; // Exit the function if validation fails
+    }
+
     // Validate date format using a try-catch to catch any parsing errors
     try {
       final date = DateFormat('yyyy-MM-dd').parseStrict(_dateController.text);
