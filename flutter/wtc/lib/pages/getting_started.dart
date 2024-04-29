@@ -15,16 +15,8 @@ class GettingStartedPage extends StatefulWidget {
   State<GettingStartedPage> createState() => _GettingStartedPageState();
 }
 
-  Map<String, bool> tags = {
-    'Eastern': false,
-    'Traffic': false,
-    'Accident': false,
-    'Weather': false,
-    'Construction': false,
-    'Event': false,
-    'Sports': false,
-    'News': false,
-  };
+Set<String> tags = <String>{};
+
 
 class _GettingStartedPageState extends State<GettingStartedPage> {
 
@@ -45,6 +37,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -126,9 +119,10 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
-                //alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Wrap(
-                  spacing: 5.0,
+                  spacing: 6.0,
+                  alignment: WrapAlignment.center,
                   runSpacing: 3.0,
                   children: <Widget>[
                     FilterChipWidget(chipName: 'Eastern'),
@@ -139,6 +133,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                     FilterChipWidget(chipName: 'Event'),
                     FilterChipWidget(chipName: 'Sports'),
                     FilterChipWidget(chipName: 'News'),
+                    FilterChipWidget(chipName: 'School'),
                   ],
                 ),
               ),
@@ -150,20 +145,14 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
             ElevatedButton(
               onPressed: () async{
 
-                var convertedTags = [];
-                  for(String key in tags.keys){
-                    if(tags[key] == true){
-                      convertedTags.add(key);
-                    }
-                  }
-
-                if(convertedTags.isEmpty){
+                if(tags.isEmpty){
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('At least one tag must be selected')),
                   );
                   return;
                 }
                 else{
+                  String profilePic = "";
                   await showDialog(
                     context: context, 
                     builder: (context) {
@@ -177,18 +166,19 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                           ),
                           TextButton(
                             onPressed: ()async{
-                              String profilePic = "";
                               if(selectedImage != null){
                                 Reference ref = FirebaseStorage.instance
-                                .ref('profilePictures')
-                                .child('${widget.username}.jpg');
+                                  .ref('profilePictures')
+                                  .child('${widget.username}.jpg');
 
                                 await ref.putFile(File(selectedImage!.path));
 
                                 profilePic = await ref.getDownloadURL();
                               }
 
-                              await setAccountInfo(convertedTags, profilePic);
+                              await setAccountInfo(tags, profilePic);
+
+                              tags.clear();
 
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
@@ -199,7 +189,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                         ],
                       );
                     }
-                  );  
+                  );
                 }
               },
               child: const Text(
@@ -233,7 +223,12 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
       onSelected: (bool value){
         setState(() {
           isSelected = !isSelected;
-          tags[widget.chipName] = isSelected;
+          if(isSelected){
+            tags.add(widget.chipName);
+          }
+          else{
+            tags.remove(widget.chipName);
+          }
         });
       }
     );
