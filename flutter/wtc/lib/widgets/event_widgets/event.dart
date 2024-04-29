@@ -14,7 +14,6 @@ class Event extends Post {
     required super.body,
     required super.tags,
     required super.header,
-    super.user,
     required super.interestCount,
     required super.created,
     required super.postId,
