@@ -107,10 +107,11 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
     }
 
     User? currentUser = FirebaseAuth.instance.currentUser;
+    String newGuidString = newGuid.toString();
 
     await FirebaseFirestore.instance
         .collection('_review_posts')
-        .doc(newGuid.toString())
+        .doc(newGuidString)
         .set({
       'body': _descriptionController.text,
       'header': _headerController.text,
@@ -120,7 +121,7 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
       'createdAt': formattedDate,
       'timestamp': FieldValue.serverTimestamp(),
       'interestCount': 0,
-      'postID': newGuid.toString(),
+      'postID': newGuidString,
       'user': currentUser!.email,
     });
 
