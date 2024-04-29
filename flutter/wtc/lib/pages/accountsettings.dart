@@ -102,9 +102,10 @@ class _AccountPage extends State<AccountPage> {
                               context,
                               MaterialPageRoute(
                               builder: (context) => EditProfile(
-                                username: username,
+                                uid: currentUser!.uid,
                                 name: name, 
-                                profilePic: profilePic
+                                profilePic: profilePic,
+                                username: username,
                                 )
                               )
                             );

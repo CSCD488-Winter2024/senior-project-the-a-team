@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
+import 'package:wtc/pages/getting_started.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({
@@ -58,7 +59,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
         createUserDocument(userCredential);
 
-        if(context.mounted)Navigator.pop(context);
+        if(context.mounted){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GettingStartedPage(email: emailController.text, uid: userCredential.user!.uid)
+            )
+          );
+        }
       } on FirebaseAuthException catch (e){
         Navigator.pop(context);
         displayMessageToUser(e.code , context);
@@ -76,8 +84,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'username': usernameController.text,
         'name': nameController.text,
         'tier': "Viewer",
-        'tags': ['Eastern'],
-        'pfp': '',
+        'pfp': "",
+        'tags': []
       });
     }
   }
