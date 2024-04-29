@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'widgets/navbutton.dart';
 import 'pages/home.dart';
@@ -35,9 +37,32 @@ class _NavBars extends State<App> {
   int currentPageIndex = 2;
   bool showNotification = false;
   bool showJobsPage = false;
-  bool showVolunteerPage =false;
+  bool showVolunteerPage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
+  String userTier = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserTier(); // Fetch user tier on init
+  }
+
+  Future<void> fetchUserTier() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.email != null) {
+      DocumentSnapshot<Map<String, dynamic>> userDetails =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(currentUser.email)
+              .get();
+
+      setState(() {
+        userTier = userDetails.data()?['tier'] ??
+            'viewer'; // Store user tier or default to viewer
+      });
+    }
+  }
 
   void showCreatePostOptions(BuildContext context) {
     showDialog(
@@ -105,7 +130,8 @@ class _NavBars extends State<App> {
             child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
               color: Color(0xFF469AB8),
-              image: DecorationImage(image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
           ),
           ListTile(
@@ -160,12 +186,12 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              setState(()  {
+              setState(() {
                 title = "Volunteer";
                 prevTitle = "Volunteer";
                 showJobsPage = false;
                 showNotification = false;
-                showVolunteerPage  = !showVolunteerPage;
+                showVolunteerPage = !showVolunteerPage;
               });
             },
           ),
@@ -185,19 +211,21 @@ class _NavBars extends State<App> {
               });
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.create),
-            title: const Text('Create Post'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              showCreatePostOptions(context);
-              setState(()  {
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-              });
-            },
-          ),
+          if (userTier == "Admin" ||
+              userTier == "Poster") // Conditional rendering
+            ListTile(
+              leading: const Icon(Icons.create),
+              title: const Text('Create Post'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                showCreatePostOptions(context);
+                setState(() {
+                  showJobsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                });
+              },
+            ),
         ],
       ),
     );
@@ -212,17 +240,15 @@ class _NavBars extends State<App> {
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
           setState(() {
-          
             if (showNotification == false) {
-                title = prevTitle;
+              title = prevTitle;
             } else {
-                title = "Notifications";
+              title = "Notifications";
             }
-              
+
             showJobsPage = false;
             showVolunteerPage = false;
           });
-
         },
         showNotifications: showNotification,
       ),
@@ -248,11 +274,11 @@ class _NavBars extends State<App> {
             title = setTitle(index);
             prevTitle = setTitle(index);
           });
-          
+
           setState(() {
-              showJobsPage = false;
-              showVolunteerPage = false;
-              showNotification = false;
+            showJobsPage = false;
+            showVolunteerPage = false;
+            showNotification = false;
           });
         },
         indicatorColor: Colors.white,
@@ -280,21 +306,26 @@ class _NavBars extends State<App> {
     );
   }
 
-  String setTitle (int index) {
+  String setTitle(int index) {
     switch (index) {
-      case 0: return "Alerts";
-      case 1: return "Maps";
-      case 2: return "Welcome to Cheney";
-      case 3: return "Calendar";
-      case 4: return "Account Settings";
-      default: return "Welcome to Cheney";
+      case 0:
+        return "Alerts";
+      case 1:
+        return "Maps";
+      case 2:
+        return "Welcome to Cheney";
+      case 3:
+        return "Calendar";
+      case 4:
+        return "Account Settings";
+      default:
+        return "Welcome to Cheney";
     }
   }
 
   Widget getPageContent(int index) {
     switch (index) {
       case 0:
-
         return const AlertsPage();
       case 1:
         return const MapPage();
