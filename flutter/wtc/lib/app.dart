@@ -218,7 +218,7 @@ class _NavBars extends State<App> {
                 )
               : ListTile(
                   leading: const Icon(Icons.create),
-                  title: const Text('Post for admin review.'),
+                  title: const Text('Post for Admin Review'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     Navigator.push(
