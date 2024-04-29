@@ -102,10 +102,12 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       return; // Exit the function if validation fails
     }
 
-    if (_titleController.text.length > 60) {
+    if (_titleController.text.length > 60 ||
+        _headerController.text.length > 60) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Title can have no more than 60 characters.')),
+            content: Text(
+                'Title or quick description can have no more than 60 characters.')),
       );
       return; // Exit the function if validation fails
     }
