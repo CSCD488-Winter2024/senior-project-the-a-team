@@ -43,6 +43,9 @@ dependencies:
   firebase_auth: ^4.17.8
   firebase_storage: ^11.6.9
   image_picker: ^1.0.8
+
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
   cached_network_image: ^3.3.1
 
 
