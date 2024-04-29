@@ -37,12 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void register() async{
-    // showDialog(
-    //   context: context,
-    //   builder: (context) => const Center(
-    //     child: CircularProgressIndicator(),
-    //   )
-    // );
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      )
+    );
 
     if(passwordController.text != confirmPasswordController.text){
       Navigator.pop(context);

@@ -32,6 +32,16 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
   //bool isSelected = false;
 
+  Future<void> setAccountInfo(var tags, String profilePic){
+    return FirebaseFirestore.instance
+      .collection('users')
+      .doc(widget.email)
+      .update({
+      'tags': tags,
+      'pfp': profilePic,
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +76,18 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
               ),
             )
             :
-            SizedBox(
-              height: 120,
-              width: 120,
+            CircleAvatar(
+              radius: 61.5,
+              backgroundColor: Colors.black,
+              
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(200),
-                child: const Image(image: AssetImage('images/profile.jpg'))
+                child: const Image(
+                  image: AssetImage('images/profile.jpg'),
+                  height: 120,
+                  width: 120,
+                  
+                )
               ),
             ),
 
@@ -90,7 +106,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                   child: const Text("Edit Profile Picture"),
                 ),
 
-            const SizedBox(height: 25.0,),
+            const SizedBox(height: 45.0,),
 
             // tags selection
             const Align(
@@ -100,7 +116,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                 child: Text(
                   "Select Tags:",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 21,
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -128,39 +144,63 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
               ),
             ),
 
-            const SizedBox(height: 25.0,),
+            const SizedBox(height: 250.0,),
 
             // confirm selection
             ElevatedButton(
               onPressed: () async{
 
-                String profilePic = "";
-                if(selectedImage != null){
-                  Reference ref = FirebaseStorage.instance
-                  .ref('profilePictures')
-                  .child('${widget.username}.jpg');
-
-                  await ref.putFile(File(selectedImage!.path));
-
-                  profilePic = await ref.getDownloadURL();
-                }
-
                 var convertedTags = [];
-                for(String key in tags.keys){
-                  if(tags[key] == true){
-                    convertedTags.add(key);
+                  for(String key in tags.keys){
+                    if(tags[key] == true){
+                      convertedTags.add(key);
+                    }
                   }
+
+                if(convertedTags.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('At least one tag must be selected')),
+                  );
+                  return;
                 }
+                else{
+                  await showDialog(
+                    context: context, 
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Confirm Settings?'),
+                        content: const Text("You can change these settings later"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(), 
+                            child: const Text('No'),
+                          ),
+                          TextButton(
+                            onPressed: ()async{
+                              String profilePic = "";
+                              if(selectedImage != null){
+                                Reference ref = FirebaseStorage.instance
+                                .ref('profilePictures')
+                                .child('${widget.username}.jpg');
 
-                await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(widget.email)
-                  .update({
-                    'tags': convertedTags,
-                    'pfp': profilePic,
-                });
+                                await ref.putFile(File(selectedImage!.path));
 
-                Navigator.of(context).pop();
+                                profilePic = await ref.getDownloadURL();
+                              }
+
+                              await setAccountInfo(convertedTags, profilePic);
+
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            }, 
+                            child: const Text("Yes"),
+                          )
+                        ],
+                      );
+                    }
+                  );  
+                }
               },
               child: const Text(
                 "Finish Setup"
