@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +15,23 @@ class AccountPage extends StatefulWidget {
 class _AccountPage extends State<AccountPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
-    return await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser!.email)
-        .get();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void signout(){
+    FirebaseAuth.instance.signOut();
   }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: getUserDetails(),
+      body: StreamBuilder(
+        stream: _firestore
+          .collection('users')
+          .doc(currentUser!.email)
+          .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -40,6 +45,16 @@ class _AccountPage extends State<AccountPage> {
             String username = user!['username'];
             String name = user['name'];
             String email = user['email'];
+            String pfp = user['pfp'];
+
+            CachedNetworkImage profilePic = CachedNetworkImage(
+              imageUrl: pfp,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Image(image: AssetImage('images/profile.jpg')),
+              memCacheHeight: 120,
+              memCacheWidth: 120,
+              fit: BoxFit.cover,
+            );
 
             return Center(
                 child: SingleChildScrollView(
@@ -52,11 +67,9 @@ class _AccountPage extends State<AccountPage> {
                       height: 120,
                       width: 120,
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(200),
-                          child: const Image(
-                            image: AssetImage('images/profile.jpg'),
-                            fit: BoxFit.cover,
-                          )),
+                        borderRadius: BorderRadius.circular(200),
+                        child: profilePic
+                      ),
                     ),
 
                     const SizedBox(height: 10),
@@ -69,7 +82,10 @@ class _AccountPage extends State<AccountPage> {
                       child: SizedBox(
                         width: 9999,
                         child: Text('Hello $username!',
-                            style: const TextStyle(fontSize: 24),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.white
+                            ),
                             textAlign: TextAlign.center),
                       ),
                     ),
@@ -83,9 +99,15 @@ class _AccountPage extends State<AccountPage> {
                           onTap: () {
                             //Navigator.pop(context);
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const EditProfile()));
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) => EditProfile(
+                                username: username,
+                                name: name, 
+                                profilePic: profilePic
+                                )
+                              )
+                            );
                           },
                           child: const Text(
                             "Edit Profile",
@@ -152,8 +174,28 @@ class _AccountPage extends State<AccountPage> {
 
                     //logout
                     ElevatedButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
+                      onPressed: (){
+                        showDialog(
+                          context: context, 
+                          builder: (context){
+                            return AlertDialog(
+                              title: const Text("Are you sure you want to Logout?"),
+                              actions:[
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("No"),
+                                ),
+                                TextButton(
+                                  onPressed: (){
+                                    Navigator.of(context).pop();
+                                    signout();
+                                  },
+                                  child: const Text("Yes"),
+                                ),
+                              ]
+                            );
+                          }
+                        );
                       },
                       child: const Text(
                         "Logout",
@@ -165,7 +207,8 @@ class _AccountPage extends State<AccountPage> {
                   ],
                 ),
               ),
-            ));
+            )
+          );
           } else {
             return const Text("no data");
           }
