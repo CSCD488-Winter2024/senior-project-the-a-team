@@ -14,6 +14,7 @@ import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
 import 'pages/specific_fillable_form.dart';
+import 'pages/admin_review.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -38,6 +39,7 @@ class _NavBars extends State<App> {
   bool showNotification = false;
   bool showJobsPage = false;
   bool showVolunteerPage = false;
+  bool showApprovePostsPage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -137,6 +139,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -152,6 +155,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -168,6 +172,7 @@ class _NavBars extends State<App> {
                 showJobsPage = !showJobsPage;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -183,6 +188,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showNotification = false;
                 showVolunteerPage = !showVolunteerPage;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -199,6 +205,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -213,6 +220,7 @@ class _NavBars extends State<App> {
                       showJobsPage = false;
                       showVolunteerPage = false;
                       showNotification = false;
+                      showApprovePostsPage = false;
                     });
                   },
                 )
@@ -229,6 +237,22 @@ class _NavBars extends State<App> {
                     );
                   },
                 ),
+          if (userTier == "Admin")
+            ListTile(
+              leading: const Icon(Icons.add_moderator),
+              title: const Text('Approve Posts'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  title = "Approve Posts";
+                  prevTitle = "Approve Posts";
+                  showApprovePostsPage = !showApprovePostsPage;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showJobsPage = false;
+                });
+              },
+            ),
         ],
       ),
     );
@@ -267,7 +291,8 @@ class _NavBars extends State<App> {
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
-          if (showVolunteerPage) const VolunteerPage()
+          if (showVolunteerPage) const VolunteerPage(),
+          if (showApprovePostsPage) const AdminReviewPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -282,6 +307,7 @@ class _NavBars extends State<App> {
             showJobsPage = false;
             showVolunteerPage = false;
             showNotification = false;
+            showApprovePostsPage = false;
           });
         },
         indicatorColor: Colors.white,
@@ -321,6 +347,8 @@ class _NavBars extends State<App> {
         return "Calendar";
       case 4:
         return "Account Settings";
+      case 5:
+        return "Approve Posts";
       default:
         return "Welcome to Cheney";
     }
