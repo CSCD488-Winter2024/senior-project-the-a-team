@@ -138,7 +138,7 @@ class _EditTagsState extends State<EditTags> {
 
                           TextButton(
                             onPressed: ()async{
-                              await updateTags(tempTags);
+                              await updateTags(widget.tags);
                               
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
