@@ -53,7 +53,8 @@ class PostReview extends Post {
         var data = document.data();
         FirebaseFirestore.instance
             .collection('_posts')
-            .add(data!)
+            .doc(postId.toString())
+            .set(data!)
             .then((value) => docRef.delete().then((_) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content:
