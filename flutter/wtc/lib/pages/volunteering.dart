@@ -19,21 +19,6 @@ class _VolunteerPage extends State<VolunteerPage> {
       margin: const EdgeInsets.all(8.0),
       child: SizedBox.expand(
           child: VolunteerPostList())
-          );/*Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back)),
-          title: const Center(child: Text("Volunteer")),
-          backgroundColor: const Color(0xFF469AB8),
-        ),
-        body: Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-              child: VolunteerPostList(volunteerList: volunteerList)),
-        ));*/
+          );
   }
 }

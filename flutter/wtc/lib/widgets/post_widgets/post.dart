@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
+import 'package:wtc/widgets/post_widgets/post_delete_edit_title_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
@@ -39,7 +40,7 @@ class Post extends StatelessWidget {
       },
       child: Column(
         children: [
-          PostTitleBox(title: title),
+          PostDeleteEditTitleBox(title: title, post: this),
           PostTagBox(tags: tags),
           SizedBox(
               width: 600,

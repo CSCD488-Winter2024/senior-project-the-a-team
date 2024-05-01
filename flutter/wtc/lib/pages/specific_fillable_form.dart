@@ -4,14 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
-class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({super.key});
+class SpecificFillableFormPage extends StatefulWidget {
+  const SpecificFillableFormPage({super.key});
 
   @override
-  State<CreatePostPage> createState() => _CreatePostPageState();
+  State<SpecificFillableFormPage> createState() =>
+      _SpecificFillableFormPageState();
 }
 
-class _CreatePostPageState extends State<CreatePostPage> {
+class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
   // Text editing controllers to capture input from text fields
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -86,27 +87,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
       return; // Exit the function if validation fails
     }
 
-    // Check if the text fields have at least 4 characters
-    if (_titleController.text.length < 4 ||
-        _descriptionController.text.length < 4 ||
-        _headerController.text.length < 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Each field must have at least 4 characters')),
-      );
-      return; // Exit the function if validation fails
-    }
-
-    if (_titleController.text.length > 60 ||
-        _headerController.text.length > 60) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Title or quick description can have no more than 60 characters.')),
-      );
-      return; // Exit the function if validation fails
-    }
-
     bool anyTagSelected = tags.values.any((val) => val);
     if (!anyTagSelected) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -127,10 +107,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
     }
 
     User? currentUser = FirebaseAuth.instance.currentUser;
+    String newGuidString = newGuid.toString();
 
     await FirebaseFirestore.instance
-        .collection('_posts')
-        .doc(newGuid.toString())
+        .collection('_review_posts')
+        .doc(newGuidString)
         .set({
       'body': _descriptionController.text,
       'header': _headerController.text,
@@ -140,7 +121,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'createdAt': formattedDate,
       'timestamp': FieldValue.serverTimestamp(),
       'interestCount': 0,
-      'postID': newGuid.toString(),
+      'postID': newGuidString,
       'user': currentUser!.email,
     });
 

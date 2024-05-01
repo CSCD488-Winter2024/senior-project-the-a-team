@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -90,14 +91,25 @@ class _LoginPageState extends State<LoginPage>{
                 const SizedBox(height: 10,),
 
                 //forgor password
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
-                    );
-                  },
-                  child: const Text("Forgot Password"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
+                        );
+                      },
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
+                        ),
+                        ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 25,),
@@ -113,7 +125,14 @@ class _LoginPageState extends State<LoginPage>{
                 // register
                 GestureDetector(
                   onTap: widget.onTap,
-                  child: const Text("Register Here"),
+                  child: const Text(
+                    "Register Here",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  
                 ),
               ]
             ),

@@ -1,11 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/auth/auth.dart';
-import 'package:wtc/auth/login_or_register.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:wtc/firebase_options.dart';
-// Import the firebase_core package
-//import 'app.dart';
 
 /*
   -- This will be the in point of our app

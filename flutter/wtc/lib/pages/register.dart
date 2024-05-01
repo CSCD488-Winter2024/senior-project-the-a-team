@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
+import 'package:wtc/pages/getting_started.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({
@@ -24,6 +25,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose(){
+    usernameController.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   void register() async{
     showDialog(
@@ -48,7 +59,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
         createUserDocument(userCredential);
 
-        if(context.mounted)Navigator.pop(context);
+        if(context.mounted){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GettingStartedPage(email: emailController.text, uid: userCredential.user!.uid)
+            )
+          );
+        }
       } on FirebaseAuthException catch (e){
         Navigator.pop(context);
         displayMessageToUser(e.code , context);
@@ -65,7 +83,9 @@ class _RegisterPageState extends State<RegisterPage> {
         'email': userCredential.user!.email,
         'username': usernameController.text,
         'name': nameController.text,
-        'tier': "Viewer"
+        'tier': "Viewer",
+        'pfp': "",
+        'tags': []
       });
     }
   }
@@ -73,6 +93,18 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: widget.onTap, 
+          icon: const Icon(Icons.arrow_back_ios)
+        ),
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        //title: const Text("Register"),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -155,7 +187,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 // register
                 GestureDetector(
                   onTap: widget.onTap,
-                  child: const Text("Login Here"),
+                  child: const Text(
+                    "Already have an account?",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold
+                    ),
+                    ),
                 ),
               ]
             )

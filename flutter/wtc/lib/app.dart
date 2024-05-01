@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbutton.dart';
+import 'User/user_service.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
 import 'pages/alerts.dart';
@@ -12,6 +13,8 @@ import 'pages/create_post_job.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
+import 'pages/specific_fillable_form.dart';
+import 'pages/admin_review.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -35,9 +38,24 @@ class _NavBars extends State<App> {
   int currentPageIndex = 2;
   bool showNotification = false;
   bool showJobsPage = false;
-  bool showVolunteerPage =false;
+  bool showVolunteerPage = false;
+  bool showApprovePostsPage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
+  String userTier = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _initUserTier();
+  }
+
+  void _initUserTier() async {
+    String tier = await UserService().fetchUserTier(); // Await the Future
+    setState(() {
+      userTier = tier; // Assign the result within setState to trigger a rebuild
+    });
+  }
 
   void showCreatePostOptions(BuildContext context) {
     showDialog(
@@ -105,7 +123,8 @@ class _NavBars extends State<App> {
             child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
               color: Color(0xFF469AB8),
-              image: DecorationImage(image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
           ),
           ListTile(
@@ -120,6 +139,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -135,6 +155,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -151,6 +172,7 @@ class _NavBars extends State<App> {
                 showJobsPage = !showJobsPage;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -160,12 +182,13 @@ class _NavBars extends State<App> {
             onTap: () {
               // Navigate to Volunteer page
               Navigator.pop(context);
-              setState(()  {
+              setState(() {
                 title = "Volunteer";
                 prevTitle = "Volunteer";
                 showJobsPage = false;
                 showNotification = false;
-                showVolunteerPage  = !showVolunteerPage;
+                showVolunteerPage = !showVolunteerPage;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -182,22 +205,54 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.create),
-            title: const Text('Create Post'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              showCreatePostOptions(context);
-              setState(()  {
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-              });
-            },
-          ),
+          (userTier == "Admin" || userTier == "Poster")
+              ? ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Create Post'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    showCreatePostOptions(context);
+                    setState(() {
+                      showJobsPage = false;
+                      showVolunteerPage = false;
+                      showNotification = false;
+                      showApprovePostsPage = false;
+                    });
+                  },
+                )
+              : ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Post for Admin Review'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const SpecificFillableFormPage()),
+                    );
+                  },
+                ),
+          if (userTier == "Admin")
+            ListTile(
+              leading: const Icon(Icons.add_moderator),
+              title: const Text('Approve Posts'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  title = "Approve Posts";
+                  prevTitle = "Approve Posts";
+                  showApprovePostsPage = !showApprovePostsPage;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showJobsPage = false;
+                });
+              },
+            ),
         ],
       ),
     );
@@ -212,17 +267,15 @@ class _NavBars extends State<App> {
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
           setState(() {
-          
             if (showNotification == false) {
-                title = prevTitle;
+              title = prevTitle;
             } else {
-                title = "Notifications";
+              title = "Notifications";
             }
-              
+
             showJobsPage = false;
             showVolunteerPage = false;
           });
-
         },
         showNotifications: showNotification,
       ),
@@ -238,7 +291,8 @@ class _NavBars extends State<App> {
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
-          if (showVolunteerPage) const VolunteerPage()
+          if (showVolunteerPage) const VolunteerPage(),
+          if (showApprovePostsPage) const AdminReviewPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -248,11 +302,12 @@ class _NavBars extends State<App> {
             title = setTitle(index);
             prevTitle = setTitle(index);
           });
-          
+
           setState(() {
-              showJobsPage = false;
-              showVolunteerPage = false;
-              showNotification = false;
+            showJobsPage = false;
+            showVolunteerPage = false;
+            showNotification = false;
+            showApprovePostsPage = false;
           });
         },
         indicatorColor: Colors.white,
@@ -264,7 +319,7 @@ class _NavBars extends State<App> {
               icon: Icons.crisis_alert,
               outlinedIcon: Icons.crisis_alert_outlined),
           NavButton(
-              label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
+              label: "Maps", icon: Icons.map, outlinedIcon: Icons.map_outlined),
           NavButton(
               label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
           NavButton(
@@ -280,21 +335,28 @@ class _NavBars extends State<App> {
     );
   }
 
-  String setTitle (int index) {
+  String setTitle(int index) {
     switch (index) {
-      case 0: return "Alerts";
-      case 1: return "Maps";
-      case 2: return "Welcome to Cheney";
-      case 3: return "Calendar";
-      case 4: return "Account Settings";
-      default: return "Welcome to Cheney";
+      case 0:
+        return "Alerts";
+      case 1:
+        return "Maps";
+      case 2:
+        return "Welcome to Cheney";
+      case 3:
+        return "Calendar";
+      case 4:
+        return "Account Settings";
+      case 5:
+        return "Approve Posts";
+      default:
+        return "Welcome to Cheney";
     }
   }
 
   Widget getPageContent(int index) {
     switch (index) {
       case 0:
-
         return const AlertsPage();
       case 1:
         return const MapPage();
