@@ -319,7 +319,7 @@ class _NavBars extends State<App> {
               icon: Icons.crisis_alert,
               outlinedIcon: Icons.crisis_alert_outlined),
           NavButton(
-              label: "Map", icon: Icons.map, outlinedIcon: Icons.map_outlined),
+              label: "Maps", icon: Icons.map, outlinedIcon: Icons.map_outlined),
           NavButton(
               label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
           NavButton(
