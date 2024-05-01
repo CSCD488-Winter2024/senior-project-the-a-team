@@ -4,6 +4,7 @@ import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
+import 'package:wtc/widgets/post_widgets/post_review.dart';
 
 class PostListReview extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -119,7 +120,7 @@ class PostListReview extends StatelessWidget {
                 for (int i = 0; i < tempTags.length; i++) {
                   postTags.add(tempTags[i]);
                 }
-                return Post(
+                return PostReview(
                   postId: Guid(document?['postID'] as String),
                   header: document?['header'] as String,
                   userEmail: document?['user'] as String,
