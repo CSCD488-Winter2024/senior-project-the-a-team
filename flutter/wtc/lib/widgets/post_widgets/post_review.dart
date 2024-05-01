@@ -35,8 +35,8 @@ class PostReview extends Post {
         .doc(postId.toString())
         .delete()
         .then((_) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Post successfully deleted')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Post successfully deleted')));
     }).catchError((error) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Error deleting post: $error')));
