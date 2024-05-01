@@ -4,18 +4,19 @@ import 'package:latlong2/latlong.dart';
 import 'package:wtc/widgets/map_card.dart';
 import 'package:wtc/User/user.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:wtc/widgets/map_pin.dart';
 
 User user =
     User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
 
 MapController mapController = MapController();
 
-MapCard mapCard1 = MapCard(
-    latitude: 47.51088681762052,
-    longitude: -117.56603062632779,
-    name: "Second Harvest",
-    description: "Food Bank",
-    address: "1234 E. Sprague Ave",
+MapCard bimart = MapCard(
+    latitude: 47.500505676036504,
+    longitude: -117.56262374784019,
+    name: "Bi-Mart Membership Discount Stores",
+    description: "a general purpose store",
+    address: "2221 1st St, Cheney, WA 99004",
     mapController: mapController);
 
 MapCard safeway = MapCard(
@@ -27,13 +28,50 @@ MapCard safeway = MapCard(
     address: "2710 1st St, Cheney",
     mapController: mapController);
 
+MapCard mitchels = MapCard(
+    latitude: 47.483255024221855, 
+    longitude: -117.58181308827773,
+    name: "Mitchell's Harvest Foods",
+    description:
+        "Mitchell's Harvest Foods has been proudly serving Cheney for the past 300 years. We are a small grocery store, so our prices are pretty unreasonable.",
+    address: "116 W 1st St",
+    mapController: mapController);
+
+MapCard unionMarket = MapCard(
+    latitude: 47.492369291352546, 
+    longitude: -117.58395630844107, 
+    name: "Union Market",
+    description:
+        "Come get some crappy food for a crappy price. We're the market over at the PUB at EWU!",
+    address: "116 Pence Union Building",
+    mapController: mapController);
+
+MapCard aceHardware = MapCard(
+    latitude: 47.49968278403646, 
+    longitude: -117.56351963474647, 
+    name: "Ace Hardware",
+    description:
+        "Ace Harware sells harware or any other nick nacks that are helpful around the house. I bought a hammer there once, it worked great!",
+    address: "6 Cheney Spokane Rd",
+    mapController: mapController);
+
+MapCard cottonWood = MapCard(
+    latitude:47.48656972488268,  
+    longitude: -117.57592882067053,
+    name: "Cottonwood Creek Boutique & Tanning",
+    description:
+        "Need a tan? Well, you'll be pretty let down with our price to quality ration. Come on down to our shop this week!",
+    address: "317 1st St, Cheney, WA 99004",
+    mapController: mapController);
+
+
 List mapCards = <MapCard>[
   safeway,
-  mapCard1,
-  mapCard1,
-  mapCard1,
-  mapCard1,
-  mapCard1
+  bimart,
+  mitchels,
+  unionMarket,
+  aceHardware,
+  cottonWood
 ];
 
 class MapPage extends StatefulWidget {
@@ -69,16 +107,13 @@ class _MapPage extends State<MapPage> {
                     urlTemplate:
                         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
-                  const MarkerLayer(
-                    markers: [
-                      Marker(
-                        width: 80.0,
+                  MarkerLayer(
+                    markers: mapCards.map((mapCard) {
+                      return Marker( width: 80.0,
                         height: 80.0,
-                        point: LatLng(47.50595337523408, -117.56739882687351),
-                        child: Icon(Icons.location_pin,
-                            color: Colors.red, size: 50.0),
-                      ),
-                    ],
+                        point: LatLng(mapCard.latitude, mapCard.longitude),
+                        child: MapPin(name: mapCard.name, address: mapCard.address, description: mapCard.description),);
+                    }).toList()
                   ),
                 ],
               )),
@@ -132,11 +167,11 @@ class _MapPage extends State<MapPage> {
           child: SizedBox.expand(
             child: ListView(children: <MapCard>[
               safeway,
-              mapCard1,
-              mapCard1,
-              mapCard1,
-              mapCard1,
-              mapCard1
+              aceHardware,
+              cottonWood,
+              unionMarket,
+              mitchels,
+              bimart
             ]),
           ))
     ]);
