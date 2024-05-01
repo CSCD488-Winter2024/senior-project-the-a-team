@@ -49,11 +49,15 @@ class _EditTagsState extends State<EditTags> {
   @override
   Widget build(BuildContext context) {
 
-    List<String> tempTags = widget.tags;
+    List<String> tempTags = List.of(widget.tags);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
+            //widget.tags.removeWhere((element) => !tempTags.contains(element));
+            setState(() {
+              widget.tags.removeWhere((element) => !tempTags.contains(element));
+            });
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
@@ -69,85 +73,87 @@ class _EditTagsState extends State<EditTags> {
       ),
 
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            
-            const Align(
-              //alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "Select Tags:",
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),  
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: Wrap(
-                  spacing: 6.0,
-                  alignment: WrapAlignment.center,
-                  runSpacing: 3.0,
-                  children: items.map(
-                    (e) => Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: FilterChip(
-                        label: Text(e), 
-                        selected: tempTags.contains(e),
-                        onSelected: (bool value) {
-                          if(tempTags.contains(e)){
-                            tempTags.remove(e);
-                          }else{
-                            tempTags.add(e);
-                          }
-                          setState(() {});
-                        }
-                      )
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
+              const Align(
+                //alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Select Tags:",
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold
                     ),
-                  ).toList(),         
-                )    
+                  ),
+                ),  
               ),
-            ),
 
-            const SizedBox(height: 150,),
-
-            ElevatedButton(
-              onPressed: () async{
-                await showDialog(
-                  context: context, 
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Confirm Tags?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('No'),
-                        ),
-
-                        TextButton(
-                          onPressed: ()async{
-                            await updateTags(tempTags);
-                            
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Yes'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Wrap(
+                    spacing: 6.0,
+                    alignment: WrapAlignment.center,
+                    runSpacing: 3.0,
+                    children: items.map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: FilterChip(
+                          label: Text(e), 
+                          selected: widget.tags.contains(e),
+                          onSelected: (bool value) {
+                            if(widget.tags.contains(e)){
+                              widget.tags.remove(e);
+                            }else{
+                              widget.tags.add(e);
+                            }
+                            setState(() {});
+                          }
                         )
-                      ],
-                    );
-                  }
-                );
-              }, 
-              child: const Text("Confirm")
-            )
-          ],
+                      ),
+                    ).toList(),         
+                  )    
+                ),
+              ),
+
+              const SizedBox(height: 150,),
+
+              ElevatedButton(
+                onPressed: () async{
+                  await showDialog(
+                    context: context, 
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Confirm Tags?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('No'),
+                          ),
+
+                          TextButton(
+                            onPressed: ()async{
+                              await updateTags(tempTags);
+                              
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Yes'),
+                          )
+                        ],
+                      );
+                    }
+                  );
+                }, 
+                child: const Text("Confirm")
+              )
+            ],
+          ),
         ),
       )
     );
