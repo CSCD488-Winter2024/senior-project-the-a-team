@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
-import 'package:wtc/widgets/post_widgets/post_body_box.dart';
-import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
-import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class PostReview extends Post {
@@ -46,23 +43,56 @@ class PostReview extends Post {
     });
   }
 
+  void acceptPost(BuildContext context) {
+    final docRef = FirebaseFirestore.instance
+        .collection('_review_posts')
+        .doc(postId.toString());
+
+    docRef.get().then((document) {
+      if (document.exists) {
+        var data = document.data();
+        FirebaseFirestore.instance
+            .collection('_posts')
+            .add(data!)
+            .then((value) => docRef.delete().then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text('Post accepted and moved to active posts')));
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Error deleting old post: $error')));
+                }))
+            .catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Error adding post to active collection: $error')));
+        });
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Post not found')));
+      }
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error retrieving post: $error')));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => showPostDialog(context),
       child: Column(
         children: [
-          super.build(context), // This uses the original Post's build method
+          super.build(context),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () => print("Post Accepted"),
-                child: Text('Accept'),
+                onPressed: () => acceptPost(context),
+                child: const Text('Accept'),
               ),
               ElevatedButton(
                 onPressed: () => deletePost(context),
-                child: Text('Deny'),
+                child: const Text('Deny'),
               ),
             ],
           )
