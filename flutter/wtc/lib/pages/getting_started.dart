@@ -15,14 +15,30 @@ class GettingStartedPage extends StatefulWidget {
   State<GettingStartedPage> createState() => _GettingStartedPageState();
 }
 
-Set<String> tags = <String>{};
 
 
 class _GettingStartedPageState extends State<GettingStartedPage> {
 
   File? selectedImage;
 
-  //bool isSelected = false;
+  final items = [
+    'News',
+    'Weather',
+    'Business',
+    'Shopping',
+    'Eastern',
+    'Entertainment',
+    'Food',
+    'Government',
+    'Job',
+    'Volunteer',
+    'Pets',
+    'Public Resources',
+    'Schools',
+    'Sports',
+    'Adult Sports',
+    'Youth Sports',
+  ];
 
   Future<void> setAccountInfo(var tags, String profilePic){
     return FirebaseFirestore.instance
@@ -34,6 +50,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
     });
   }
 
+  List<String> tags = ['Alert', 'Emergency'];
 
   @override
   Widget build(BuildContext context) {
@@ -116,42 +133,40 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
               ),  
             ),
 
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.center,
                 child: Wrap(
                   spacing: 6.0,
                   alignment: WrapAlignment.center,
-                  runSpacing: 3.0,
-                  children: <Widget>[
-                    FilterChipWidget(chipName: 'Eastern'),
-                    FilterChipWidget(chipName: 'Traffic'),
-                    FilterChipWidget(chipName: 'Accident'),
-                    FilterChipWidget(chipName: 'Weather'),
-                    FilterChipWidget(chipName: 'Construction'),
-                    FilterChipWidget(chipName: 'Event'),
-                    FilterChipWidget(chipName: 'Sports'),
-                    FilterChipWidget(chipName: 'News'),
-                    FilterChipWidget(chipName: 'School'),
-                  ],
+                  runSpacing: 1.0,
+                  children: items.map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: FilterChip(
+                        label: Text(e),
+                        selected: tags.contains(e),
+                        onSelected: (bool value){
+                          if(tags.contains(e)){
+                            tags.remove(e);
+                          }else{
+                            tags.add(e);
+                          }
+                          setState(() {});
+                        }
+                      )
+                    ),
+                  ).toList(),
                 ),
               ),
             ),
 
-            const SizedBox(height: 250.0,),
+            const SizedBox(height: 25.0,),
 
             // confirm selection
             ElevatedButton(
               onPressed: () async{
-
-                if(tags.isEmpty){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('At least one tag must be selected')),
-                  );
-                  return;
-                }
-                else{
                   String profilePic = "";
                   await showDialog(
                     context: context, 
@@ -190,7 +205,6 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                       );
                     }
                   );
-                }
               },
               child: const Text(
                 "Finish Setup"
@@ -199,38 +213,6 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class FilterChipWidget extends StatefulWidget {
-  final String chipName;
-  const FilterChipWidget({super.key, required this.chipName});
-
-  @override
-  State<FilterChipWidget> createState() => _FilterChipWidgetState();
-}
-
-class _FilterChipWidgetState extends State<FilterChipWidget> {
-
-  bool isSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(widget.chipName), 
-      selected: isSelected,
-      onSelected: (bool value){
-        setState(() {
-          isSelected = !isSelected;
-          if(isSelected){
-            tags.add(widget.chipName);
-          }
-          else{
-            tags.remove(widget.chipName);
-          }
-        });
-      }
     );
   }
 }

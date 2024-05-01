@@ -46,6 +46,12 @@ class _AccountPage extends State<AccountPage> {
             String name = user['name'];
             String email = user['email'];
             String pfp = user['pfp'];
+            var tempTags = user['tags'] as List<dynamic>;
+            List<String> tags = [];
+
+            for(int i = 0; i < tempTags.length; i++){
+              tags.add(tempTags[i]);
+            }
 
             CachedNetworkImage profilePic = CachedNetworkImage(
               imageUrl: pfp,
@@ -124,9 +130,11 @@ class _AccountPage extends State<AccountPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const EditTags()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditTags(tags: tags)
+                              )
+                            );
                           },
                           child: const Text(
                             "Edit Tags",
