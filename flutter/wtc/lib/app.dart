@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'widgets/navbutton.dart';
+import 'User/user_service.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
 import 'pages/alerts.dart';
@@ -14,6 +13,8 @@ import 'pages/create_post_job.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
+import 'pages/specific_fillable_form.dart';
+import 'pages/admin_review.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -38,6 +39,7 @@ class _NavBars extends State<App> {
   bool showNotification = false;
   bool showJobsPage = false;
   bool showVolunteerPage = false;
+  bool showApprovePostsPage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -45,23 +47,14 @@ class _NavBars extends State<App> {
   @override
   void initState() {
     super.initState();
-    fetchUserTier(); // Fetch user tier on init
+    _initUserTier();
   }
 
-  Future<void> fetchUserTier() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null && currentUser.email != null) {
-      DocumentSnapshot<Map<String, dynamic>> userDetails =
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(currentUser.email)
-              .get();
-
-      setState(() {
-        userTier = userDetails.data()?['tier'] ??
-            'viewer'; // Store user tier or default to viewer
-      });
-    }
+  void _initUserTier() async {
+    String tier = await UserService().fetchUserTier(); // Await the Future
+    setState(() {
+      userTier = tier; // Assign the result within setState to trigger a rebuild
+    });
   }
 
   void showCreatePostOptions(BuildContext context) {
@@ -146,6 +139,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -161,6 +155,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -177,6 +172,7 @@ class _NavBars extends State<App> {
                 showJobsPage = !showJobsPage;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -192,6 +188,7 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showNotification = false;
                 showVolunteerPage = !showVolunteerPage;
+                showApprovePostsPage = false;
               });
             },
           ),
@@ -208,21 +205,51 @@ class _NavBars extends State<App> {
                 showJobsPage = false;
                 showVolunteerPage = false;
                 showNotification = false;
+                showApprovePostsPage = false;
               });
             },
           ),
-          if (userTier == "Admin" ||
-              userTier == "Poster") // Conditional rendering
+          (userTier == "Admin" || userTier == "Poster")
+              ? ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Create Post'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    showCreatePostOptions(context);
+                    setState(() {
+                      showJobsPage = false;
+                      showVolunteerPage = false;
+                      showNotification = false;
+                      showApprovePostsPage = false;
+                    });
+                  },
+                )
+              : ListTile(
+                  leading: const Icon(Icons.create),
+                  title: const Text('Post for Admin Review'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const SpecificFillableFormPage()),
+                    );
+                  },
+                ),
+          if (userTier == "Admin")
             ListTile(
-              leading: const Icon(Icons.create),
-              title: const Text('Create Post'),
+              leading: const Icon(Icons.add_moderator),
+              title: const Text('Approve Posts'),
               onTap: () {
-                Navigator.pop(context); // Close the drawer
-                showCreatePostOptions(context);
+                Navigator.pop(context);
                 setState(() {
-                  showJobsPage = false;
+                  title = "Approve Posts";
+                  prevTitle = "Approve Posts";
+                  showApprovePostsPage = !showApprovePostsPage;
                   showVolunteerPage = false;
                   showNotification = false;
+                  showJobsPage = false;
                 });
               },
             ),
@@ -264,7 +291,8 @@ class _NavBars extends State<App> {
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
-          if (showVolunteerPage) const VolunteerPage()
+          if (showVolunteerPage) const VolunteerPage(),
+          if (showApprovePostsPage) const AdminReviewPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -279,6 +307,7 @@ class _NavBars extends State<App> {
             showJobsPage = false;
             showVolunteerPage = false;
             showNotification = false;
+            showApprovePostsPage = false;
           });
         },
         indicatorColor: Colors.white,
@@ -318,6 +347,8 @@ class _NavBars extends State<App> {
         return "Calendar";
       case 4:
         return "Account Settings";
+      case 5:
+        return "Approve Posts";
       default:
         return "Welcome to Cheney";
     }
