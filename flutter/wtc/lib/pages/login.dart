@@ -4,6 +4,9 @@ import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/pages/forgot_password.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({
@@ -34,14 +37,25 @@ class _LoginPageState extends State<LoginPage>{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
 
-      if(context.mounted) Navigator.pop(context);
+      if(context.mounted){
+        storeNotifToken(emailController.text);
+        Navigator.pop(context);
+      }
     }
     on FirebaseAuthException catch(e){
       Navigator.pop(context);
       displayMessageToUser(e.code, context);
     }
   }
-
+  void storeNotifToken(String email) async{
+    final CollectionReference user = FirebaseFirestore.instance.collection('users');
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    //final notificationSettings = await FirebaseMessaging.instance.requestPermission(provisional: true);
+    String? token = await FirebaseMessaging.instance.getToken();
+    await user.doc(currentUser!.email).update({
+      'notificationToken': token
+    });
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(

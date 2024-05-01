@@ -15,7 +15,6 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
     """
     post_uid = event.params["postUid"]
 
-
     # If un-follow we exit the function.
     change = event.data
     if not change.after:
@@ -23,7 +22,7 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
         return
 
     print(f"Post {post_uid} is now posted")
-    tokens_ref = firestore_fn.DocumentReference(f"users/tobVX4vfF2MjKuduwp6YyG/notificationTokens")
+    tokens_ref = firestore_fn.DocumentReference(f"users/{userID}/notificationToken")
     notification_tokens = tokens_ref.get()
     if (not isinstance(notification_tokens, dict) or len(notification_tokens) < 1):
         print("There are no tokens to send notifications to.")
