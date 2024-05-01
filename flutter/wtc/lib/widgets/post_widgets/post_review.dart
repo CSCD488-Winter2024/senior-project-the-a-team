@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
@@ -31,6 +32,20 @@ class PostReview extends Post {
           created: created,
         );
 
+  void deletePost(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('_review_posts')
+        .doc(postId.toString())
+        .delete()
+        .then((_) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Post successfully deleted')));
+    }).catchError((error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error deleting post: $error')));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -46,7 +61,7 @@ class PostReview extends Post {
                 child: Text('Accept'),
               ),
               ElevatedButton(
-                onPressed: () => print("Post Denied"),
+                onPressed: () => deletePost(context),
                 child: Text('Deny'),
               ),
             ],
