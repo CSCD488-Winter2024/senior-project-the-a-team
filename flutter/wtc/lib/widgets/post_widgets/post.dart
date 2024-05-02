@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
-import 'package:wtc/widgets/post_widgets/post_delete_edit_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
@@ -51,7 +51,7 @@ class Post extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    PostDeleteEditTitleBox(title: title, post: this),
+                    PostTitleBox(title: title),
                     PostTagBox(tags: tags),
                     SizedBox(
                         width: 600,
@@ -59,7 +59,8 @@ class Post extends StatelessWidget {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    PostDeleteEditBox(post: this)
                   ],
                 ),
               );
