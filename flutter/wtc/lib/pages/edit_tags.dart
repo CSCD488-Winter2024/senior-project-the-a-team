@@ -1,12 +1,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class EditTags extends StatefulWidget {
-  const EditTags({super.key, required this.tags});
+  const EditTags({super.key, required this.tags, required this.origTags});
 
-   final List<String> tags;  
+   final List<String> tags;
+   final List<String> origTags;
 
   @override
   State<EditTags> createState() => _EditTagsState();
@@ -46,19 +48,49 @@ class _EditTagsState extends State<EditTags> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-
-    List<String> tempTags = List.of(widget.tags);
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            //widget.tags.removeWhere((element) => !tempTags.contains(element));
-            setState(() {
-              widget.tags.removeWhere((element) => !tempTags.contains(element));
-            });
-            Navigator.pop(context);
+          onPressed: () async{
+            bool confirm = false;
+            if(listEquals(widget.tags, widget.origTags)){
+              Navigator.of(context).pop();
+            }
+            else{
+              await showDialog(
+                context: context, 
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Are you sure? You have unsaved changes"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(), 
+                        child: const Text('No'),
+                      ),
+
+                      TextButton(
+                        onPressed: (){
+                          setState(() {
+                            widget.tags.clear();
+                            widget.tags.addAll(widget.origTags);
+                          });
+                          confirm = true;
+                          Navigator.of(context).pop();
+                        }, 
+                        child: const Text('Yes'),
+                      )
+                    ],
+                  );
+                }
+              );
+            }
+            if(confirm){
+              Navigator.of(context).pop();
+            }
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -125,30 +157,35 @@ class _EditTagsState extends State<EditTags> {
 
               ElevatedButton(
                 onPressed: () async{
-                  await showDialog(
-                    context: context, 
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Confirm Tags?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('No'),
-                          ),
+                  if(listEquals(widget.tags, widget.origTags)){
+                    Navigator.of(context).pop();
+                  }
+                  else{
+                    await showDialog(
+                      context: context, 
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Confirm Tags?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('No'),
+                            ),
 
-                          TextButton(
-                            onPressed: ()async{
-                              await updateTags(widget.tags);
-                              
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Yes'),
-                          )
-                        ],
-                      );
-                    }
-                  );
+                            TextButton(
+                              onPressed: ()async{
+                                await updateTags(widget.tags);
+                                
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Yes'),
+                            )
+                          ],
+                        );
+                      }
+                    );
+                  }
                 }, 
                 child: const Text("Confirm")
               )

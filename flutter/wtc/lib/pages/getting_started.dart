@@ -50,7 +50,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
     });
   }
 
-  List<String> tags = ['Alert', 'Emergency'];
+  List<String> tags = [];
 
   @override
   Widget build(BuildContext context) {

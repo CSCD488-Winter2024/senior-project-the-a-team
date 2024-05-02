@@ -59,7 +59,7 @@ class _EditProfile extends State<EditProfile>{
         leading: IconButton(
           onPressed: () async {
             bool changes = usernameController.text.isNotEmpty || nameController.text.isNotEmpty || 
-              passwordController.text.isNotEmpty || confirmPasswordController.text.isNotEmpty;
+              passwordController.text.isNotEmpty || confirmPasswordController.text.isNotEmpty || selectedImage != null;
               
             if(changes){
               await showDialog(
@@ -138,16 +138,6 @@ class _EditProfile extends State<EditProfile>{
                     setState((){
                       selectedImage = File(image!.path);
                     });
-
-                    Reference ref = FirebaseStorage.instance
-                      .ref('profilePictures')
-                      .child('${widget.uid}.jpg');
-
-                    await ref.putFile(File(image!.path));
-
-                    String newPfp = await ref.getDownloadURL();
-
-                    setPfp(newPfp);
                   },
                   child: const Text("Edit Profile Picture"),
                 ),
@@ -195,7 +185,7 @@ class _EditProfile extends State<EditProfile>{
                   onPressed: () async{
 
                     bool changes = usernameController.text.isNotEmpty || nameController.text.isNotEmpty || 
-                      passwordController.text.isNotEmpty || confirmPasswordController.text.isNotEmpty;
+                      passwordController.text.isNotEmpty || confirmPasswordController.text.isNotEmpty || selectedImage != null;
 
                     if(!changes) {
                       Navigator.of(context).pop();
@@ -229,6 +219,17 @@ class _EditProfile extends State<EditProfile>{
                       );
 
                       if(confirm){
+
+                          Reference ref = FirebaseStorage.instance
+                            .ref('profilePictures')
+                            .child('${widget.uid}.jpg');
+
+                          await ref.putFile(File(selectedImage!.path));
+
+                          String newPfp = await ref.getDownloadURL();
+
+                          setPfp(newPfp);
+
                         if(usernameController.text.isEmpty){
                           usernameController.text = widget.username;
                         }

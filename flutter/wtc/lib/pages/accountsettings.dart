@@ -53,6 +53,9 @@ class _AccountPage extends State<AccountPage> {
               tags.add(tempTags[i]);
             }
 
+            List<String> origTags = [];
+            origTags.addAll(tags);
+
             CachedNetworkImage profilePic = CachedNetworkImage(
               imageUrl: pfp,
               placeholder: (context, url) => const CircularProgressIndicator(),
@@ -132,7 +135,7 @@ class _AccountPage extends State<AccountPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditTags(tags: tags)
+                                builder: (context) => EditTags(tags: tags, origTags: origTags)
                               )
                             );
                           },
