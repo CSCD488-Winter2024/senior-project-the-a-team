@@ -85,7 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': nameController.text,
         'tier': "Viewer",
         'pfp': "",
-        'tags': []
+        'tags': [],
+        'notificationToken': ""
       });
     }
   }
