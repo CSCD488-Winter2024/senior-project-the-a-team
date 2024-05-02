@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
-
 class JobPostList extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -17,7 +16,6 @@ class JobPostList extends StatelessWidget {
             .where('type', isEqualTo: 'Job')
             .orderBy('timestamp', descending: true)
             .snapshots(),
-        
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -35,26 +33,25 @@ class JobPostList extends StatelessWidget {
               var document = snapshot.data?.docs[index];
               String dateCreated = document?['createdAt'] as String;
               var wage = document?['wage'];
-                if (wage is int) {
-                  wage = wage.toDouble();
-                }
-             
-                return JobPost(
-                  title: document?['title'] as String,
-                  body: document?['body'] as String,
-                  tags: const ["Job"],
-                  header: document?['header'] as String,
-                  userEmail: document?['user'] as String,
-                  interestCount: document?['interestCount'] as int,
-                  created: DateTime(
-                      int.parse(dateCreated.split("-")[0]),
-                      int.parse(dateCreated.split("-")[1]),
-                      int.parse(dateCreated.split("-")[2])),
-                  postId: Guid(document?['postID'] as String),
-                  wage: wage,
-                  wageType: document?['wageType'] as String,
-                );
-            
+              if (wage is int) {
+                wage = wage.toDouble();
+              }
+
+              return JobPost(
+                title: document?['title'] as String,
+                body: document?['body'] as String,
+                tags: const ["Job"],
+                header: document?['header'] as String,
+                userEmail: document?['user'] as String,
+                interestCount: document?['interestCount'] as int,
+                created: DateTime(
+                    int.parse(dateCreated.split("-")[0]),
+                    int.parse(dateCreated.split("-")[1]),
+                    int.parse(dateCreated.split("-")[2])),
+                postId: Guid(document?['postID'] as String),
+                wage: wage,
+                wageType: document?['wageType'] as String,
+              );
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),
