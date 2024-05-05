@@ -155,7 +155,7 @@ class _EditPostPageState extends State<EditPostPage> {
 
     // Show a snackbar as feedback
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Post Edited successfully')),
+      const SnackBar(content: Text('Post Updated Successfully')),
     );
   }
 

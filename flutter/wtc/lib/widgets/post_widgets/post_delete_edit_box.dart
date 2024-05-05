@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/pages/edit_event.dart';
+import 'package:wtc/pages/edit_job.dart';
 import 'package:wtc/pages/edit_post.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
@@ -31,6 +32,12 @@ class PostDeleteEditBox extends StatelessWidget {
                         EditPostEventPage(post: post as Event)),
               );
             } else if (post is JobPost) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        EditPostJobPage(post: post as JobPost)),
+              );
             } else {
               Navigator.push(
                 context,
