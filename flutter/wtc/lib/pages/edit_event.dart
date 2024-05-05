@@ -306,7 +306,7 @@ class _EditPostEventPageState extends State<EditPostEventPage> {
                   await _updateEvent();
                   Navigator.pop(context);
                 },
-                child: const Text('Submit'),
+                child: const Text('Update'),
               ),
             ],
           ),

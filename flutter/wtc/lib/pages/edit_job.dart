@@ -195,7 +195,7 @@ class _EditPostJobPageState extends State<EditPostJobPage> {
                   await _updateJob();
                   Navigator.pop(context);
                 },
-                child: const Text('Submit'),
+                child: const Text('Update'),
               ),
             ],
           ),
