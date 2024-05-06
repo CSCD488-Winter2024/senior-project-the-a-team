@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/app.dart';
-import 'package:wtc/auth/login_or_register.dart';
+import 'package:wtc/pages/login.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
             return const App();
           }
           else{
-            return const LoginOrRegister();
+            return const LoginPage();
           }
         },
       )

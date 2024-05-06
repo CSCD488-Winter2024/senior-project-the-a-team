@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
@@ -7,12 +8,7 @@ import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/pages/getting_started.dart';
 
 class RegisterPage extends StatefulWidget{
-  const RegisterPage({
-    super.key,
-    required this.onTap,
-    });
-
-  final void Function()? onTap;
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -53,8 +49,8 @@ class _RegisterPageState extends State<RegisterPage> {
       try{
         UserCredential? userCredential = 
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text, 
-          password: passwordController.text
+          email: emailController.text.trim(), 
+          password: passwordController.text.trim()
         );
 
         createUserDocument(userCredential);
@@ -62,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if(context.mounted){
           Navigator.push(
             context,
-            MaterialPageRoute(
+            CupertinoPageRoute(
               builder: (context) => GettingStartedPage(email: emailController.text, uid: userCredential.user!.uid)
             )
           );
@@ -81,8 +77,8 @@ class _RegisterPageState extends State<RegisterPage> {
       .doc(userCredential.user!.email)
       .set({
         'email': userCredential.user!.email,
-        'username': usernameController.text,
-        'name': nameController.text,
+        'username': usernameController.text.trim(),
+        'name': nameController.text.trim(),
         'tier': "Viewer",
         'pfp': "",
         'tags': []
@@ -96,8 +92,10 @@ class _RegisterPageState extends State<RegisterPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: widget.onTap, 
-          icon: const Icon(Icons.arrow_back_ios)
+          onPressed: (){
+            Navigator.pop(context);                   
+          }, 
+          icon: const Icon(Icons.arrow_back_ios_new)
         ),
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -186,7 +184,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 // register
                 GestureDetector(
-                  onTap: widget.onTap,
+                  onTap: (){
+                    Navigator.pop(context);                   
+                  },
                   child: const Text(
                     "Already have an account?",
                     style: TextStyle(
