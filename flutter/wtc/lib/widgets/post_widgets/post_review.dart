@@ -23,7 +23,6 @@ class PostReview extends Post {
           header: header,
           tags: tags,
           body: body,
-          user: user,
           userEmail: userEmail,
           interestCount: interestCount,
           created: created,

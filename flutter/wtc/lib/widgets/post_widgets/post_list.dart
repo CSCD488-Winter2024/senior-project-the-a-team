@@ -53,6 +53,8 @@ class PostList extends StatelessWidget {
                   } else {
                     hour = int.parse(time[0].split(":")[0]) + 12;
                   }
+                } else {
+                  hour = int.parse(time[0].split(":")[0]);
                 }
                 int minute = int.parse(time[0].split(":")[1]);
 
