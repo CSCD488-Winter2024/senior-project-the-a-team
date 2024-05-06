@@ -32,6 +32,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);                   
+          }, 
+          icon: const Icon(Icons.arrow_back_ios_new)
+        ),
         backgroundColor: const Color(0xFF469AB8),
         title: const Text(
           "Forgot Password",

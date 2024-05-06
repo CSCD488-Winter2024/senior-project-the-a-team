@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wtc/auth/auth.dart';
 
 class GettingStartedPage extends StatefulWidget {
   const GettingStartedPage({super.key, required this.email, required this.uid});
@@ -48,6 +51,17 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
       'tags': tags,
       'pfp': profilePic,
     });
+  }
+
+  Future<void> setTags(var tags)async {
+    for(int i = 0; i < tags.length; i++){
+      FirebaseFirestore.instance
+        .collection('tags')
+        .doc(tags[i])
+        .update({
+          'users': FieldValue.arrayUnion([widget.email.toLowerCase()])
+        });
+    }
   }
 
   List<String> tags = [];
@@ -193,12 +207,20 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                                 }
 
                                 await setAccountInfo(tags, profilePic);
+                                await setTags(tags);
 
-                                tags.clear(); 
+                                tags.clear();
 
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+
+                                Navigator.pushReplacement(
+                                  context, 
+                                  MaterialPageRoute(
+                                    builder: (context) => const AuthPage()
+                                  )
+                                );
                               }, 
                               child: const Text("Yes"),
                             )

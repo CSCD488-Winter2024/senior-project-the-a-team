@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/pages/edit_profile.dart';
 import 'package:wtc/pages/edit_tags.dart';
@@ -109,7 +110,7 @@ class _AccountPage extends State<AccountPage> {
                             //Navigator.pop(context);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                               builder: (context) => EditProfile(
                                 uid: currentUser!.uid,
                                 name: name, 
@@ -134,7 +135,7 @@ class _AccountPage extends State<AccountPage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                 builder: (context) => EditTags(tags: tags, origTags: origTags)
                               )
                             );

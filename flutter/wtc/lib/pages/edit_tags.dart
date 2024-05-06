@@ -48,6 +48,22 @@ class _EditTagsState extends State<EditTags> {
     });
   }
 
+  Future<void> setTags(List<String> tags, List<String> origTags)async {
+    for(int i = 0; i < tags.length; i++){
+      await _firestore.collection('tags').doc(tags[i]).update({
+        'users': FieldValue.arrayUnion([currentUser!.email])
+      });
+    }
+
+    for(int i = 0; i < origTags.length; i++){
+      if(!tags.contains(origTags[i])){
+        await _firestore.collection('tags').doc(origTags[i]).update({
+          'users': FieldValue.arrayRemove([currentUser!.email])
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +191,7 @@ class _EditTagsState extends State<EditTags> {
                             TextButton(
                               onPressed: ()async{
                                 await updateTags(widget.tags);
+                                await setTags(widget.tags, widget.origTags);
                                 
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();

@@ -1,16 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/pages/forgot_password.dart';
+import 'package:wtc/pages/register.dart';
 
 class LoginPage extends StatefulWidget{
-  const LoginPage({
-    super.key,
-    required this.onTap,
-  });
-  final void Function()? onTap;
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -32,7 +30,7 @@ class _LoginPageState extends State<LoginPage>{
     );
 
     try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
       if(context.mounted) Navigator.pop(context);
     }
@@ -98,7 +96,7 @@ class _LoginPageState extends State<LoginPage>{
                       onTap: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
+                          CupertinoPageRoute(builder: (context) => const ForgotPasswordPage())
                         );
                       },
                       child: const Text(
@@ -124,7 +122,14 @@ class _LoginPageState extends State<LoginPage>{
 
                 // register
                 GestureDetector(
-                  onTap: widget.onTap,
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const RegisterPage()
+                      )
+                    );
+                  },
                   child: const Text(
                     "Register Here",
                     style: TextStyle(
