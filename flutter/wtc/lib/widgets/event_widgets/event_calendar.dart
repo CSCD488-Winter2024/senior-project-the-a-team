@@ -178,6 +178,8 @@ class _EventCalendar extends State<EventCalendar> {
           } else {
             hour = int.parse(time[0].split(":")[0]) + 12;
           }
+        } else {
+          hour = int.parse(time[0].split(":")[0]);
         }
         int minute = int.parse(time[0].split(":")[1]);
         Event event = Event(

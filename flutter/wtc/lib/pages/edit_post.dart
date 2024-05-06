@@ -194,15 +194,6 @@ class _EditPostPageState extends State<EditPostPage> {
                 minLines: 1,
                 maxLines: 5,
               ),
-              CheckboxListTile(
-                title: const Text('Alert'),
-                value: _isAlert,
-                onChanged: (bool? value) {
-                  setState(() {
-                    _isAlert = value!;
-                  });
-                },
-              ),
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: showTags,
