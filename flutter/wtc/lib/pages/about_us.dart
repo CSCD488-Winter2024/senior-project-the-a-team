@@ -34,7 +34,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   'Founded by Maria Fell, Welcome to Cheney is a non-profit dedicated to fostering community through reliable information sharing.'),
               SizedBox(height: 16),
               Text(
-                  'Our team is led by developers Nolan Posey, Matt Matriciano, Tanner Stephenson, Daniel Palmer, and Timonthy Nelson. Together, we strive to deliver an app that stands out as the primary source of news and events for Cheney residents.'),
+                  'Our team is led by developers Nolan Posey, Matt Matriciano, Tanner Stephenson, Daniel Palmer, and Tim Nelson. Together, we strive to deliver an app that stands out as the primary source of news and events for Cheney residents.'),
               SizedBox(height: 16),
               Text(
                   'With previous attempts overshadowed in noisy social platforms, our app focuses on delivering timely, accurate, and useful content directly to our community.'),
