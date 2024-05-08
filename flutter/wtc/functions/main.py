@@ -17,7 +17,7 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
 
     print(f"Post {post_uid} is now posted")
     #get all tokens
-    tokens_ref = firestore_fn.DocumentReference(f"users/{userID}/notificationToken")
+    tokens_ref = firestore_fn.DocumentReference(f"users/taterstimmy@gmail.com/notificationToken")
     notification_tokens = tokens_ref.get()
     if (not isinstance(notification_tokens, dict) or len(notification_tokens) < 1):
         print("There are no tokens to send notifications to.")
