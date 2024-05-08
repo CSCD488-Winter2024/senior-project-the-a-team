@@ -1,9 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
-import 'package:wtc/widgets/post_widgets/post_delete_edit_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
@@ -14,7 +15,6 @@ class Event extends Post {
     required super.body,
     required super.tags,
     required super.header,
-    super.user,
     required super.interestCount,
     required super.created,
     required super.postId,
@@ -34,23 +34,68 @@ class Event extends Post {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showEventDialog(context);
+    return FutureBuilder<String>(
+      future: fetchUserTier(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData) {
+            String currentUserTier = snapshot.data!;
+            User? currentUser = FirebaseAuth.instance.currentUser;
+            if (currentUserTier == "Admin" ||
+                (currentUserTier == "Poster" &&
+                    currentUser?.email == userEmail)) {
+              return InkWell(
+                onTap: () {
+                  showEventDialog(context);
+                },
+                child: Column(
+                  children: [
+                    PostTitleBox(title: title),
+                    PostTagBox(tags: tags),
+                    SizedBox(
+                        width: 600,
+                        child: Text(
+                          "Posted on: ${created.toString().split(" ")[0]}\n",
+                          textAlign: TextAlign.left,
+                        )),
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    PostDeleteEditBox(post: this)
+                  ],
+                ),
+              );
+            } else {
+              return InkWell(
+                onTap: () {
+                  showEventDialog(context);
+                },
+                child: Column(
+                  children: [
+                    PostTitleBox(title: title),
+                    PostTagBox(tags: tags),
+                    SizedBox(
+                        width: 600,
+                        child: Text(
+                          "Posted on: ${created.toString().split(" ")[0]}\n",
+                          textAlign: TextAlign.left,
+                        )),
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                  ],
+                ),
+              );
+            }
+          } else {
+            // This handles the case where snapshot has data but it's null or some unexpected condition
+            return const Text('Unexpected error. Please try again later.');
+          }
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Show loading spinner while waiting for data
+        } else {
+          // This handles any other unanticipated state of the snapshot
+          return const Text('Something went wrong. Please try again.');
+        }
       },
-      child: Column(
-        children: [
-          PostDeleteEditTitleBox(title: title, post: this),
-          PostTagBox(tags: tags),
-          SizedBox(
-              width: 600,
-              child: Text(
-                "Posted on: ${created.toString().split(" ")[0]}\n",
-                textAlign: TextAlign.left,
-              )),
-          PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-        ],
-      ),
     );
   }
 

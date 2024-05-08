@@ -15,6 +15,7 @@ import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
 import 'pages/specific_fillable_form.dart';
 import 'pages/admin_review.dart';
+import 'pages/about_us.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -40,6 +41,7 @@ class _NavBars extends State<App> {
   bool showJobsPage = false;
   bool showVolunteerPage = false;
   bool showApprovePostsPage = false;
+  bool showAboutUsPage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -140,6 +142,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = false;
                 showNotification = false;
                 showApprovePostsPage = false;
+                showAboutUsPage = false;
               });
             },
           ),
@@ -156,6 +159,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = false;
                 showNotification = false;
                 showApprovePostsPage = false;
+                showAboutUsPage = false;
               });
             },
           ),
@@ -173,6 +177,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = false;
                 showNotification = false;
                 showApprovePostsPage = false;
+                showAboutUsPage = false;
               });
             },
           ),
@@ -189,6 +194,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showVolunteerPage = !showVolunteerPage;
                 showApprovePostsPage = false;
+                showAboutUsPage = false;
               });
             },
           ),
@@ -206,6 +212,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = false;
                 showNotification = false;
                 showApprovePostsPage = false;
+                showAboutUsPage = false;
               });
             },
           ),
@@ -221,6 +228,7 @@ class _NavBars extends State<App> {
                       showVolunteerPage = false;
                       showNotification = false;
                       showApprovePostsPage = false;
+                      showAboutUsPage = false;
                     });
                   },
                 )
@@ -253,6 +261,23 @@ class _NavBars extends State<App> {
                 });
               },
             ),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text('About Us'),
+            onTap: () {
+              // Navigate to Volunteer page
+              Navigator.pop(context);
+              setState(() {
+                title = "About Us";
+                prevTitle = "About Us";
+                showAboutUsPage = !showAboutUsPage;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+              });
+            },
+          ),
         ],
       ),
     );
@@ -292,7 +317,8 @@ class _NavBars extends State<App> {
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
           if (showVolunteerPage) const VolunteerPage(),
-          if (showApprovePostsPage) const AdminReviewPage()
+          if (showApprovePostsPage) const AdminReviewPage(),
+          if (showAboutUsPage) const AboutUsPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -308,6 +334,7 @@ class _NavBars extends State<App> {
             showVolunteerPage = false;
             showNotification = false;
             showApprovePostsPage = false;
+            showAboutUsPage = false;
           });
         },
         indicatorColor: Colors.white,
@@ -349,6 +376,8 @@ class _NavBars extends State<App> {
         return "Account Settings";
       case 5:
         return "Approve Posts";
+      case 6:
+        return "About us";
       default:
         return "Welcome to Cheney";
     }

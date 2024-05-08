@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/pages/edit_profile.dart';
 import 'package:wtc/pages/edit_tags.dart';
@@ -46,6 +47,15 @@ class _AccountPage extends State<AccountPage> {
             String name = user['name'];
             String email = user['email'];
             String pfp = user['pfp'];
+            var tempTags = user['tags'] as List<dynamic>;
+            List<String> tags = [];
+
+            for(int i = 0; i < tempTags.length; i++){
+              tags.add(tempTags[i]);
+            }
+
+            List<String> origTags = [];
+            origTags.addAll(tags);
 
             CachedNetworkImage profilePic = CachedNetworkImage(
               imageUrl: pfp,
@@ -100,7 +110,7 @@ class _AccountPage extends State<AccountPage> {
                             //Navigator.pop(context);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                               builder: (context) => EditProfile(
                                 uid: currentUser!.uid,
                                 name: name, 
@@ -124,9 +134,11 @@ class _AccountPage extends State<AccountPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const EditTags()));
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => EditTags(tags: tags, origTags: origTags)
+                              )
+                            );
                           },
                           child: const Text(
                             "Edit Tags",
