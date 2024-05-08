@@ -258,6 +258,7 @@ class _NavBars extends State<App> {
                   showVolunteerPage = false;
                   showNotification = false;
                   showJobsPage = false;
+                  showAboutUsPage = false;
                 });
               },
             ),
