@@ -1,47 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/post_widgets/post_list_review.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({super.key});
 
   @override
-  State<AboutUsPage> createState() => _AboutUsPage();
+  State<AboutUsPage> createState() => _AboutUsPageState();
 }
 
-class _AboutUsPage extends State<AboutUsPage> {
+class _AboutUsPageState extends State<AboutUsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('About Us'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome to Cheney Team',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+    return const Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Changed alignment to start
+            children: [
+              SizedBox(height: 30),
+              Center(
+                // Center widget used to center only the title
+                child: Text(
+                  'Welcome to Cheney Team',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'We are a dedicated team of developers working on the Welcome to Cheney app.',
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Our goal is to provide the residents and visitors of Cheney with a user-friendly and informative app that enhances their experience in the city.',
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Feel free to explore the app and provide us with your valuable feedback.',
-              textAlign: TextAlign.center,
-            ),
-          ],
+              SizedBox(height: 18),
+              Text(
+                  'Founded by Maria Fell, Welcome to Cheney is a non-profit dedicated to fostering community through reliable information sharing.'),
+              SizedBox(height: 16),
+              Text(
+                  'Our team is led by developers Nolan Posey, Matt Matriciano, Tanner Stephenson, Daniel Palmer, and Timonthy Nelson. Together, we strive to deliver an app that stands out as the primary source of news and events for Cheney residents.'),
+              SizedBox(height: 16),
+              Text(
+                  'With previous attempts overshadowed in noisy social platforms, our app focuses on delivering timely, accurate, and useful content directly to our community.'),
+              SizedBox(height: 16),
+              Text(
+                  'Explore the app and connect with your community like never before. We appreciate your feedback and look forward to enhancing your experience in Cheney.'),
+            ],
+          ),
         ),
       ),
     );

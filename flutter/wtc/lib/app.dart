@@ -334,7 +334,7 @@ class _NavBars extends State<App> {
             showVolunteerPage = false;
             showNotification = false;
             showApprovePostsPage = false;
-            showApprovePostsPage = false;
+            showAboutUsPage = false;
           });
         },
         indicatorColor: Colors.white,
