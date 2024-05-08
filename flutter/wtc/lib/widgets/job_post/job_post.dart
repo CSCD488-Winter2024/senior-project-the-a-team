@@ -50,7 +50,7 @@ class JobPost extends Post {
               List<Widget> columnChildren = [
                 PostTitleBox(title: title),
                 PostTagBox(tags: tags),
-                PostBodyBox(body: body),
+                PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                 Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
@@ -75,7 +75,7 @@ class JobPost extends Post {
               List<Widget> columnChildren = [
                 PostTitleBox(title: title),
                 PostTagBox(tags: tags),
-                PostBodyBox(body: body),
+                PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                 Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
