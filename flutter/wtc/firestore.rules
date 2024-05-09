@@ -6,10 +6,19 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /users/{id}{
-    	allow read, write: if true;
+        allow read, write: if true;
     }
     match /_posts/{id}{
-    	allow read, write: if true;
+        allow read, write: if true;
+    }
+    match /_review_posts/{id}{
+        allow read, write: if true;
+    }
+    match /tags/{id}{
+        allow read, write: if true;
+    }
+    match /_review_account/{id}{
+        allow read, write: if true;
     }
   }
 }

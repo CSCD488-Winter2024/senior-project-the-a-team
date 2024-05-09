@@ -5,7 +5,7 @@ from firebase_functions import firestore_fn
 firebase_admin.initialize_app()
 
 
-@firestore_fn.on_document_created(document="/_posts/{PostUid}")
+@firestore_fn.on_document_updated(document="/_posts/{PostUid}")
 def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> None:
     post_uid = event.params["postUid"]
 
