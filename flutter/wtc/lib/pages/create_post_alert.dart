@@ -145,7 +145,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'header': _headerController.text,
       'tags': convertedTags,
       'title': _titleController.text,
-      'type': 'Post',
+      'type': 'Alert',
       'createdAt': formattedDate,
       'timestamp': FieldValue.serverTimestamp(),
       'interestCount': 0,
