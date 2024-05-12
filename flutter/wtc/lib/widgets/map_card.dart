@@ -8,6 +8,7 @@ class MapCard extends StatelessWidget {
   final String name;
   final String description;
   final String address;
+  final String emailAddress;
   final MapController mapController;
   //need logo
 
@@ -18,6 +19,7 @@ class MapCard extends StatelessWidget {
       required this.name,
       required this.description,
       required this.address,
+      required this.emailAddress,
       required this.mapController});
 
   @override

@@ -8,7 +8,7 @@ import 'package:wtc/widgets/post_widgets/post.dart';
 
 class OrganizationPostList extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final userEmail;
+  final String userEmail;
   OrganizationPostList({super.key, required this.userEmail });
   
   @override
@@ -16,7 +16,7 @@ class OrganizationPostList extends StatelessWidget {
     return StreamBuilder(
       stream:_firestore
       .collection('_posts')
-      .where('email', isEqualTo: userEmail)
+      .where('user', isEqualTo: userEmail)
       .orderBy('timestamp', descending: true)
       .snapshots(),
       
@@ -27,6 +27,7 @@ class OrganizationPostList extends StatelessWidget {
         if (snapshot.hasError) {
           return Center(child: Text("Error: ${snapshot.error}"));
         }
+
 
         return ListView.separated(
           padding: const EdgeInsets.all(8),
