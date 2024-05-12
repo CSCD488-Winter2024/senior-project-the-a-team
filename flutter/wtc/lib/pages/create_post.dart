@@ -18,12 +18,22 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final TextEditingController _headerController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   Map<String, bool> tags = {
-    'Eastern': false,
-    'Traffic': false,
-    'Accident': false,
+    'News': false,
     'Weather': false,
+    'Business': false,
+    'Shopping': false,
+    'Eastern': false,
+    'Entertainment': false,
+    'Food': false,
+    'Government': false,
+    'Pets': false,
+    'Public Resources': false,
+    'Schools': false,
+    'Sports': false,
+    'Adult Sports': false,
+    'Youth Sports': false,
+    'Traffic': false,
     'Construction': false,
-    'Event': false,
   };
   bool _isAlert = false;
   bool _isEvent = false;
@@ -45,20 +55,21 @@ class _CreatePostPageState extends State<CreatePostPage> {
           title: const Text('Select Tags'),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: tags.keys.map((String tag) {
-                  return CheckboxListTile(
-                    title: Text(tag),
-                    value: tags[tag],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Update the selection state of the tag
-                        tags[tag] = value!;
-                      });
-                    },
-                  );
-                }).toList(),
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: tags.keys.map((String tag) {
+                    return CheckboxListTile(
+                      title: Text(tag),
+                      value: tags[tag],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          tags[tag] = value!;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
               );
             },
           ),
@@ -190,15 +201,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 ),
                 minLines: 1,
                 maxLines: 5,
-              ),
-              CheckboxListTile(
-                title: const Text('Alert'),
-                value: _isAlert,
-                onChanged: (bool? value) {
-                  setState(() {
-                    _isAlert = value!;
-                  });
-                },
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
