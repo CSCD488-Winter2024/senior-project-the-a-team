@@ -111,9 +111,15 @@ class _EditProfile extends State<EditProfile>{
 
                 //Pfp
                 selectedImage != null ?
-                  SizedBox(
+                  Container(
                   height: 120,
                   width: 120,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                    shape: BoxShape.circle
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(200),
                     child: Image.file(
@@ -123,12 +129,18 @@ class _EditProfile extends State<EditProfile>{
                   )
                 )
                 :
-                SizedBox(
+                Container(
                   height: 120,
                   width: 120,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                    shape: BoxShape.circle
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(200),
-                    child: widget.profilePic 
+                    child: widget.profilePic,                   
                   ),
                 ),
 

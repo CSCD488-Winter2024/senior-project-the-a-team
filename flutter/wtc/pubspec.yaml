@@ -47,6 +47,8 @@ dependencies:
   flutter_map: ^6.1.0
   latlong2: ^0.9.1
   cached_network_image: ^3.3.1
+  smooth_page_indicator: ^1.1.0
+  intl_phone_number_input: ^0.7.4
 
 
 dev_dependencies:

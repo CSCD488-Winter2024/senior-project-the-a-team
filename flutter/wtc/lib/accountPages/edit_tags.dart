@@ -23,7 +23,8 @@ class _EditTagsState extends State<EditTags> {
 
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  final items = [
+ final items = [
+    'Construction',
     'News',
     'Weather',
     'Business',
@@ -33,6 +34,7 @@ class _EditTagsState extends State<EditTags> {
     'Food',
     'Government',
     'Job',
+    'Traffic',
     'Volunteer',
     'Pets',
     'Public Resources',
