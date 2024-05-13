@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/pages/search_user.dart';
 import 'widgets/navbutton.dart';
 import 'User/user_service.dart';
 import 'pages/home.dart';
@@ -42,6 +43,7 @@ class _NavBars extends State<App> {
   bool showVolunteerPage = false;
   bool showApprovePostsPage = false;
   bool showAboutUsPage = false;
+  bool showSearchUsers = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -143,6 +145,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -160,6 +163,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -178,6 +182,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -195,6 +200,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = !showVolunteerPage;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -213,6 +219,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -229,6 +236,7 @@ class _NavBars extends State<App> {
                       showNotification = false;
                       showApprovePostsPage = false;
                       showAboutUsPage = false;
+                      showSearchUsers = false;
                     });
                   },
                 )
@@ -259,6 +267,25 @@ class _NavBars extends State<App> {
                   showNotification = false;
                   showJobsPage = false;
                   showAboutUsPage = false;
+                  showSearchUsers = false;
+                });
+              },
+            ),
+          if (userTier == "Admin")
+            ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('Search Users'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  title = "Search Users";
+                  prevTitle = "Search Users";
+                  showApprovePostsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showJobsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = !showSearchUsers;
                 });
               },
             ),
@@ -276,6 +303,7 @@ class _NavBars extends State<App> {
                 showNotification = false;
                 showVolunteerPage = false;
                 showApprovePostsPage = false;
+                showSearchUsers = false;
               });
             },
           ),
@@ -319,7 +347,8 @@ class _NavBars extends State<App> {
           if (showJobsPage) const JobsPage(),
           if (showVolunteerPage) const VolunteerPage(),
           if (showApprovePostsPage) const AdminReviewPage(),
-          if (showAboutUsPage) const AboutUsPage()
+          if (showAboutUsPage) const AboutUsPage(),
+          if (showSearchUsers) const SearchUserPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -336,6 +365,7 @@ class _NavBars extends State<App> {
             showNotification = false;
             showApprovePostsPage = false;
             showAboutUsPage = false;
+            showSearchUsers = false;
           });
         },
         indicatorColor: Colors.white,
@@ -378,6 +408,8 @@ class _NavBars extends State<App> {
       case 5:
         return "Approve Posts";
       case 6:
+        return "Search Users";
+      case 7:
         return "About us";
       default:
         return "Welcome to Cheney";
