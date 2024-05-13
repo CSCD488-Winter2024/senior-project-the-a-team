@@ -21,12 +21,22 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
   final TextEditingController _timeController = TextEditingController();
 
   Map<String, bool> tags = {
-    'Eastern': false,
-    'Traffic': false,
-    'Accident': false,
+    'News': false,
     'Weather': false,
+    'Business': false,
+    'Shopping': false,
+    'Eastern': false,
+    'Entertainment': false,
+    'Food': false,
+    'Government': false,
+    'Pets': false,
+    'Public Resources': false,
+    'Schools': false,
+    'Sports': false,
+    'Adult Sports': false,
+    'Youth Sports': false,
+    'Traffic': false,
     'Construction': false,
-    'Event': false,
   };
 
   @override
@@ -48,20 +58,21 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
           title: const Text('Select Tags'),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: tags.keys.map((String tag) {
-                  return CheckboxListTile(
-                    title: Text(tag),
-                    value: tags[tag],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Update the selection state of the tag
-                        tags[tag] = value!;
-                      });
-                    },
-                  );
-                }).toList(),
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: tags.keys.map((String tag) {
+                    return CheckboxListTile(
+                      title: Text(tag),
+                      value: tags[tag],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          tags[tag] = value!;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
               );
             },
           ),
@@ -152,6 +163,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
         convertedTags.add(key);
       }
     }
+    convertedTags.add('Event');
 
     User? currentUser = FirebaseAuth.instance.currentUser;
 
