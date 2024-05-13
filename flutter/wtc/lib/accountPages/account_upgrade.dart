@@ -9,11 +9,13 @@ class AccountUpgradePage extends StatefulWidget {
     required this.tier, 
     required this.name, 
     required this.email,
+    required this.uid
   });
 
   final String tier;
   final String name;
   final String email;
+  final String uid;
 
   @override
   State<AccountUpgradePage> createState() => _AccountUpgradePageState();
@@ -73,7 +75,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
     // Upload to database
     await FirebaseFirestore.instance
       .collection("_review_account")
-      .doc()
+      .doc(widget.uid)
       .set({
         "name": name,
         "about": about,

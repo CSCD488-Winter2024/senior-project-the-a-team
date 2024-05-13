@@ -219,6 +219,7 @@ class _EditSettingsState extends State<EditSettings> {
                           tier: widget.tier,
                           name: widget.name,
                           email: widget.email,
+                          uid: widget.uid,
                         )
                       )
                     );
@@ -255,6 +256,7 @@ class _EditSettingsState extends State<EditSettings> {
                           tier: widget.tier,
                           name: widget.name,
                           email: widget.email,
+                          uid: widget.uid,
                         )
                       )
                     );
@@ -280,6 +282,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
 
+              if(widget.tier == "Poster" || widget.tier == "Viewer")
               const SizedBox(height: 20,),
 
               // delete account

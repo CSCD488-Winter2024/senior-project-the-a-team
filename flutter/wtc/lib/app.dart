@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/pages/search_user.dart';
+import 'package:wtc/pages/account_review.dart';
 import 'widgets/navbutton.dart';
 import 'User/user_service.dart';
 import 'pages/home.dart';
@@ -44,6 +45,7 @@ class _NavBars extends State<App> {
   bool showApprovePostsPage = false;
   bool showAboutUsPage = false;
   bool showSearchUsers = false;
+  bool showAccountUpgradePage = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -146,6 +148,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -164,6 +167,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -183,6 +187,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -201,6 +206,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -220,6 +226,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -237,6 +244,7 @@ class _NavBars extends State<App> {
                       showApprovePostsPage = false;
                       showAboutUsPage = false;
                       showSearchUsers = false;
+                      showAccountUpgradePage = false;
                     });
                   },
                 )
@@ -268,6 +276,7 @@ class _NavBars extends State<App> {
                   showJobsPage = false;
                   showAboutUsPage = false;
                   showSearchUsers = false;
+                  showAccountUpgradePage = false;
                 });
               },
             ),
@@ -286,6 +295,25 @@ class _NavBars extends State<App> {
                   showJobsPage = false;
                   showAboutUsPage = false;
                   showSearchUsers = !showSearchUsers;
+                  showAccountUpgradePage = false;
+                });
+              },
+            ),
+          if(userTier == "Admin")
+            ListTile(
+              leading: const Icon(Icons.people_sharp),
+              title: const Text('Upgrade Accounts'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  title = "Upgrade Accounts";
+                  prevTitle = "Upgrade Accounts";
+                  showAccountUpgradePage = !showAccountUpgradePage;
+                  showApprovePostsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showJobsPage = false;
+                  showAboutUsPage = false;
                 });
               },
             ),
@@ -304,6 +332,7 @@ class _NavBars extends State<App> {
                 showVolunteerPage = false;
                 showApprovePostsPage = false;
                 showSearchUsers = false;
+                showAccountUpgradePage = false;
               });
             },
           ),
@@ -348,7 +377,8 @@ class _NavBars extends State<App> {
           if (showVolunteerPage) const VolunteerPage(),
           if (showApprovePostsPage) const AdminReviewPage(),
           if (showAboutUsPage) const AboutUsPage(),
-          if (showSearchUsers) const SearchUserPage()
+          if (showSearchUsers) const SearchUserPage(),
+          if (showAccountUpgradePage) const AccountReviewPage(),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -366,6 +396,7 @@ class _NavBars extends State<App> {
             showApprovePostsPage = false;
             showAboutUsPage = false;
             showSearchUsers = false;
+            showAccountUpgradePage = false;
           });
         },
         indicatorColor: Colors.white,
