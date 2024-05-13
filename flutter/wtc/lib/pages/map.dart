@@ -17,6 +17,7 @@ MapCard bimart = MapCard(
     name: "Bi-Mart Membership Discount Stores",
     description: "a general purpose store",
     address: "2221 1st St, Cheney, WA 99004",
+    emailAddress: "bimart@gmail.com",
     mapController: mapController);
 
 MapCard safeway = MapCard(
@@ -26,6 +27,7 @@ MapCard safeway = MapCard(
     description:
         "Safeway is a restaurant where you can buy food. Jk it's actually a grocery store. Come on down to Safeway and get your groceries!",
     address: "2710 1st St, Cheney",
+    emailAddress: "safeway@gmail.com",
     mapController: mapController);
 
 MapCard mitchels = MapCard(
@@ -35,6 +37,7 @@ MapCard mitchels = MapCard(
     description:
         "Mitchell's Harvest Foods has been proudly serving Cheney for the past 300 years. We are a small grocery store, so our prices are pretty unreasonable.",
     address: "116 W 1st St",
+    emailAddress: "mitchels@gmail.com",
     mapController: mapController);
 
 MapCard unionMarket = MapCard(
@@ -44,6 +47,7 @@ MapCard unionMarket = MapCard(
     description:
         "Come get some crappy food for a crappy price. We're the market over at the PUB at EWU!",
     address: "116 Pence Union Building",
+    emailAddress: "unionmarket@gmail.com",
     mapController: mapController);
 
 MapCard aceHardware = MapCard(
@@ -53,6 +57,7 @@ MapCard aceHardware = MapCard(
     description:
         "Ace Harware sells harware or any other nick nacks that are helpful around the house. I bought a hammer there once, it worked great!",
     address: "6 Cheney Spokane Rd",
+    emailAddress: "acehardware@gmail.com",
     mapController: mapController);
 
 MapCard cottonWood = MapCard(
@@ -62,6 +67,7 @@ MapCard cottonWood = MapCard(
     description:
         "Need a tan? Well, you'll be pretty let down with our price to quality ration. Come on down to our shop this week!",
     address: "317 1st St, Cheney, WA 99004",
+    emailAddress: "cottonwood@gmail.com",
     mapController: mapController);
 
 
@@ -112,7 +118,7 @@ class _MapPage extends State<MapPage> {
                       return Marker( width: 80.0,
                         height: 80.0,
                         point: LatLng(mapCard.latitude, mapCard.longitude),
-                        child: MapPin(name: mapCard.name, address: mapCard.address, description: mapCard.description),);
+                        child: MapPin(name: mapCard.name, address: mapCard.address, description: mapCard.description, userEmail: mapCard.emailAddress),);
                     }).toList()
                   ),
                 ],
