@@ -96,6 +96,10 @@ class _EditProfile extends State<EditProfile>{
           ),
         ),
         backgroundColor: const Color(0xFF469AB8),
+        centerTitle: true,
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ) ,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -220,6 +224,14 @@ class _EditProfile extends State<EditProfile>{
 
                       if(confirm){
 
+                        showDialog(
+                          context: context,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        );
+
+                        if(selectedImage != null){
                           Reference ref = FirebaseStorage.instance
                             .ref('profilePictures')
                             .child('${widget.uid}.jpg');
@@ -229,6 +241,7 @@ class _EditProfile extends State<EditProfile>{
                           String newPfp = await ref.getDownloadURL();
 
                           setPfp(newPfp);
+                        }
 
                         if(usernameController.text.isEmpty){
                           usernameController.text = widget.username;
@@ -241,6 +254,7 @@ class _EditProfile extends State<EditProfile>{
                         if(passwordController.text.isNotEmpty && passwordController.text == confirmPasswordController.text){
                           await currentUser?.updatePassword(passwordController.text);
                         }
+                        Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       }
                     }
