@@ -197,6 +197,11 @@ class _EditTagsState extends State<EditTags> {
                               onPressed: ()async{
                                 await updateTags(widget.tags);
                                 await setTags(widget.tags, widget.origTags);
+
+                                setState(() {
+                                  widget.origTags.clear();
+                                  widget.origTags.addAll(widget.tags);
+                                });
                                 
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
