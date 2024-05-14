@@ -118,6 +118,9 @@ class _EditTagsState extends State<EditTags> {
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF469AB8),
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
       ),
 
       body: Center(
@@ -131,7 +134,7 @@ class _EditTagsState extends State<EditTags> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Select Tags:",
+                    "Select Tags",
                     style: TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.bold

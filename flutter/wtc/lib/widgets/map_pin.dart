@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/pages/organization_post_page.dart';
+import 'package:flutter/cupertino.dart';
 
 
 class MapPin extends StatelessWidget {
   final String address;
   final String name;
   final String description;
+  final String userEmail;
 
   const MapPin({
     super.key,
     required this.address,
     required this.name,
-    required this.description
+    required this.description,
+    required this.userEmail
   });
 
 
@@ -38,7 +42,10 @@ class MapPin extends StatelessWidget {
         children: [
         Padding(padding: const EdgeInsets.all(8), child: Text(address)),
         Padding(padding: const EdgeInsets.all(8), child: Text("About: $description")),
-        Padding(padding: const EdgeInsets.all(12), child: GestureDetector(onTap: () {},child: const Text("Tap here to view posts.", style: TextStyle(decoration: TextDecoration.underline,color: Color.fromARGB(255, 0, 53, 114)))))]));
+        Padding(padding: const EdgeInsets.all(12), child: GestureDetector(onTap: () {
+            Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => OrganizationPostPage(userEmail: userEmail, username: name)));
+        },child: const Text("Tap here to view posts.", style: TextStyle(decoration: TextDecoration.underline,color: Color.fromARGB(255, 0, 53, 114)))))]));
       });
   }
 }

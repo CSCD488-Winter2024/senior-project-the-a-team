@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 
-class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({super.key});
+class CreatePostAlertPage extends StatefulWidget {
+  const CreatePostAlertPage({super.key});
 
   @override
-  State<CreatePostPage> createState() => _CreatePostPageState();
+  State<CreatePostAlertPage> createState() => _CreatePostAlertPageState();
 }
 
-class _CreatePostPageState extends State<CreatePostPage> {
+class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
   // Text editing controllers to capture input from text fields
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -145,7 +145,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'header': _headerController.text,
       'tags': convertedTags,
       'title': _titleController.text,
-      'type': 'Post',
+      'type': 'Alert',
       'createdAt': formattedDate,
       'timestamp': FieldValue.serverTimestamp(),
       'interestCount': 0,
