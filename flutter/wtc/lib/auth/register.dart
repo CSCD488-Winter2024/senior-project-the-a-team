@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
-import 'package:wtc/pages/getting_started.dart';
+import 'package:wtc/auth/welcome_page.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({super.key});
@@ -56,10 +56,10 @@ class _RegisterPageState extends State<RegisterPage> {
         createUserDocument(userCredential);
 
         if(context.mounted){
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
-              builder: (context) => GettingStartedPage(email: emailController.text, uid: userCredential.user!.uid)
+              builder: (context) => IntroPage(email: emailController.text, uid: userCredential.user!.uid)
             )
           );
         }
@@ -81,7 +81,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': nameController.text.trim(),
         'tier': "Viewer",
         'pfp': "",
-        'tags': []
+        'tags': [],
+        'isBusiness': false,
       });
     }
   }
