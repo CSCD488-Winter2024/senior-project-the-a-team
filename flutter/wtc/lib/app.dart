@@ -11,6 +11,7 @@ import 'widgets/topbar.dart';
 import 'pages/create_post.dart';
 import 'pages/create_post_event.dart';
 import 'pages/create_post_job.dart';
+import 'pages/create_post_alert.dart';
 import 'pages/jobs.dart';
 import 'pages/volunteering.dart';
 import 'widgets/notifications_window.dart';
@@ -80,6 +81,17 @@ class _NavBars extends State<App> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CreatePostPage()),
+                  );
+                },
+              ),
+              ElevatedButton(
+                child: const Text("Alert Post"),
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreatePostAlertPage()),
                   );
                 },
               ),
