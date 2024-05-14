@@ -125,14 +125,24 @@ class _MapPage extends State<MapPage> {
               )),
           Padding(
               padding: const EdgeInsets.all(14),
-              child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [ElevatedButton(
                   onPressed: () {
                     setState(() {
                       zoom = 12.0;
                     });
                     mapController.move(center, 12.0);
+                    mapController.rotate(0);
                   },
-                  child: const Icon(Icons.refresh)))
+                  child: const Icon(Icons.refresh)), ElevatedButton(
+                  onPressed: () {
+                    showInstructions(context);
+                  
+                  }                 
+  
+                  ,
+                  child: const Icon(Icons.info))] ))
         ],
       ),
       Row(
@@ -182,4 +192,20 @@ class _MapPage extends State<MapPage> {
           ))
     ]);
   }
+
+  void showInstructions(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return  const AlertDialog(
+        title: Text(
+          "How to use",
+          textAlign: TextAlign.center,
+        ),
+        contentPadding: EdgeInsets.all(12),
+        content:  Text("Pinch the map or press the magnification buttons to zoom in or out.\n\nTo reset default view, press the refresh button in the upper left corner.\n\nTo view an organization, search the organization list below and tap on an organization to navigate to the designated map pin.\n\nTap a map pin to view extended information of an organization."),
+      );
+    },
+  );
+}
 }
