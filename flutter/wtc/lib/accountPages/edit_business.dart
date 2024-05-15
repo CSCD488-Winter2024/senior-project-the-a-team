@@ -483,7 +483,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                       ElevatedButton(
                         onPressed: () async {
 
-                          if(_addressController.text.isEmpty || _bioController.text.isEmpty || _phoneController.text.isEmpty){
+                          if(_addressController.text.isEmpty || _bioController.text.isEmpty || _phoneController.text.length < 12){
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Please fill out all fields"),
