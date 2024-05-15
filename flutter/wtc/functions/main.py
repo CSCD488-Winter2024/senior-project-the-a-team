@@ -1,37 +1,47 @@
 import firebase_admin
-from firebase_admin import auth, db, messaging, exceptions
+from firebase_admin import auth, db, messaging, exceptions, firestore
 from firebase_functions import firestore_fn
+
 
 firebase_admin.initialize_app()
 
 @firestore_fn.on_document_updated(document="_posts/{PostID}")
 def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> None:
-    #post_uid = event.params["postID"]
 
+    postID = event.params["PostID"]
     #If deleted we exit the function.
     change = event.data
     if not change.after:
         print(f"Post removed :(")
         return
+    db = firestore.client()
 
-    print(f"Post is now posted")
-    #get all tokens
-    #tokens_ref = firestore_fn.DocumentReference(f"users/taterstimmy@gmail.com/notificationToken")
-    #notification_tokens = tokens_ref.get()
-    #if (not isinstance(notification_tokens, dict) or len(notification_tokens) < 1):
-    #    print("There are no tokens to send notifications to.")
-    #    return
-    #print(f"There are {len(notification_tokens)} tokens to send notifications to.")
+    #Get post info from db
+    post_ref = db.collection("_posts").document(postID)
+    get_header= post_ref.get({u'header'})
+    header = u'{}'.format(get_header.to_dict()['header'])
+    get_body= post_ref.get({u'body'})
+    body = u'{}'.format(get_body.to_dict()['body'])
+    if(len(body) > 20):body = body[0:20] + "..."
+
+    #get users
+    users_ref = db.collection("users").where("notificationToken","!=","none")
+    users = users_ref.get()
+    #get tokens
+    tokens = []
+    for user in users:
+        token = user.get("notificationToken")
+        tokens.append(token)
     #create notification
     notification = messaging.Notification(
-        title="New Post",
-        body=f"New post has been posted",
+        title="New Post: " + header,
+        body=body,
     )
-    token = "dlxLoRG4Q76iu-QHlcHEwX:APA91bHZxUoOCo_hIq62f-r4jXilmp2CfP4tn6ZASba9i74TTz7fYLBrgypaZRexzhjq9MHJ1zhi4dHRfxcNA5wGkOteTANT-vRJc_8brTM_XtJpaFYb6JnCnX0MvVvY2FXA8MNK1g7T"
+
     # Send notifications to all tokens.
     msgs = [
-        #messaging.Message(token=token, notification=notification) for token in notification_tokens
-        messaging.Message(token=token, notification=notification)
+        messaging.Message(token=token, notification=notification) for token in tokens
+        #messaging.Message(token=token, notification=notification)
     ]
     batch_response: messaging.BatchResponse = messaging.send_each(msgs)
     if batch_response.failure_count < 1:

@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'tier': "Viewer",
         'pfp': "",
         'tags': [],
-        'notificationToken': ""
+        'notificationToken': "none"
       });
     }
   }
