@@ -9,13 +9,15 @@ class SearchUserInfo extends StatelessWidget {
       required this.username,
       required this.name,
       required this.tier,
-      required this.pfp});
+      required this.pfp,
+      required this.onUpdatePage});
 
   final String email;
   final String username;
   final String name;
   final String tier;
   final String pfp;
+  final ValueChanged<void> onUpdatePage;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,10 @@ class SearchUserInfo extends StatelessWidget {
             )
           ],
         ),
-        SearchUserDeleteEdit(user: this),
+        SearchUserDeleteEdit(
+          user: this,
+          onUpdatePage: onUpdatePage,
+        ),
       ],
     );
   }

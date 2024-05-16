@@ -4,9 +4,11 @@ import 'package:wtc/widgets/user_widgets/change_tier_radio_buttons.dart';
 import 'package:wtc/widgets/user_widgets/search_user_info.dart';
 
 class SearchUserDeleteEdit extends StatefulWidget {
-  const SearchUserDeleteEdit({super.key, required this.user});
+  const SearchUserDeleteEdit(
+      {super.key, required this.user, required this.onUpdatePage});
 
   final SearchUserInfo user;
+  final ValueChanged<void> onUpdatePage;
 
   @override
   State<SearchUserDeleteEdit> createState() => _SearchUserDeleteEditState();
@@ -71,6 +73,8 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
                   onPressed: () async {
                     Navigator.of(context).pop();
                     await _deleteUser(widget.user.email);
+                    void noParam;
+                    widget.onUpdatePage(noParam);
                   },
                   child: const Text("Confirm",
                       style: TextStyle(fontSize: 24, color: Colors.green)),
@@ -111,6 +115,8 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
                           onPressed: () async {
                             Navigator.of(context).pop();
                             _editUserTier(widget.user.email, newTier);
+                            void noParam;
+                            widget.onUpdatePage(noParam);
                           },
                           child: const Text("Confirm",
                               style:
