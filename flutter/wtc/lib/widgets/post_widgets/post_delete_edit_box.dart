@@ -70,7 +70,6 @@ class PostDeleteEditBox extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    //Needs to be changed to do the actual deleting of the post.
                     Navigator.of(context).pop();
                     await _deletePost(post.postId.toString());
                   },
