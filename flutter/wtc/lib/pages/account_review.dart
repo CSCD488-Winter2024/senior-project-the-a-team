@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/user_widgets/user_review.dart'; // Ensure this import is correct
+import 'package:wtc/widgets/user_widgets/user_review.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
 class AccountReviewPage extends StatefulWidget {
   const AccountReviewPage({super.key});
@@ -20,7 +21,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
 
   void acceptUser(UserReview userReview) async {
     updateUserWithReview(userReview).then((_) {
-      deleteUserFromReviewAccount(userReview.email).then((_) {
+      deleteUserFromReviewAccount(userReview.reviewId).then((_) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("User approved and review deleted successfully!"),
           backgroundColor: Colors.green,
@@ -46,8 +47,8 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     });
   }
 
-  void denyUser(String email) {
-    deleteUserFromReviewAccount(email).then((_) {
+  void denyUser(String reviewId) {
+    deleteUserFromReviewAccount(reviewId).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("User review denied and deleted successfully!"),
         backgroundColor: Colors.green,
@@ -57,7 +58,6 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
         futureUserReviews = UserReview.fetchUsersFromFirestore();
       });
     }).catchError((error) {
-      // Handle deletion errors
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to delete user review: $error"),
         backgroundColor: Colors.red,
@@ -83,11 +83,10 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     });
   }
 
-  Future<void> deleteUserFromReviewAccount(String email) async {
+  Future<void> deleteUserFromReviewAccount(String reviewId) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     DocumentReference reviewDoc =
-        firestore.collection('_review_account').doc(email);
+        firestore.collection('_review_account').doc(reviewId);
 
     return reviewDoc.delete();
   }
@@ -95,9 +94,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("User Reviews"),
-      ),
+      appBar: AppBar(),
       body: FutureBuilder<List<UserReview>>(
         future: futureUserReviews,
         builder: (context, snapshot) {
@@ -133,7 +130,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
                           children: [
                             TextButton(
                               onPressed: () =>
-                                  denyUser(snapshot.data![index].email),
+                                  denyUser(snapshot.data![index].reviewId),
                               child: Text("Deny"),
                             ),
                             TextButton(

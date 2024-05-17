@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
 class UserReview extends StatelessWidget {
   final String about;
@@ -9,6 +10,7 @@ class UserReview extends StatelessWidget {
   final bool isBusiness;
   final String name;
   final String phone;
+  final String reviewId;
 
   UserReview({
     required this.about,
@@ -18,6 +20,7 @@ class UserReview extends StatelessWidget {
     required this.isBusiness,
     required this.name,
     required this.phone,
+    required this.reviewId,
   });
 
   @override
@@ -53,6 +56,7 @@ class UserReview extends StatelessWidget {
         isBusiness: doc['isBusiness'],
         name: doc['name'],
         phone: doc['phone'],
+        reviewId: doc.id,
       );
     }).toList();
     return users;
