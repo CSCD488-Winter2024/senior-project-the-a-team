@@ -29,6 +29,11 @@ class _SearchUserPageState extends State<SearchUserPage> {
     });
   }
 
+  void _updatePage(void noParam) async {
+    await getAllUsers();
+    filterUsers(_searchController.text);
+  }
+
   void filterUsers(String query) {
     if (query.isEmpty) {
       setState(() {
@@ -76,11 +81,13 @@ class _SearchUserPageState extends State<SearchUserPage> {
             itemCount: filteredUsers.length,
             itemBuilder: (BuildContext context, int index) {
               return SearchUserInfo(
-                  email: filteredUsers[index]['email'] as String,
-                  username: filteredUsers[index]['username'] as String,
-                  name: filteredUsers[index]['name'] as String,
-                  tier: filteredUsers[index]['tier'] as String,
-                  pfp: filteredUsers[index]['pfp'] as String);
+                email: filteredUsers[index]['email'] as String,
+                username: filteredUsers[index]['username'] as String,
+                name: filteredUsers[index]['name'] as String,
+                tier: filteredUsers[index]['tier'] as String,
+                pfp: filteredUsers[index]['pfp'] as String,
+                onUpdatePage: _updatePage,
+              );
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),
