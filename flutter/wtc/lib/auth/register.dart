@@ -83,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'pfp': "",
         'tags': [],
         'isBusiness': false,
+        'uid': userCredential.user!.uid,
       });
     }
   }
