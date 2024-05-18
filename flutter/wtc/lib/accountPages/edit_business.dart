@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:wtc/components/hour_input.dart';
 import 'package:wtc/components/textfield.dart';
 
 class EditBusinessInfo extends StatefulWidget {
@@ -26,27 +27,44 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
+  final TextEditingController _mondayOpenController = TextEditingController();
+  final TextEditingController _mondayCloseController = TextEditingController();
+  final TextEditingController _tuesdayOpenController = TextEditingController();
+  final TextEditingController _tuesdayCloseController = TextEditingController();
+  final TextEditingController _wednesdayOpenController = TextEditingController();
+  final TextEditingController _wednesdayCloseController = TextEditingController();
+  final TextEditingController _thursdayOpenController = TextEditingController();
+  final TextEditingController _thursdayCloseController = TextEditingController();
+  final TextEditingController _fridayOpenController = TextEditingController();
+  final TextEditingController _fridayCloseController = TextEditingController();
+  final TextEditingController _saturdayOpenController = TextEditingController();
+  final TextEditingController _saturdayCloseController = TextEditingController();
+  final TextEditingController _sundayOpenController = TextEditingController();
+  final TextEditingController _sundayCloseController = TextEditingController();
+  
+
+
   @override
   void dispose() {
     _bioController.dispose();
     _addressController.dispose();
+    _phoneController.dispose();
+    _mondayOpenController.dispose();
+    _mondayCloseController.dispose();
+    _tuesdayOpenController.dispose();
+    _tuesdayCloseController.dispose();
+    _wednesdayOpenController.dispose();
+    _wednesdayCloseController.dispose();
+    _thursdayOpenController.dispose();
+    _thursdayCloseController.dispose();
+    _fridayOpenController.dispose();
+    _fridayCloseController.dispose();
+    _saturdayOpenController.dispose();
+    _saturdayCloseController.dispose();
+    _sundayOpenController.dispose();
+    _sundayCloseController.dispose();
     super.dispose();
   }
-
-  String mondayOpen = "";
-  String mondayClose = "";
-  String tuesdayOpen = "";
-  String tuesdayClose = "";
-  String wednesdayOpen = "";
-  String wednesdayClose = "";
-  String thursdayOpen = "";
-  String thursdayClose = "";
-  String fridayOpen = "";
-  String fridayClose = "";
-  String saturdayOpen = "";
-  String saturdayClose = "";
-  String sundayOpen = "";
-  String sundayClose = "";
 
   @override
   Widget build(BuildContext context) {
@@ -95,32 +113,32 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
             String sunday = data["businessHours"]["Sunday"];
 
             if(monday.length > 3){
-              mondayOpen = monday.split(" - ")[0];
-              mondayClose = monday.split(" - ")[1];
+              _mondayOpenController.text = monday.split(" - ")[0];
+              _mondayCloseController.text = monday.split(" - ")[1];
             }
             if(tuesday.length > 3){
-              tuesdayOpen = tuesday.split(" - ")[0];
-              tuesdayClose = tuesday.split(" - ")[1];
+              _tuesdayOpenController.text = tuesday.split(" - ")[0];
+              _tuesdayCloseController.text = tuesday.split(" - ")[1];
             }
             if(wednesday.length > 3){
-              wednesdayOpen = wednesday.split(" - ")[0];
-              wednesdayClose = wednesday.split(" - ")[1];
+              _wednesdayOpenController.text = wednesday.split(" - ")[0];
+              _wednesdayCloseController.text = wednesday.split(" - ")[1];
             }
             if(thursday.length > 3){
-              thursdayOpen = thursday.split(" - ")[0];
-              thursdayClose = thursday.split(" - ")[1];
+              _thursdayOpenController.text = thursday.split(" - ")[0];
+              _thursdayCloseController.text = thursday.split(" - ")[1];
             }
             if(friday.length > 3){
-              fridayOpen = friday.split(" - ")[0];
-              fridayClose = friday.split(" - ")[1];
+              _fridayOpenController.text = friday.split(" - ")[0];
+              _fridayCloseController.text = friday.split(" - ")[1];
             }
             if(saturday.length > 3){
-              saturdayOpen = saturday.split(" - ")[0];
-              saturdayClose = saturday.split(" - ")[1];
+              _saturdayOpenController.text = saturday.split(" - ")[0];
+              _saturdayCloseController.text = saturday.split(" - ")[1];
             }
             if(sunday.length > 3){
-              sundayOpen = sunday.split(" - ")[0];
-              sundayClose = sunday.split(" - ")[1];
+              _sundayOpenController.text = sunday.split(" - ")[0];
+              _sundayCloseController.text = sunday.split(" - ")[1];
             }
 
             return Center(
@@ -211,273 +229,51 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                       const SizedBox(height: 20.0),
 
                       const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "\tEdit Business Hours",
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                              textAlign: TextAlign.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "\tEdit Business Hours",
+                            style: TextStyle(
+                              fontSize: 17,
                             ),
-                          ],
-                        ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
 
-                      DataTable(
-                          columns: const [
-                            DataColumn(label: Text("Day")),
-                            DataColumn(label: Text("Open")),
-                            DataColumn(label: Text("Close")),
-                          ],
-                          rows: [
-                            DataRow(cells: [
-                              const DataCell(Text("Monday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        mondayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(mondayOpen),
-                              ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        mondayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },                      
-                                Text(mondayClose),
-                              ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Tuesday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        tuesdayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(tuesdayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        tuesdayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(tuesdayClose)
-                                ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Wednesday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        wednesdayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(wednesdayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        wednesdayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(wednesdayClose)
-                                ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Thursday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        thursdayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(thursdayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        thursdayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(thursdayClose)
-                                ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Friday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        fridayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(fridayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        fridayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(fridayClose)
-                                ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Saturday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        saturdayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(saturdayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        saturdayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(saturdayClose)
-                                ),
-                            ]),
-                            DataRow(cells: [
-                              const DataCell(Text("Sunday")),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        sundayOpen = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(sundayOpen)
-                                ),
-                              DataCell(
-                                onTap:(){
-                                  showTimePicker(
-                                    context: context, 
-                                    initialTime: TimeOfDay.now(),
-                                    initialEntryMode: TimePickerEntryMode.input,
-                                  ).then((value){
-                                    if(value != null){
-                                      setState(() {
-                                        sundayClose = value.format(context);
-                                      });
-                                    }
-                                  });
-                                },
-                                Text(sundayClose)
-                                ),
-                            ]),
-                          ],
-                        ),
+                      HourInput(day: "Monday", openHour: _mondayOpenController, closeHour: _mondayCloseController),
 
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Tuesday", openHour: _tuesdayOpenController, closeHour: _tuesdayCloseController),
+                      
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Wednesday", openHour: _wednesdayOpenController, closeHour: _wednesdayCloseController),
+                      
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Thursday", openHour: _thursdayOpenController, closeHour: _thursdayCloseController),
+                      
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Friday", openHour: _fridayOpenController, closeHour: _fridayCloseController),
+                      
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Saturday", openHour: _saturdayOpenController, closeHour: _saturdayCloseController),
+                      
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      
+                      HourInput(day: "Sunday", openHour: _sundayOpenController, closeHour: _sundayCloseController),
+                  
+                      const Divider(),
                       const SizedBox(height: 20.0),
 
                       ElevatedButton(
@@ -500,13 +296,13 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                                 "about": _bioController.text,
                                 "phone": _phoneController.text,
                                 "businessHours": {
-                                  "Monday": "$mondayOpen - $mondayClose",
-                                  "Tuesday": "$tuesdayOpen - $tuesdayClose",
-                                  "Wednesday": "$wednesdayOpen - $wednesdayClose",
-                                  "Thursday": "$thursdayOpen - $thursdayClose",
-                                  "Friday": "$fridayOpen - $fridayClose",
-                                  "Saturday": "$saturdayOpen - $saturdayClose",
-                                  "Sunday": "$sundayOpen - $sundayClose",
+                                  "Monday": "${_mondayOpenController.text.trim()} - ${_mondayCloseController.text.trim()}",
+                                  "Tuesday": "${_tuesdayOpenController.text.trim()} - ${_tuesdayCloseController.text.trim()}",
+                                  "Wednesday": "${_wednesdayOpenController.text.trim()} - ${_wednesdayCloseController.text.trim()}",
+                                  "Thursday": "${_thursdayOpenController.text.trim()} - ${_thursdayCloseController.text.trim()}",
+                                  "Friday": "${_fridayOpenController.text.trim()} - ${_fridayCloseController.text.trim()}",
+                                  "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
+                                  "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
                                 }
                               });
                           Navigator.pop(context);
