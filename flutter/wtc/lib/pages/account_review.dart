@@ -19,6 +19,25 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     futureUserReviews = UserReview.fetchUsersFromFirestore();
   }
 
+  String formatBusinessHours(Map<String, dynamic> hours) {
+    // Define the order of days to maintain consistent formatting
+    const dayOrder = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ];
+
+    // Generate a sorted list of business hours by days of the week
+    return dayOrder.where((day) => hours.containsKey(day)).map((day) {
+      // Ensure the hour value is treated as a string
+      return "$day: ${hours[day].toString()}";
+    }).join('\n');
+  }
+
   void acceptUser(UserReview userReview) async {
     updateUserWithReview(userReview).then((_) {
       deleteUserFromReviewAccount(userReview.reviewId).then((_) {
@@ -72,15 +91,23 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
         firestore.collection('users').doc(userReview.email);
 
     // Update the user's details
-    return userDoc.update({
+    Map<String, dynamic> updateData = {
       'email': userReview.email,
       'isBusiness': userReview.isBusiness,
       'name': userReview.name,
       'about': userReview.about,
-      'address': userReview.address,
-      'businessHours': userReview.businessHours,
+      'tier': 'Poster',
+      'isPending': false,
       'phone': userReview.phone,
-    });
+    };
+
+    if (userReview.isBusiness) {
+      updateData.addAll({
+        'address': userReview.address,
+        'businessHours': userReview.businessHours,
+      });
+    }
+    return userDoc.update(updateData);
   }
 
   Future<void> deleteUserFromReviewAccount(String reviewId) async {
@@ -94,7 +121,6 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: FutureBuilder<List<UserReview>>(
         future: futureUserReviews,
         builder: (context, snapshot) {
@@ -115,23 +141,25 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Name: ${userReview.name}",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25)),
                         Text("Email: ${userReview.email}"),
                         Text("Phone: ${userReview.phone}"),
-                        Text("Address: ${userReview.address}"),
                         Text("About: ${userReview.about}"),
                         Text(
                             "Business: ${userReview.isBusiness ? 'Yes' : 'No'}"),
-                        Text(
-                            "Business Hours: ${userReview.businessHours.toString()}"),
+                        if (userReview.isBusiness) ...[
+                          Text("Address: ${userReview.address}"),
+                          Text(
+                              "Business Hours:\n${formatBusinessHours(userReview.businessHours as Map<String, dynamic>)}"),
+                        ],
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
                               onPressed: () =>
                                   denyUser(snapshot.data![index].reviewId),
-                              child: Text("Deny"),
+                              child: const Text("Deny"),
                             ),
                             TextButton(
                               onPressed: () =>
