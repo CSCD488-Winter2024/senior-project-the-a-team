@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HourInput extends StatelessWidget {
   final String day;
@@ -13,24 +14,26 @@ class HourInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    return SizedBox(
       height: 80,
       width: 5000,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-        border: Border.all(
-          color: Colors.black,
-        ),
-        //color: Colors.grey[200],
-      ),
+      // decoration: BoxDecoration(
+      //   //borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+       
+      //   //color: Colors.grey[200],
+      // ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
 
-          Text(
-            "\t\t$day : ",
-            style: const TextStyle(
-              fontSize: 17,
+          SizedBox(
+            width: 110,
+            child: Text(
+              "\t\t$day :",
+              style: const TextStyle(
+                fontSize: 17,
+              ),
             ),
           ),
 
@@ -40,10 +43,14 @@ class HourInput extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: TextField(
                 decoration: const InputDecoration(
-                  hintText: 'Opening'
+                  hintText: 'Opening',
                 ),
                 textAlign: TextAlign.center,
                 controller: openHour,
+                style: const TextStyle(
+                  decoration: TextDecoration.none,
+                  decorationThickness: 0,
+                ),
               ),
             ),
           ),
