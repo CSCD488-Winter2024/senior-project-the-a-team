@@ -36,7 +36,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           onPressed: (){
             Navigator.pop(context);                   
           }, 
-          icon: const Icon(Icons.arrow_back_ios_new)
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          )
         ),
         backgroundColor: const Color(0xFF469AB8),
         title: const Text(
@@ -45,6 +48,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             color: Colors.white
           ),
         ),
+        centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(

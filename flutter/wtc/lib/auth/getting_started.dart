@@ -25,6 +25,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
   File? selectedImage;
 
   final items = [
+    'Construction',
     'News',
     'Weather',
     'Business',
@@ -34,6 +35,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
     'Food',
     'Government',
     'Job',
+    'Traffic',
     'Volunteer',
     'Pets',
     'Public Resources',

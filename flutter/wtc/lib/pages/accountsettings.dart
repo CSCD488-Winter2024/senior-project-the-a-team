@@ -3,8 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/edit_profile.dart';
-import 'package:wtc/pages/edit_tags.dart';
+import 'package:wtc/accountPages/edit_settings.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -47,15 +46,14 @@ class _AccountPage extends State<AccountPage> {
             String name = user['name'];
             String email = user['email'];
             String pfp = user['pfp'];
+            String tier = user['tier'];
             var tempTags = user['tags'] as List<dynamic>;
             List<String> tags = [];
+            bool isBusiness = user['isBusiness'];
 
             for(int i = 0; i < tempTags.length; i++){
               tags.add(tempTags[i]);
             }
-
-            List<String> origTags = [];
-            origTags.addAll(tags);
 
             CachedNetworkImage profilePic = CachedNetworkImage(
               imageUrl: pfp,
@@ -73,9 +71,13 @@ class _AccountPage extends State<AccountPage> {
                 child: Column(
                   children: [
                     //pfp
-                    SizedBox(
+                    Container(
                       height: 120,
                       width: 120,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),                     
+                        shape: BoxShape.circle,
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(200),
                         child: profilePic
@@ -102,59 +104,39 @@ class _AccountPage extends State<AccountPage> {
 
                     const SizedBox(height: 20),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            //Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                              builder: (context) => EditProfile(
-                                uid: currentUser!.uid,
+                    // Edit Settings
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: 
+                              (context) => EditSettings(
+                                tier: tier, 
+                                email: email, 
+                                tags: tags, 
+                                isBusiness: isBusiness, 
+                                username: username, 
                                 name: name, 
                                 profilePic: profilePic,
-                                username: username,
-                                )
+                                uid: currentUser!.uid,
                               )
-                            );
-                          },
-                          child: const Text(
-                            "Edit Profile",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
+                          )
+                        );
+                      },
+                      child: const Text(
+                        "Edit Settings",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-
-                        //edit tags button
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => EditTags(tags: tags, origTags: origTags)
-                              )
-                            );
-                          },
-                          child: const Text(
-                            "Edit Tags",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+                        textAlign: TextAlign.center,
+                      ),
                     ),
 
                     const SizedBox(height: 20),
 
-                    // Bio with edit account button
+                    // Bio
                     Container(
                       width: 350,
                       decoration: const BoxDecoration(
@@ -181,8 +163,9 @@ class _AccountPage extends State<AccountPage> {
                       ),
                     ),
 
+             
                     const SizedBox(
-                      height: 10,
+                      height: 25,
                     ),
 
                     //logout
