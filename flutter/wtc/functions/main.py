@@ -23,15 +23,23 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
     get_body= post_ref.get({u'body'})
     body = u'{}'.format(get_body.to_dict()['body'])
     if(len(body) > 20):body = body[0:20] + "..."
-
+    get_type= post_ref.get({u'type'})
+    type = u'{}'.format(get_type.to_dict()['type'])
     #get users
     users_ref = db.collection("users").where("notificationToken","!=","none")
     users = users_ref.get()
     #get tokens
     tokens = []
-    for user in users:
-        token = user.get("notificationToken")
-        tokens.append(token)
+    if(type == "Alert"):
+        for user in users:
+            token = user.get("notificationToken")
+            tokens.append(token)
+    else:
+        for user in users:
+            tags = user.get("tags")
+            if(type in tags):
+                token = user.get("notificationToken")
+                tokens.append(token)
     #create notification
     notification = messaging.Notification(
         title="New Post: " + header,
