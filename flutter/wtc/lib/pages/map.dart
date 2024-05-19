@@ -51,8 +51,8 @@ MapCard unionMarket = MapCard(
     mapController: mapController);
 
 MapCard aceHardware = MapCard(
-    latitude: 47.49968278403646, 
-    longitude: -117.56351963474647, 
+    latitude: 47.4996734, 
+    longitude: -117.56351679999999, 
     name: "Ace Hardware",
     description:
         "Ace Harware sells harware or any other nick nacks that are helpful around the house. I bought a hammer there once, it worked great!",
