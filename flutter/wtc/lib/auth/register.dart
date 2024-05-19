@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
-import 'package:wtc/components/square_tile.dart';
+//import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/auth/welcome_page.dart';
-import 'package:wtc/services/auth_services.dart';
+//import 'package:wtc/services/auth_services.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({super.key});
