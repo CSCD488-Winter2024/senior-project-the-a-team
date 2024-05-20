@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/user_widgets/user_review.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:geocoding/geocoding.dart';
 
 class AccountReviewPage extends StatefulWidget {
   const AccountReviewPage({super.key});
@@ -90,6 +91,15 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     DocumentReference userDoc =
         firestore.collection('users').doc(userReview.email);
 
+    GeoPoint coordinates = GeoPoint(0, 0);
+    try {
+      List<Location> locations = await locationFromAddress(userReview.address);
+      coordinates =
+          GeoPoint(locations.first.latitude, locations.first.longitude);
+    } catch (e) {
+      print('Error: $e');
+    }
+
     // Update the user's details
     Map<String, dynamic> updateData = {
       'email': userReview.email,
@@ -99,6 +109,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
       'tier': 'Poster',
       'isPending': false,
       'phone': userReview.phone,
+      'coordinates': coordinates,
     };
 
     if (userReview.isBusiness) {

@@ -312,7 +312,7 @@ class _NavBars extends State<App> {
                 });
               },
             ),
-          if(userTier == "Admin")
+          if (userTier == "Admin")
             ListTile(
               leading: const Icon(Icons.people_sharp),
               title: const Text('Upgrade Accounts'),
@@ -431,10 +431,6 @@ class _NavBars extends State<App> {
           NavButton(
               label: "Account",
               icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined),
-          NavButton(
-              label: "Geocode",
-              icon: Icons.manage_accounts,
               outlinedIcon: Icons.manage_accounts_outlined)
         ],
       ),
@@ -476,8 +472,6 @@ class _NavBars extends State<App> {
         return const CalendarPage();
       case 4:
         return const AccountPage();
-      case 5:
-        return const GeocodeTest();
 
       default:
         return Container(); // Default empty container
