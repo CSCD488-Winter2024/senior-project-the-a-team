@@ -2,83 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:wtc/widgets/map_card.dart';
-import 'package:wtc/User/user.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/map_pin.dart';
-
-User user =
-    User(userId: Guid.newGuid, username: "TestUser", email: "TestUser@wtc.org");
+import 'package:wtc/widgets/organization_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 MapController mapController = MapController();
-
-MapCard bimart = MapCard(
-    latitude: 47.500505676036504,
-    longitude: -117.56262374784019,
-    name: "Bi-Mart Membership Discount Stores",
-    description: "a general purpose store",
-    address: "2221 1st St, Cheney, WA 99004",
-    emailAddress: "bimart@gmail.com",
-    mapController: mapController);
-
-MapCard safeway = MapCard(
-    latitude: 47.5064666106083,
-    longitude: -117.56740089999998,
-    name: "Safeway",
-    description:
-        "Safeway is a restaurant where you can buy food. Jk it's actually a grocery store. Come on down to Safeway and get your groceries!",
-    address: "2710 1st St, Cheney",
-    emailAddress: "safeway@gmail.com",
-    mapController: mapController);
-
-MapCard mitchels = MapCard(
-    latitude: 47.483255024221855, 
-    longitude: -117.58181308827773,
-    name: "Mitchell's Harvest Foods",
-    description:
-        "Mitchell's Harvest Foods has been proudly serving Cheney for the past 300 years. We are a small grocery store, so our prices are pretty unreasonable.",
-    address: "116 W 1st St",
-    emailAddress: "mitchels@gmail.com",
-    mapController: mapController);
-
-MapCard unionMarket = MapCard(
-    latitude: 47.492369291352546, 
-    longitude: -117.58395630844107, 
-    name: "Union Market",
-    description:
-        "Come get some crappy food for a crappy price. We're the market over at the PUB at EWU!",
-    address: "116 Pence Union Building",
-    emailAddress: "unionmarket@gmail.com",
-    mapController: mapController);
-
-MapCard aceHardware = MapCard(
-    latitude: 47.4996734, 
-    longitude: -117.56351679999999, 
-    name: "Ace Hardware",
-    description:
-        "Ace Harware sells harware or any other nick nacks that are helpful around the house. I bought a hammer there once, it worked great!",
-    address: "6 Cheney Spokane Rd",
-    emailAddress: "acehardware@gmail.com",
-    mapController: mapController);
-
-MapCard cottonWood = MapCard(
-    latitude:47.48656972488268,  
-    longitude: -117.57592882067053,
-    name: "Cottonwood Creek Boutique & Tanning",
-    description:
-        "Need a tan? Well, you'll be pretty let down with our price to quality ration. Come on down to our shop this week!",
-    address: "317 1st St, Cheney, WA 99004",
-    emailAddress: "cottonwood@gmail.com",
-    mapController: mapController);
-
-
-List mapCards = <MapCard>[
-  safeway,
-  bimart,
-  mitchels,
-  unionMarket,
-  aceHardware,
-  cottonWood
-];
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -92,6 +20,13 @@ void updateCoordinates(double latitude, double longitude) {}
 class _MapPage extends State<MapPage> {
   LatLng center = LatLng(47.50595337523408, -117.56739882687351);
   double zoom = 12.0;
+  List<MapCard> organizations = List<MapCard>.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrganizations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +34,7 @@ class _MapPage extends State<MapPage> {
     return Column(children: [
       Stack(
         children: [
+          Text("size of orgs: ${organizations.length}"),
           Container(
               width: 500,
               height: 400,
@@ -114,35 +50,42 @@ class _MapPage extends State<MapPage> {
                         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
                   MarkerLayer(
-                    markers: mapCards.map((mapCard) {
-                      return Marker( width: 80.0,
-                        height: 80.0,
-                        point: LatLng(mapCard.latitude, mapCard.longitude),
-                        child: MapPin(name: mapCard.name, address: mapCard.address, description: mapCard.description, userEmail: mapCard.emailAddress),);
-                    }).toList()
-                  ),
+                      markers: organizations.map((mapCard) {
+                    return Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: LatLng(mapCard.latitude, mapCard.longitude),
+                      child: MapPin(
+                        name: mapCard.name,
+                        address: mapCard.address,
+                        description: mapCard.description,
+                        userEmail: mapCard.emailAddress,
+                        businessHours: mapCard.businessHours,
+                      ),
+                    );
+                  }).toList()),
                 ],
               )),
           Padding(
               padding: const EdgeInsets.all(14),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      zoom = 12.0;
-                    });
-                    mapController.move(center, 12.0);
-                    mapController.rotate(0);
-                  },
-                  child: const Icon(Icons.refresh)), ElevatedButton(
-                  onPressed: () {
-                    showInstructions(context);
-                  
-                  }                 
-  
-                  ,
-                  child: const Icon(Icons.info))] ))
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            zoom = 12.0;
+                          });
+                          mapController.move(center, 12.0);
+                          mapController.rotate(0);
+                        },
+                        child: const Icon(Icons.refresh)),
+                    ElevatedButton(
+                        onPressed: () {
+                          showInstructions(context);
+                        },
+                        child: const Icon(Icons.info))
+                  ]))
         ],
       ),
       Row(
@@ -181,31 +124,55 @@ class _MapPage extends State<MapPage> {
       Flexible(
           flex: 1,
           child: SizedBox.expand(
-            child: ListView(children: <MapCard>[
-              safeway,
-              aceHardware,
-              cottonWood,
-              unionMarket,
-              mitchels,
-              bimart
-            ]),
+            child: OrganizationList(mapController: mapController),
           ))
     ]);
   }
 
   void showInstructions(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return  const AlertDialog(
-        title: Text(
-          "How to use",
-          textAlign: TextAlign.center,
-        ),
-        contentPadding: EdgeInsets.all(12),
-        content:  Text("Pinch the map or press the magnification buttons to zoom in or out.\n\nTo reset default view, press the refresh button in the upper left corner.\n\nTo view an organization, search the organization list below and tap on an organization to navigate to the designated map pin.\n\nTap a map pin to view extended information of an organization."),
-      );
-    },
-  );
-}
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text(
+            "How to use",
+            textAlign: TextAlign.center,
+          ),
+          contentPadding: EdgeInsets.all(12),
+          content: Text(
+              "Pinch the map or press the magnification buttons to zoom in or out.\n\nTo reset default view, press the refresh button in the upper left corner.\n\nTo view an organization, search the organization list below and tap on an organization to navigate to the designated map pin.\n\nTap a map pin to view extended information of an organization."),
+        );
+      },
+    );
+  }
+
+  Future<void> fetchOrganizations() async {
+    CollectionReference organizations =
+        FirebaseFirestore.instance.collection('users');
+
+    Query query = organizations
+        .where('tier', isEqualTo: "Poster")
+        .where('isBusiness', isEqualTo: true);
+    QuerySnapshot querySnapshot = await query.get();
+    final filteredData = querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    setState(() {
+      this.organizations = filteredData.map((data) {
+        GeoPoint coordinates = data['coordinates'];
+        return MapCard(
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          name: data['name'],
+          description: data['about'],
+          address: data['address'],
+          emailAddress: data['email'],
+          businessHours: data['businessHours'],
+          profilePic: data['pfp'],
+          mapController: mapController,
+        );
+      }).toList();
+    });
+  }
 }
