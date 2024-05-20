@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
+//import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/auth/welcome_page.dart';
+//import 'package:wtc/services/auth_services.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({super.key});
@@ -83,6 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'pfp': "",
         'tags': [],
         'isBusiness': false,
+        'uid': userCredential.user!.uid,
+        'isPending': false
       });
     }
   }
@@ -113,15 +117,15 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 //logo
                 SizedBox(
-                  height: 250,
-                  width: 250,
+                  height: 220,
+                  width: 220,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40),
                     child: const Image(image: AssetImage("images/wtcLogo.png")),
                   ),
                 ),
 
-                const SizedBox(height: 25,),
+                const SizedBox(height: 20,),
 
                 // app name
                 const Text(
@@ -180,8 +184,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   text: 'Register', 
                   onTap: register
                 ),
-
-                const SizedBox(height: 10,),
 
                 // register
                 GestureDetector(

@@ -26,7 +26,7 @@ class _AccountPage extends State<AccountPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       body: StreamBuilder(
         stream: _firestore
           .collection('users')
@@ -50,6 +50,16 @@ class _AccountPage extends State<AccountPage> {
             var tempTags = user['tags'] as List<dynamic>;
             List<String> tags = [];
             bool isBusiness = user['isBusiness'];
+            bool isPending = user['isPending'];
+            String? uid = user['uid'];
+            if(uid == null){
+              FirebaseFirestore.instance
+                .collection("users")
+                .doc(email)
+                .update({
+                  'uid': currentUser!.uid,
+                });
+            }
 
             for(int i = 0; i < tempTags.length; i++){
               tags.add(tempTags[i]);
@@ -120,6 +130,7 @@ class _AccountPage extends State<AccountPage> {
                                 name: name, 
                                 profilePic: profilePic,
                                 uid: currentUser!.uid,
+                                isPending: isPending
                               )
                           )
                         );
@@ -138,10 +149,12 @@ class _AccountPage extends State<AccountPage> {
 
                     // Bio
                     Container(
-                      width: 350,
-                      decoration: const BoxDecoration(
+                      width: 9999,
+                      decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.black)
+                        ),
                       child: Column(
                         children: [
                           Text(
@@ -149,12 +162,20 @@ class _AccountPage extends State<AccountPage> {
                             style: const TextStyle(fontSize: 24),
                             textAlign: TextAlign.center,
                           ),
-                          Text(
-                            'Email:\n $email',
-                            style: const TextStyle(
+                          const Text(
+                            'Email:',
+                            style: TextStyle(
                               fontSize: 24,
                             ),
                             textAlign: TextAlign.center,
+                          ),
+
+                          Text(
+                            email,
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.justify,
                           ),
                           const SizedBox(
                             height: 20,

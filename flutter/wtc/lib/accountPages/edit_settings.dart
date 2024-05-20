@@ -22,6 +22,7 @@ class EditSettings extends StatefulWidget {
       required this.name,
       required this.profilePic,
       required this.uid,
+      required this.isPending
     }
   );
 
@@ -33,6 +34,7 @@ class EditSettings extends StatefulWidget {
   final String name;
   final CachedNetworkImage? profilePic;
   final String uid;
+  final bool isPending;
 
   @override
   State<EditSettings> createState() => _EditSettingsState();
@@ -71,10 +73,6 @@ Future<void> deleteAccount(String email, List<String> tags, String uid) async{
       content: Text(e.code),
     );
   }
-}
-
-Future<void> reauthenticateAndDelete() async{
-   //await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential)
 }
 
 class _EditSettingsState extends State<EditSettings> {
@@ -209,7 +207,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
 
                 // acount is not business or a poster
-              if(!widget.isBusiness && widget.tier == "Viewer")
+              if(!widget.isBusiness && widget.tier == "Viewer"  && !widget.isPending)
                 GestureDetector(
                   onTap: (){               
                     Navigator.push(
@@ -246,7 +244,7 @@ class _EditSettingsState extends State<EditSettings> {
               ),
 
                 // account is a poster but not a business
-              if(widget.tier == "Poster" && !widget.isBusiness)
+              if(widget.tier == "Poster" && !widget.isBusiness && !widget.isPending)
                 GestureDetector(
                   onTap: (){
                     Navigator.push(
@@ -281,6 +279,37 @@ class _EditSettingsState extends State<EditSettings> {
                   ),
                 ),
               ),
+
+              if(widget.isPending)
+              GestureDetector(
+                  onTap: (){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Your application is pending"),
+                      )
+                    );
+                  },
+                  child: Container(
+                   decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  height: 80,
+                  child: const Center(
+                    child:  ListTile(
+                      leading: Icon(Icons.pending_actions),
+                      title: Text(
+                        "Application Pending",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
+                ),
+              ),
+
 
               if(widget.tier == "Poster" || widget.tier == "Viewer")
               const SizedBox(height: 20,),
