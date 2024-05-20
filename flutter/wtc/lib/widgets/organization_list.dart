@@ -2,19 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
+import 'package:wtc/widgets/map_card.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class OrganizationList extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  OrganizationList({super.key});
+  final MapController mapController;
+  OrganizationList({super.key, required this.mapController});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: _firestore
-            .collection('_users')
-            .orderBy('timestamp', descending: true)
-            .where('type', isEqualTo: 'Alert')
+            .collection('users')
+            .where('tier', isEqualTo: 'Poster')
+            .where('isBusiness', isEqualTo: true)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -31,29 +34,20 @@ class OrganizationList extends StatelessWidget {
             itemCount: snapshot.data?.docs.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               var document = snapshot.data?.docs[index];
-              String dateCreated = document?['createdAt'] as String;
-    
-              var tempTags = document?['tags'] as List<dynamic>;
-              List<String> postTags = [];
-
-              for (int i = 0; i < tempTags.length; i++) {
-                postTags.add(tempTags[i]);
-              }
-              return Post(
-                  postId: Guid(document?['postID'] as String),
-                  header: document?['header'] as String,
-                  userEmail: document?['user'] as String,
-                  interestCount: document?['interestCount'] as int,
-                  created: DateTime(
-                      int.parse(dateCreated.split("-")[0]),
-                      int.parse(dateCreated.split("-")[1]),
-                      int.parse(dateCreated.split("-")[2])),
-                  title: document?['title'] as String,
-                  tags: postTags,
-                  body: document?['body'] as String,
-                );
-              }
-            ,
+              GeoPoint coordinates = document?['coordinates'] as GeoPoint;
+              return MapCard(
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
+                name: document?['name'] as String,
+                description: document?['about'] as String,
+                address: document?['address'] as String,
+                emailAddress: document?['email'] as String,
+                businessHours:
+                    document?['businessHours'] as Map<String, dynamic>,
+                profilePic: document?['pfp'] as String,
+                mapController: mapController,
+              );
+            },
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),
           );
