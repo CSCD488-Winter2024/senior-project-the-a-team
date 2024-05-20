@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/user_widgets/change_tier_radio_buttons.dart';
 import 'package:wtc/widgets/user_widgets/search_user_info.dart';
@@ -133,8 +134,14 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
   Future<void> _deleteUser(String email) async {
     try {
       await FirebaseFirestore.instance.collection("users").doc(email).delete();
+      FirebaseFunctions functions = FirebaseFunctions.instance;
+      HttpsCallable callable = functions.httpsCallable('deleteUserByEmail');
+      final response = await callable.call(<String, dynamic>{
+        'identifier': email,
+      });
+      print(response.data);
     } catch (error) {
-      print("Error deleting post: $error");
+      print("Error deleting user: $error");
     }
   }
 
