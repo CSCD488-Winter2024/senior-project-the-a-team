@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:wtc/components/hour_input.dart';
-import 'package:wtc/components/textfield.dart';
 
 class EditBusinessInfo extends StatefulWidget {
   const EditBusinessInfo({super.key});
@@ -26,6 +25,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
 
   final TextEditingController _mondayOpenController = TextEditingController();
   final TextEditingController _mondayCloseController = TextEditingController();
@@ -66,8 +66,44 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
     super.dispose();
   }
 
+  Future<void> submitApplication(String oldAddress, String newAddress, String name) async {
+    await FirebaseFirestore.instance
+      .collection("_review_account")
+      .doc(user!.uid)
+      .set({
+        "email": user!.email,
+        "name": name,
+        "about": "Old Address: $oldAddress",
+        "phone": _phoneController.text,
+        "isBusiness": true,
+        "businessHours": {
+          "Monday": "${_mondayOpenController.text.trim()} - ${_mondayCloseController.text.trim()}",
+          "Tuesday": "${_tuesdayOpenController.text.trim()} - ${_tuesdayCloseController.text.trim()}",
+          "Wednesday": "${_wednesdayOpenController.text.trim()} - ${_wednesdayCloseController.text.trim()}",
+          "Thursday": "${_thursdayOpenController.text.trim()} - ${_thursdayCloseController.text.trim()}",
+          "Friday": "${_fridayOpenController.text.trim()} - ${_fridayCloseController.text.trim()}",
+          "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
+          "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
+        }, 
+        "address": newAddress,
+
+      }
+    );
+
+    await FirebaseFirestore.instance
+      .collection("users")
+      .doc(user!.email)
+      .update({
+        "isPending": true,
+      }
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    _cityController.text = "Cheney, WA";
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -99,7 +135,8 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
 
             Map<String, dynamic> data = snapshot.data!.data()!;
 
-            _addressController.text = data["address"];
+            _addressController.text = data["address"].split(", Cheney, WA")[0];
+            String address = data["address"].split(", Cheney, WA")[0];
             _bioController.text = data["about"];
 
             PhoneNumber number = PhoneNumber(isoCode: "US", phoneNumber: data["phone"]);
@@ -111,6 +148,8 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
             String friday = data["businessHours"]["Friday"];
             String saturday = data["businessHours"]["Saturday"];
             String sunday = data["businessHours"]["Sunday"];
+
+            String name = data["name"];
 
             if(monday.length > 3){
               _mondayOpenController.text = monday.split(" - ")[0];
@@ -151,48 +190,44 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                     children: [
                       // Edit Business Address
 
-                    const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "\tEdit Address",
-                            style: TextStyle(
-                              fontSize: 17,
+                     Row(
+                       children: [
+                         Expanded(
+                           child: TextField(
+                              controller: _addressController,
+                              decoration: const InputDecoration(
+                                hintText: "Change Business Address",
+                                labelText: "Business Address",
+                                helperText: "Must be approved by admin"
+                              ),
                             ),
-                            textAlign: TextAlign.start,
+                         ),
+
+                         SizedBox(
+                          width: 90,
+                          child: TextField(
+                            controller: _cityController,
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              labelText: "",
+                              helperText: ""
+                            ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 10.0),
-                      MyTextField(
-                        hintText: "Change Address", 
-                        obscureText: false, 
-                        controller: _addressController,
-                      ),
+                         )
+                       ],
+                     ),
+                   
 
                       const SizedBox(height: 15.0),
 
                       // Edit Business Bio
 
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "\tEdit Business Description",
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 10.0),
-
-                      MyTextField(
-                        hintText: "Change Business Description", 
-                        obscureText: false, 
+                      TextField(
                         controller: _bioController,
+                        decoration: const InputDecoration(
+                          hintText: "Change Business Bio",
+                          labelText: "Business Bio",
+                        ),
                       ),
 
                       const SizedBox(height: 15.0),
@@ -287,12 +322,42 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                             );
                             return;
                           }
-
+                          else if(address != _addressController.text){
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Address Change"),
+                                content: const Text("Changing your address will require admin approval. Are you sure you want to change your address?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      return;
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: ()async{                                      
+                                      await submitApplication(address, _addressController.text, name);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("Address change submitted for approval"),
+                                        )
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Confirm"),
+                                  )
+                                ],
+                              )
+                            );
+                          }
+                      
                           await FirebaseFirestore.instance
                               .collection("users")
                               .doc(user!.email)
                               .update({
-                                "address": _addressController.text,
                                 "about": _bioController.text,
                                 "phone": _phoneController.text,
                                 "businessHours": {
@@ -305,7 +370,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                                   "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
                                 }
                               });
-                          Navigator.pop(context);
+                          Navigator.pop(context);                       
                         },
                         child: const Text("Save Changes"),
                       ),

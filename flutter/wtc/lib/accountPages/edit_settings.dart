@@ -8,7 +8,7 @@ import 'package:wtc/accountPages/account_upgrade.dart';
 import 'package:wtc/accountPages/edit_business.dart';
 import 'package:wtc/accountPages/edit_profile.dart';
 import 'package:wtc/accountPages/edit_tags.dart';
-//import 'package:wtc/auth/login.dart';
+
 
 class EditSettings extends StatefulWidget {
   const EditSettings(
@@ -47,7 +47,7 @@ Future<void> deleteAccount(String email, List<String> tags, String uid) async{
     .doc(email.toLowerCase())
     .delete();
 
-  // Delete user from tags collection
+  // // Delete user from tags collection
 
   for(int i = 0; i < tags.length; i++){
     await FirebaseFirestore.instance
@@ -58,24 +58,38 @@ Future<void> deleteAccount(String email, List<String> tags, String uid) async{
       });
   }
 
-  // Delete pfps from storage
-  await FirebaseStorage.instance
-    .ref()
-    .child('profile_pics/$uid')
-    .delete();
-
+  // // Delete pfps from storage
+  try{
+    await FirebaseStorage.instance
+      .ref()
+      .child("profilePictures/$uid.jpg")
+      .delete();
+  }on FirebaseException {
+    // do nothing
+  }
   // Delete user from auth
   try{
     await FirebaseAuth.instance.currentUser!.delete();
-  }on FirebaseAuthException catch(e){
-    AlertDialog(
-      title: const Text("Error"),
-      content: Text(e.code),
-    );
+  }on FirebaseAuthException{
+    // do nothing
   }
+  
 }
 
+
 class _EditSettingsState extends State<EditSettings> {
+
+  final TextEditingController passwordController = TextEditingController();
+
+  final provider = FirebaseAuth.instance.currentUser?.providerData.first;
+
+  @override
+  void dispose(){
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
 
@@ -280,6 +294,9 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
 
+              if(widget.isBusiness && widget.isPending)
+              const SizedBox(height: 20,),
+
               if(widget.isPending)
               GestureDetector(
                   onTap: (){
@@ -316,8 +333,171 @@ class _EditSettingsState extends State<EditSettings> {
 
               // delete account
               GestureDetector(
-                onTap: (){
-                  },
+                onTap: ()async{
+                  if(GoogleAuthProvider().providerId == provider!.providerId){
+                    showDialog(
+                      context: context, 
+                      builder: (context){
+                        return AlertDialog(
+                          title: const Text("Delete Account"),
+                          content: const Text("Are you sure you want to delete your account? This action is irreversible"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                try{
+
+                                  await FirebaseAuth.instance.currentUser!
+                                    .reauthenticateWithProvider(GoogleAuthProvider());
+
+                                  await deleteAccount(widget.email, widget.tags, widget.uid);
+                                  while(Navigator.canPop(context)){
+                                    Navigator.pop(context);
+                                  }
+                                } on FirebaseAuthException catch(e){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.code),
+                                    )
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text(
+                                "Confirm",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  else if(AppleAuthProvider().providerId == provider!.providerId){
+                    showDialog(
+                      context: context, 
+                      builder: (context){
+                        return AlertDialog(
+                          title: const Text("Delete Account"),
+                          content: const Text("Are you sure you want to delete your account? This action is irreversible"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                try{
+
+                                  await FirebaseAuth.instance.currentUser!
+                                    .reauthenticateWithProvider(AppleAuthProvider());
+
+                                  // revoke apple token
+                                  //await FirebaseAuth.instance.revokeTokenWithAuthorizationCode();
+
+                                  await deleteAccount(widget.email, widget.tags, widget.uid);                                 
+                                  while(Navigator.canPop(context)){
+                                    Navigator.pop(context);
+                                  }
+                                } on FirebaseAuthException catch(e){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.code),
+                                    )
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text(
+                                "Confirm",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  else{
+                    showDialog(
+                      context: context, 
+                      builder: (context){
+                        return AlertDialog(
+                          title: const Text("Reauthenticate"),
+                          content: SizedBox(
+                            height: 90,
+                            child: Column(
+                              children: [
+                                const Text("Please reauthenticate to delete your account"),
+                                TextField(
+                                  decoration: const InputDecoration(
+                                    labelText: "Password",
+                                  ),
+                                  controller: passwordController,
+                                  obscureText: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                passwordController.clear();
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () async{
+                                try{
+                                    await FirebaseAuth.instance.currentUser!
+                                      .reauthenticateWithCredential(
+                                        EmailAuthProvider.credential(
+                                          email: widget.email, 
+                                          password: passwordController.text.trim()
+                                        )
+                                    );
+                                  //print("reauthenticated successfully");
+
+                                    await deleteAccount(widget.email, widget.tags, widget.uid);
+                                    while(Navigator.canPop(context)){
+                                      Navigator.pop(context);
+                                    }
+                                }on FirebaseAuthException catch(e){ 
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.code),
+                                    )
+                                  );
+                                  passwordController.clear();
+                                  Navigator.pop(context);
+                                }                             
+                              },
+                              
+                              child: const Text(
+                                "Confirm",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                )
+                              ),
+                            ),                         
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
