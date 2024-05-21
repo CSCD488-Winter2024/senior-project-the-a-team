@@ -43,8 +43,8 @@ class _RSVPButtons extends State<RSVPButtons> {
           .collection('_posts')
           .doc(widget.postID.toString())
           .update({
-        'attending': {widget.uid},
-        'maybe.${widget.uid}': FieldValue.delete()
+        'attending': FieldValue.arrayUnion([widget.uid]),
+        'maybe': FieldValue.arrayRemove([widget.uid])
       });
     } catch (e) {
       print('Error updating maybe status:$e');
@@ -70,6 +70,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           .collection('_posts')
           .doc(widget.postID.toString())
           .update({
+        'maybe': FieldValue.arrayUnion([widget.uid]),
         'attending': FieldValue.arrayRemove([widget.uid])
       });
     } catch (e) {
