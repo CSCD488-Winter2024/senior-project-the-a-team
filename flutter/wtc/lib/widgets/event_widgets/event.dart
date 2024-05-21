@@ -13,7 +13,7 @@ import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
 
 class Event extends Post {
   Event({
-    Key? key,
+    super.key,
     required super.title,
     required super.body,
     required super.tags,
@@ -27,7 +27,7 @@ class Event extends Post {
     required this.location,
     required this.attendingCount,
     required this.maybeCount,
-  }) : super(key: key);
+  });
 
   final DateTime date;
   final TimeOfDay time;
@@ -87,7 +87,7 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(),
+                    RSVPButtons(postID: postId, uid: currentUser?.email),
                     
                   ],
                 ),
