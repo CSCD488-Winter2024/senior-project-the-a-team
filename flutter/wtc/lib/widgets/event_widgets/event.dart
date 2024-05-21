@@ -9,8 +9,6 @@ import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
 
-
-
 class Event extends Post {
   Event({
     super.key,
@@ -37,8 +35,6 @@ class Event extends Post {
 
   @override
   Widget build(BuildContext context) {
-
-
     return FutureBuilder<String>(
       future: fetchUserTier(),
       builder: (context, snapshot) {
@@ -67,7 +63,6 @@ class Event extends Post {
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                     PostDeleteEditBox(post: this),
-                    
                   ],
                 ),
               );
@@ -88,7 +83,6 @@ class Event extends Post {
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                     RSVPButtons(postID: postId, uid: currentUser?.email),
-                    
                   ],
                 ),
               );
