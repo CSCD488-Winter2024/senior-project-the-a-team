@@ -186,6 +186,8 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
+      'attending' : {},
+      'maybe' : {}
     });
 
     // Clear the fields
