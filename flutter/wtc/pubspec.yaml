@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.15.8
   firebase_core: ^2.27.0
   firebase_auth: ^4.17.8
+  cloud_functions: ^4.6.8
   firebase_storage: ^11.6.9
   image_picker: ^1.0.8
 
@@ -49,6 +50,7 @@ dependencies:
   cached_network_image: ^3.3.1
   smooth_page_indicator: ^1.1.0
   intl_phone_number_input: ^0.7.4
+  geocoding: ^3.0.0
   firebase_messaging: ^14.9.2
 
 

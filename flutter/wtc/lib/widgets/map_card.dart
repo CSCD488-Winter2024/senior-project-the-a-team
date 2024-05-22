@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,7 +10,9 @@ class MapCard extends StatelessWidget {
   final String description;
   final String address;
   final String emailAddress;
+  final String profilePic;
   final MapController mapController;
+  final Map<String, dynamic> businessHours;
   //need logo
 
   const MapCard(
@@ -20,10 +23,22 @@ class MapCard extends StatelessWidget {
       required this.description,
       required this.address,
       required this.emailAddress,
-      required this.mapController});
+      required this.mapController,
+      required this.businessHours,
+      required this.profilePic});
 
   @override
   Widget build(BuildContext context) {
+    CachedNetworkImage pfp = CachedNetworkImage(
+      imageUrl: profilePic,
+      placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context, url, error) => const Image(
+          width: 64, height: 64, image: AssetImage('images/profile.jpg')),
+      memCacheHeight: 64,
+      memCacheWidth: 64,
+      fit: BoxFit.cover,
+    );
+
     return GestureDetector(
         onTap: () {
           mapController.move(LatLng(latitude, longitude), 18.0);
@@ -34,12 +49,16 @@ class MapCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: [
-                const Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                    child: Image(
-                        image: AssetImage('images/emptypfp.png'),
-                        height: 64,
-                        width: 64)),
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 2.0)),
+                  child: ClipOval(
+                    child: pfp,
+                  ),
+                ),
                 Column(
                   children: [
                     Container(

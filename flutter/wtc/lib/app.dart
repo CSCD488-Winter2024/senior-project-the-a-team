@@ -19,6 +19,7 @@ import 'widgets/notifications_window.dart';
 import 'pages/specific_fillable_form.dart';
 import 'pages/admin_review.dart';
 import 'pages/about_us.dart';
+import 'pages/geocode_testing_page.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -311,7 +312,7 @@ class _NavBars extends State<App> {
                 });
               },
             ),
-          if(userTier == "Admin")
+          if (userTier == "Admin")
             ListTile(
               leading: const Icon(Icons.people_sharp),
               title: const Text('Upgrade Accounts'),
@@ -430,7 +431,7 @@ class _NavBars extends State<App> {
           NavButton(
               label: "Account",
               icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined),
+              outlinedIcon: Icons.manage_accounts_outlined)
         ],
       ),
     );

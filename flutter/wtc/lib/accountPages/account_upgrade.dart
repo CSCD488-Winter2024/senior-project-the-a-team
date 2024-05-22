@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:intl_phone_number_input/intl_phone_number_input.dart";
+import "package:wtc/components/hour_input.dart";
 
 
 class AccountUpgradePage extends StatefulWidget {
@@ -9,7 +10,7 @@ class AccountUpgradePage extends StatefulWidget {
     required this.tier, 
     required this.name, 
     required this.email,
-    required this.uid
+    required this.uid,
   });
 
   final String tier;
@@ -33,23 +34,38 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
     _nameController.dispose();
     _bioController.dispose();
     _addressController.dispose();
+    _phoneController.dispose();
+    _mondayOpenController.dispose();
+    _mondayCloseController.dispose();
+    _tuesdayOpenController.dispose();
+    _tuesdayCloseController.dispose();
+    _wednesdayOpenController.dispose();
+    _wednesdayCloseController.dispose();
+    _thursdayOpenController.dispose();
+    _thursdayCloseController.dispose();
+    _fridayOpenController.dispose();
+    _fridayCloseController.dispose();
+    _saturdayOpenController.dispose();
+    _saturdayCloseController.dispose();
+    _sundayOpenController.dispose();
+    _sundayCloseController.dispose();
     super.dispose();
   }
 
-  String mondayOpen = "";
-  String mondayClose = "";
-  String tuesdayOpen = "";
-  String tuesdayClose = "";
-  String wednesdayOpen = "";
-  String wednesdayClose = "";
-  String thursdayOpen = "";
-  String thursdayClose = "";
-  String fridayOpen = "";
-  String fridayClose = "";
-  String saturdayOpen = "";
-  String saturdayClose = "";
-  String sundayOpen = "";
-  String sundayClose = "";
+  final TextEditingController _mondayOpenController = TextEditingController();
+  final TextEditingController _mondayCloseController = TextEditingController();
+  final TextEditingController _tuesdayOpenController = TextEditingController();
+  final TextEditingController _tuesdayCloseController = TextEditingController();
+  final TextEditingController _wednesdayOpenController = TextEditingController();
+  final TextEditingController _wednesdayCloseController = TextEditingController();
+  final TextEditingController _thursdayOpenController = TextEditingController();
+  final TextEditingController _thursdayCloseController = TextEditingController();
+  final TextEditingController _fridayOpenController = TextEditingController();
+  final TextEditingController _fridayCloseController = TextEditingController();
+  final TextEditingController _saturdayOpenController = TextEditingController();
+  final TextEditingController _saturdayCloseController = TextEditingController();
+  final TextEditingController _sundayOpenController = TextEditingController();
+  final TextEditingController _sundayCloseController = TextEditingController();
 
   bool isBusiness = false;
 
@@ -63,13 +79,13 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
 
     // Create a map of the business hours
     Map<String, String> businessHours = {
-      "Monday": "$mondayOpen - $mondayClose",
-      "Tuesday": "$tuesdayOpen - $tuesdayClose",
-      "Wednesday": "$wednesdayOpen - $wednesdayClose",
-      "Thursday": "$thursdayOpen - $thursdayClose",
-      "Friday": "$fridayOpen - $fridayClose",
-      "Saturday": "$saturdayOpen - $saturdayClose",
-      "Sunday": "$sundayOpen - $sundayClose",
+      "Monday": "${_mondayOpenController.text.trim()} - ${_mondayCloseController.text.trim()}",
+      "Tuesday": "${_tuesdayOpenController.text.trim()} - ${_tuesdayCloseController.text.trim()}",
+      "Wednesday": "${_wednesdayOpenController.text.trim()} - ${_wednesdayCloseController.text.trim()}",
+      "Thursday": "${_thursdayOpenController.text.trim()} - ${_thursdayCloseController.text.trim()}",
+      "Friday": "${_fridayOpenController.text.trim()} - ${_fridayCloseController.text.trim()}",
+      "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
+      "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
     };
 
     // Upload to database
@@ -84,6 +100,14 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
         "address": address,
         "businessHours": businessHours,
         "email": email,
+      }
+    );
+
+    await FirebaseFirestore.instance
+      .collection("users")
+      .doc(email)
+      .update({
+        "isPending": true,
       }
     );
   }
@@ -180,7 +204,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                       _phoneController.text = number.phoneNumber!;
                     },
                     inputDecoration: const InputDecoration(
-                      
+                      labelText: "Business Number",
                     ),
                     maxLength: 12,
                     selectorConfig: const SelectorConfig(
@@ -196,7 +220,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\tBusiness Hours",
+                        "Business Hours",
                         style: TextStyle(
                           fontSize: 17,
                         ),
@@ -205,262 +229,40 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                     ],
                   ),
 
-                  
-                  DataTable(
-                    columns: const [
-                      DataColumn(label: Text("Day")),
-                      DataColumn(label: Text("Open")),
-                      DataColumn(label: Text("Close")),
-                    ],
-                    rows: [
-                      DataRow(cells: [
-                        const DataCell(Text("Monday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  mondayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(mondayOpen),
-                        ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  mondayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },                      
-                          Text(mondayClose),
-                        ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Tuesday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  tuesdayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(tuesdayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  tuesdayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(tuesdayClose)
-                          ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Wednesday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  wednesdayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(wednesdayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  wednesdayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(wednesdayClose)
-                          ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Thursday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  thursdayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(thursdayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  thursdayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(thursdayClose)
-                          ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Friday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  fridayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(fridayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  fridayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(fridayClose)
-                          ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Saturday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  saturdayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(saturdayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  saturdayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(saturdayClose)
-                          ),
-                      ]),
-                      DataRow(cells: [
-                        const DataCell(Text("Sunday")),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  sundayOpen = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(sundayOpen)
-                          ),
-                        DataCell(
-                          onTap:(){
-                            showTimePicker(
-                              context: context, 
-                              initialTime: TimeOfDay.now(),
-                              initialEntryMode: TimePickerEntryMode.input,
-                            ).then((value){
-                              if(value != null){
-                                setState(() {
-                                  sundayClose = value.format(context);
-                                });
-                              }
-                            });
-                          },
-                          Text(sundayClose)
-                          ),
-                      ]),
-                    ],
-                  ),
+            
+                  HourInput(day: "Monday", openHour: _mondayOpenController, closeHour: _mondayCloseController),
 
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Tuesday", openHour: _tuesdayOpenController, closeHour: _tuesdayCloseController),
+                  
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Wednesday", openHour: _wednesdayOpenController, closeHour: _wednesdayCloseController),
+                  
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Thursday", openHour: _thursdayOpenController, closeHour: _thursdayCloseController),
+                  
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Friday", openHour: _fridayOpenController, closeHour: _fridayCloseController),
+                  
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Saturday", openHour: _saturdayOpenController, closeHour: _saturdayCloseController),
+                  
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  
+                  HourInput(day: "Sunday", openHour: _sundayOpenController, closeHour: _sundayCloseController),
+              
+                  const Divider(),
                   const SizedBox(height: 30),
                 ],
               ),
@@ -527,12 +329,13 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   );
                 }
                 else{
-                  await submitApplication(widget.email, isBusiness);           
+                  await submitApplication(widget.email, isBusiness);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Application submitted successfully"),
                     ),
                   );
+                  Navigator.pop(context);
                   Navigator.pop(context);
                 }
               },
