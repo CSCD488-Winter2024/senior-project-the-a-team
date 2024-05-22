@@ -6,6 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import cloud_firestore
+import cloud_functions
 import file_selector_macos
 import firebase_auth
 import firebase_core
