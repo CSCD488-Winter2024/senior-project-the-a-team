@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/edit_event.dart';
-import 'package:wtc/pages/edit_job.dart';
-import 'package:wtc/pages/edit_post.dart';
+import 'package:wtc/pages/edit_pages/edit_event.dart';
+import 'package:wtc/pages/edit_pages/edit_job.dart';
+import 'package:wtc/pages/edit_pages/edit_post.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
-import 'package:wtc/widgets/job_post/job_post.dart';
+import 'package:wtc/widgets/post_widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class PostDeleteEditBox extends StatelessWidget {

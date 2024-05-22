@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/organization_post_page.dart';
+import 'package:wtc/pages/nav_bar/map_pages/organization_post_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class MapPin extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/organization_post_lists.dart';
+import 'package:wtc/widgets/list_widgets/organization_post_lists.dart';
 
 class OrganizationPostPage extends StatefulWidget {
   

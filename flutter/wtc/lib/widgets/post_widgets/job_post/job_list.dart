@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/widgets/job_post/job_post.dart';
+import 'package:wtc/widgets/post_widgets/job_post/job_post.dart';
 
 class JobPostList extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

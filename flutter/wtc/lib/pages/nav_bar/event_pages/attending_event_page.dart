@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/widgets/attending_list.dart';
+import 'package:wtc/widgets/list_widgets/attending_list.dart';
 
 class AttendingEventPage extends StatefulWidget {
   final Guid postID;

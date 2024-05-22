@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
-import '../post_widgets/post.dart';
-import '../post_widgets/post_body_box.dart';
-import '../post_widgets/post_tag_box.dart';
-import '../post_widgets/post_title_box.dart';
+import '../post.dart';
+import '../post_body_box.dart';
+import '../post_tag_box.dart';
+import '../post_title_box.dart';
 import 'job_wage_box.dart';
 
 // ignore: must_be_immutable

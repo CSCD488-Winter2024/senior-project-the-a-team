@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/alerts_list.dart';
+import 'package:wtc/widgets/list_widgets/alerts_list.dart';
 
 class AlertsPage extends StatefulWidget {
   const AlertsPage({super.key});

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
-import 'package:wtc/widgets/job_post/job_post.dart';
+import 'package:wtc/widgets/post_widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_review.dart';
 

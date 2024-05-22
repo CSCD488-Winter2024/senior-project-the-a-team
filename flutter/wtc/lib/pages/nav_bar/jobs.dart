@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/job_post/job_list.dart';
+import 'package:wtc/widgets/post_widgets/job_post/job_list.dart';
 
 
 class JobsPage extends StatefulWidget {

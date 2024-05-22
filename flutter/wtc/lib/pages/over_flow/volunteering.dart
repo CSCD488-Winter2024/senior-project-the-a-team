@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/volunteer_post/volunteer_list.dart';
+import 'package:wtc/widgets/list_widgets/volunteer_list.dart';
 
 
 

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/search_user.dart';
-import 'package:wtc/pages/account_review.dart';
-import 'widgets/navbutton.dart';
+import 'package:wtc/pages/over_flow/search_user.dart';
+import 'package:wtc/pages/over_flow/account_review.dart';
+import 'widgets/infrastructure/navbutton.dart';
 import 'User/user_service.dart';
-import 'pages/home.dart';
-import 'pages/accountsettings.dart';
-import 'pages/alerts.dart';
-import 'pages/calendar.dart';
-import 'pages/map.dart';
+import 'pages/nav_bar/home.dart';
+import 'pages/nav_bar/account_pages/accountsettings.dart';
+import 'pages/nav_bar/alerts.dart';
+import 'pages/nav_bar/event_pages/calendar.dart';
+import 'pages/nav_bar/map_pages/map.dart';
 import 'widgets/topbar.dart';
-import 'pages/create_post.dart';
-import 'pages/create_post_event.dart';
-import 'pages/create_post_job.dart';
-import 'pages/create_post_alert.dart';
-import 'pages/jobs.dart';
-import 'pages/volunteering.dart';
-import 'widgets/notifications_window.dart';
-import 'pages/specific_fillable_form.dart';
-import 'pages/admin_review.dart';
-import 'pages/about_us.dart';
-import 'pages/geocode_testing_page.dart';
+import 'pages/creation_pages/create_post.dart';
+import 'pages/creation_pages/create_post_event.dart';
+import 'pages/creation_pages/create_post_job.dart';
+import 'pages/creation_pages/create_post_alert.dart';
+import 'pages/nav_bar/jobs.dart';
+import 'pages/over_flow/volunteering.dart';
+import 'widgets/infrastructure/notifications_window.dart';
+import 'pages/over_flow/specific_fillable_form.dart';
+import 'pages/over_flow/admin_review.dart';
+import 'pages/over_flow/about_us.dart';
+import 'pages/nav_bar/geocode_testing_page.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
-import 'package:wtc/widgets/map_card.dart';
+import 'package:wtc/widgets/map_widgets/map_card.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 class OrganizationList extends StatelessWidget {

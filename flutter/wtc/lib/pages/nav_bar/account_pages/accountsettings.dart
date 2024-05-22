@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/accountPages/edit_settings.dart';
+import 'package:wtc/pages/nav_bar/account_pages/edit_settings.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});

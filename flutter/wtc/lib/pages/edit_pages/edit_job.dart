@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
-import 'package:wtc/widgets/job_post/job_post.dart';
+import 'package:wtc/widgets/post_widgets/job_post/job_post.dart';
 
 class EditPostJobPage extends StatefulWidget {
   const EditPostJobPage({super.key, required this.post});

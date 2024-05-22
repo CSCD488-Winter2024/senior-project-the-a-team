@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/pages/attending_event_page.dart';
+import 'package:wtc/pages/nav_bar/event_pages/attending_event_page.dart';
 
 class GoingMaybeCountButtons extends StatefulWidget {
   final Guid postID;
