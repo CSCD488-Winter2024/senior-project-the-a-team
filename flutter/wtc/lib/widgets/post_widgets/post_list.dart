@@ -8,7 +8,8 @@ import 'package:wtc/widgets/post_widgets/post.dart';
 class PostList extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  PostList({super.key});
+  
+  PostList({super.key, });
 
   @override
   Widget build(BuildContext context) {
