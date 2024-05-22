@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/list_widgets/notifications_list.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/User/user.dart';
+import 'package:wtc/user/user.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_preview.dart';
 

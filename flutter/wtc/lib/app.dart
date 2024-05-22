@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/pages/over_flow/search_user.dart';
 import 'package:wtc/pages/over_flow/account_review.dart';
 import 'widgets/infrastructure/navbutton.dart';
-import 'User/user_service.dart';
+import 'user/user_service.dart';
 import 'pages/nav_bar/home.dart';
 import 'pages/nav_bar/account_pages/accountsettings.dart';
 import 'pages/nav_bar/alerts.dart';

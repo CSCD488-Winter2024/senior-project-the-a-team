@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/User/user.dart';
+import 'package:wtc/user/user.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class PostReview extends Post {
