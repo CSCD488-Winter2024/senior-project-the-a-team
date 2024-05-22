@@ -18,63 +18,71 @@ class _RSVPButtons extends State<RSVPButtons> {
   bool isMaybeAttending = false;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  @override
+  void initState() {
+    super.initState();
+    checkIfAttending(widget.postID.toString(), widget.uid ?? '');
+    checkIfMaybeAttending(widget.postID.toString(), widget.uid ?? '');
+    print("is maybe: ${isMaybeAttending.toString()}");
+  }
+
   Future<void> changeIsAttending() async {
+    if (isAttending) {
+      try {
+        await _firestore
+            .collection('_posts')
+            .doc(widget.postID.toString())
+            .update({
+          'attending': FieldValue.arrayRemove([widget.uid])
+        });
+      } catch (e) {
+        print('Error updating maybe status: $e');
+      }
+    } else {
+      try {
+        await _firestore
+            .collection('_posts')
+            .doc(widget.postID.toString())
+            .update({
+          'attending': FieldValue.arrayUnion([widget.uid]),
+          'maybe': FieldValue.arrayRemove([widget.uid])
+        });
+      } catch (e) {
+        print('Error updating maybe status: $e');
+      }
+    }
     setState(() {
       isAttending = !isAttending;
       if (isMaybeAttending) {
         isMaybeAttending = false;
       }
     });
-    DocumentSnapshot documentSnapshot = await _firestore
-        .collection('_posts')
-        .doc(widget.postID.toString())
-        .get();
-    if (documentSnapshot.exists) {
-      Map<String, dynamic>? data =
-          documentSnapshot.data() as Map<String, dynamic>?;
-      print('Document data before update: $data');
-    } else {
-      print('Document does not exist.');
-      return;
-    }
-
-    try {
-      await _firestore
-          .collection('_posts')
-          .doc(widget.postID.toString())
-          .update({
-        'attending': FieldValue.arrayUnion([widget.uid]),
-        'maybe': FieldValue.arrayRemove([widget.uid])
-      });
-    } catch (e) {
-      print('Error updating maybe status:$e');
-    }
   }
 
   Future<void> changeIsMaybeAttending() async {
-    DocumentSnapshot documentSnapshot = await _firestore
-        .collection('_posts')
-        .doc(widget.postID.toString())
-        .get();
-    if (documentSnapshot.exists) {
-      Map<String, dynamic>? data =
-          documentSnapshot.data() as Map<String, dynamic>?;
-      print('Document data before update: $data');
+    if (isMaybeAttending) {
+      try {
+        await _firestore
+            .collection('_posts')
+            .doc(widget.postID.toString())
+            .update({
+          'maybe': FieldValue.arrayRemove([widget.uid])
+        });
+      } catch (e) {
+        print('Error updating maybe status: $e');
+      }
     } else {
-      print('Document does not exist.');
-      return;
-    }
-
-    try {
-      await _firestore
-          .collection('_posts')
-          .doc(widget.postID.toString())
-          .update({
-        'maybe': FieldValue.arrayUnion([widget.uid]),
-        'attending': FieldValue.arrayRemove([widget.uid])
-      });
-    } catch (e) {
-      print('Error updating maybe status:$e');
+      try {
+        await _firestore
+            .collection('_posts')
+            .doc(widget.postID.toString())
+            .update({
+          'maybe': FieldValue.arrayUnion([widget.uid]),
+          'attending': FieldValue.arrayRemove([widget.uid])
+        });
+      } catch (e) {
+        print('Error updating maybe status: $e');
+      }
     }
     setState(() {
       isMaybeAttending = !isMaybeAttending;
@@ -84,11 +92,70 @@ class _RSVPButtons extends State<RSVPButtons> {
     });
   }
 
+  Future<void> checkIfAttending(String postID, String uid) async {
+    try {
+      DocumentSnapshot documentSnapshot = await _firestore
+          .collection('_posts')
+          .doc(postID)
+          .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+
+        if (data.containsKey('attending') && data['attending'] is List) {
+          List<dynamic> attendingList = data['attending'];
+
+          if (attendingList.contains(uid)) {
+            setState(() {
+              isAttending = true;
+            });
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error checking user attendance: $e');
+    }
+    setState(() {
+      isAttending = false;
+    });
+  }
+
+  Future<void> checkIfMaybeAttending(String postID, String uid) async {
+    try {
+      DocumentSnapshot documentSnapshot = await _firestore
+          .collection('_posts')
+          .doc(postID)
+          .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+
+        if (data.containsKey('maybe') && data['maybe'] is List) {
+          List<dynamic> maybeList = data['maybe'];
+
+          if (maybeList.contains(uid)) {
+            setState(() {
+              isMaybeAttending = true;
+            });
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error checking user maybe attendance: $e');
+    }
+    setState(() {
+      isMaybeAttending = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future:
-          _firestore.collection('_posts').doc(widget.postID.toString()).get(),
+      future: _firestore.collection('_posts').doc(widget.postID.toString()).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -97,21 +164,19 @@ class _RSVPButtons extends State<RSVPButtons> {
           return const Center(child: Text('No Data'));
         }
 
-        DocumentSnapshot documentSnapshot = snapshot.data!;
-
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
-
-        return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          IconButton(
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
               iconSize: 36,
               onPressed: () {
                 changeIsAttending();
               },
               icon: isAttending
                   ? const Icon(color: Colors.green, Icons.check_box)
-                  : const Icon(color: Colors.green, Icons.check_box_outlined)),
-          IconButton(
+                  : const Icon(color: Colors.green, Icons.check_box_outlined),
+            ),
+            IconButton(
               color: const Color.fromARGB(255, 160, 146, 21),
               iconSize: 38,
               onPressed: () {
@@ -119,8 +184,10 @@ class _RSVPButtons extends State<RSVPButtons> {
               },
               icon: isMaybeAttending
                   ? const Icon(Icons.star_rounded)
-                  : const Icon(Icons.star_outline_rounded))
-        ]);
+                  : const Icon(Icons.star_outline_rounded),
+            ),
+          ],
+        );
       },
     );
   }
