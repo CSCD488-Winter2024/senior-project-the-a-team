@@ -8,7 +8,7 @@ import 'pages/nav_bar/account_pages/accountsettings.dart';
 import 'pages/nav_bar/alerts.dart';
 import 'pages/nav_bar/event_pages/calendar.dart';
 import 'pages/nav_bar/map_pages/map.dart';
-import 'widgets/topbar.dart';
+import 'widgets/infrastructure/topbar.dart';
 import 'pages/creation_pages/create_post.dart';
 import 'pages/creation_pages/create_post_event.dart';
 import 'pages/creation_pages/create_post_job.dart';

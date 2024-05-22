@@ -52,7 +52,8 @@ class _AttendingList extends State<AttendingList> {
         List<dynamic> attendingList = data[widget.attendanceMap];
         List<dynamic> fetchedNames = [];
         List<dynamic> fetchedPfps = [];
-
+        //loop through the attending list, per email in list, search the users collection for the email
+        //grab the name and pfp and place into a local list
         for (int i = 0; i < attendingList.length; i++) {
           QuerySnapshot querySnapshot = await _firestore
               .collection('users')
