@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/app.dart';
+import 'package:wtc/auth/home_setup.dart';
 import 'package:wtc/auth/login.dart';
 
 class AuthPage extends StatelessWidget {
@@ -12,8 +12,8 @@ class AuthPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
-          if(snapshot.hasData){
-            return const App();
+          if(snapshot.hasData){         
+            return const HomeSetupPage();            
           }
           else{
             return const LoginPage();

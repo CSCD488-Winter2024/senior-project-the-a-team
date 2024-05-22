@@ -4,10 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:wtc/accountPages/account_upgrade.dart';
 import 'package:wtc/accountPages/edit_business.dart';
 import 'package:wtc/accountPages/edit_profile.dart';
 import 'package:wtc/accountPages/edit_tags.dart';
+import 'package:wtc/components/square_tile.dart';
+import 'package:wtc/services/auth_services.dart';
 
 
 class EditSettings extends StatefulWidget {
@@ -99,7 +103,7 @@ class _EditSettingsState extends State<EditSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Edit Settings",
+          "Settings",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -178,6 +182,191 @@ class _EditSettingsState extends State<EditSettings> {
                     leading: Icon(Icons.miscellaneous_services),
                     title: Text(
                       "Edit Tags",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),)
+                ),
+              ),
+
+              const SizedBox(height: 20,),
+
+              // link accounts
+              GestureDetector(
+                onTap: (){
+                  showDialog(
+                    context: context, 
+                    builder: (context){
+                      return AlertDialog(
+                        title: const Text("Link Accounts"),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SquareTile(
+                              imagePath: 'images/google.png', 
+                              onTap: ()async{
+                                try{
+                                  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+                                  final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+                                  final credential = GoogleAuthProvider.credential(
+                                    accessToken: googleAuth.accessToken,
+                                    idToken: googleAuth.idToken
+                                  );
+                                  await FirebaseAuth.instance.currentUser!
+                                    .linkWithCredential(credential);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Account linked successfully"),
+                                    )
+                                  );
+                                  Navigator.pop(context);
+                                }on FirebaseAuthException catch(e){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.code),
+                                    )
+                                  );
+                                }
+                              }
+                            ),
+                            SquareTile(
+                              imagePath: 'images/apple.png', 
+                              onTap: ()async{
+                                try{
+                                  final rawNonce = AuthService().generateNonce();
+                                  final nonce = AuthService().sha256ofString(rawNonce);
+                                  final credential = await SignInWithApple.getAppleIDCredential(
+                                    scopes: [
+                                        AppleIDAuthorizationScopes.email,
+                                        AppleIDAuthorizationScopes.fullName,
+                                    ],
+                                    nonce: nonce,
+                                  );
+                                  final oauthCredential = OAuthProvider("apple.com").credential(
+                                    idToken: credential.identityToken,
+                                    rawNonce: rawNonce,
+                                  );
+                                  await FirebaseAuth.instance.currentUser!
+                                    .linkWithCredential(oauthCredential);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Account linked successfully"),
+                                    )
+                                  );
+                                  Navigator.pop(context);
+                                }on FirebaseAuthException catch(e){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.code),
+                                    )
+                                  );
+                                }
+                              }
+                            ),
+                            SquareTile(
+                              imagePath: 'images/email.png', 
+                              onTap: ()async{
+                                // show dialog to enter email and password
+                                String email = "";
+                                String password = "";
+                                showDialog(
+                                  context: context, 
+                                  builder: (context){
+                                    return AlertDialog(
+                                      title: const Text("Link Email Account"),
+                                      content: SizedBox(
+                                        height: 150,
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              decoration: const InputDecoration(
+                                                labelText: "Email",
+                                              ),
+                                              onChanged: (value){
+                                                email = value;
+                                              },
+                                            ),
+                                            TextField(
+                                              decoration: const InputDecoration(
+                                                labelText: "Password",
+                                              ),
+                                              onChanged: (value){
+                                                password = value;
+                                              },
+                                              obscureText: true,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Cancel"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async{
+                                            try{
+                                              await FirebaseAuth.instance.currentUser!
+                                                .linkWithCredential(
+                                                  EmailAuthProvider.credential(
+                                                    email: email, 
+                                                    password: password
+                                                  )
+                                              );
+                                              Navigator.pop(context);
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text("Account linked successfully"),
+                                                )
+                                              );
+                                              Navigator.pop(context);
+                                            }on FirebaseAuthException catch(e){
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(e.code),
+                                                )
+                                              );
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: const Text("Link"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            )
+
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Cancel"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  height: 80,
+                  child: const Center(
+                  child:  ListTile(
+                    leading: Icon(Icons.link),
+                    title: Text(
+                      "Link Accounts",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

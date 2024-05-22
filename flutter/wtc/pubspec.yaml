@@ -50,6 +50,10 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   intl_phone_number_input: ^0.7.4
   geocoding: ^3.0.0
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.0
+  crypto: ^3.0.3
+  flutter_launcher_icons: ^0.13.1
 
 
 dev_dependencies:
@@ -79,6 +83,9 @@ flutter:
     - images/wtcLogo.png
     - images/WTC_BLANK.png
     - images/emptypfp.png
+    - images/google.png
+    - images/apple.png
+    - images/email.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -105,3 +112,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: "AppIcon"
+  image_path: "images/playstore.png"
+  min_sdk_version: 21
+  remove_alpha_ios: true
