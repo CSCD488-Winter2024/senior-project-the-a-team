@@ -16,6 +16,7 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
         return
     db = firestore.client()
 
+
     #Get post info from db
     post_ref = db.collection("_posts").document(postID)
     get_header= post_ref.get({u'header'})
@@ -25,21 +26,29 @@ def send_post_notification(event: firestore_fn.Event[firestore_fn.Change]) -> No
     if(len(body) > 20):body = body[0:20] + "..."
     get_type= post_ref.get({u'type'})
     type = u'{}'.format(get_type.to_dict()['type'])
+    get_tags= post_ref.get({u'tags'})
+    tags = u'{}'.format(get_tags.to_dict()['tags'])
     #get users
     users_ref = db.collection("users").where("notificationToken","!=","none")
     users = users_ref.get()
     #get tokens
     tokens = []
+    print("post tags:" + tags)
     if(type == "Alert"):
         for user in users:
             token = user.get("notificationToken")
             tokens.append(token)
-    else:
+    elif(type == "Post" or type == "Event"): #since job and volunteer dont have tags
         for user in users:
-            tags = user.get("tags")
-            if(type in tags):
-                token = user.get("notificationToken")
-                tokens.append(token)
+            userTags = user.get("tags")
+            print("User tags: " + userTags)
+            for tag in tags:
+                for uTag in userTags:
+                    if tag == uTag:
+                        token = user.get("notificationToken")
+                        tokens.append(token)
+    else:
+        return
     #create notification
     notification = messaging.Notification(
         title="New Post: " + header,
