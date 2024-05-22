@@ -27,7 +27,7 @@ class HomeSetupPage extends StatelessWidget {
           return const App();
         }
 
-        return const Text("Loading");
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
