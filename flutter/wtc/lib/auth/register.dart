@@ -86,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'isBusiness': false,
         'tags': [],
         'uid': userCredential.user!.uid,
-        'isPending': false
+        'isPending': false,
         'notificationToken': "none"
       });
     }
