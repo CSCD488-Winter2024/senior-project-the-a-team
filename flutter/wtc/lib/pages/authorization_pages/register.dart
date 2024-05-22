@@ -6,7 +6,7 @@ import 'package:wtc/components/button.dart';
 //import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
-import 'package:wtc/authorization_pages/welcome_page.dart';
+import 'package:wtc/pages/authorization_pages/welcome_page.dart';
 //import 'package:wtc/services/auth_services.dart';
 
 class RegisterPage extends StatefulWidget{

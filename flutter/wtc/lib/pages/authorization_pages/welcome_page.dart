@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:wtc/pages/intro_screens/intro_page3.dart';
 import 'package:wtc/pages/intro_screens/intro_page1.dart';
 import 'package:wtc/pages/intro_screens/intro_page2.dart';
-import 'package:wtc/authorization_pages/getting_started.dart';
+import 'package:wtc/pages/authorization_pages/getting_started.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key, required this.email, required this.uid});

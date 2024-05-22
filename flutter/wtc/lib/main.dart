@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/authorization_pages/auth.dart';
+import 'package:wtc/pages/authorization_pages/auth.dart';
 import 'package:wtc/firebase_options.dart';
 
 /*

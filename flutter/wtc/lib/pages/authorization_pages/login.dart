@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
-import 'package:wtc/authorization_pages/forgot_password.dart';
-import 'package:wtc/authorization_pages/register.dart';
+import 'package:wtc/pages/authorization_pages/forgot_password.dart';
+import 'package:wtc/pages/authorization_pages/register.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({super.key});

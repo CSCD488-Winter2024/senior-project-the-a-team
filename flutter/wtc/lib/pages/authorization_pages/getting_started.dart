@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wtc/authorization_pages/auth.dart';
+import 'package:wtc/pages/authorization_pages/auth.dart';
 
 class GettingStartedPage extends StatefulWidget {
   const GettingStartedPage({super.key, required this.email, required this.uid});
