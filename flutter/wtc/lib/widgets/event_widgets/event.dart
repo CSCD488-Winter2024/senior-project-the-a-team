@@ -7,10 +7,11 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
 
 class Event extends Post {
   Event({
-    Key? key,
+    super.key,
     required super.title,
     required super.body,
     required super.tags,
@@ -24,7 +25,7 @@ class Event extends Post {
     required this.location,
     required this.attendingCount,
     required this.maybeCount,
-  }) : super(key: key);
+  });
 
   final DateTime date;
   final TimeOfDay time;
@@ -61,7 +62,9 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    PostDeleteEditBox(post: this)
+                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    PostDeleteEditBox(post: this),
+                    
                   ],
                 ),
               );
@@ -81,6 +84,7 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    RSVPButtons(postID: postId, uid: currentUser?.email),
                   ],
                 ),
               );
