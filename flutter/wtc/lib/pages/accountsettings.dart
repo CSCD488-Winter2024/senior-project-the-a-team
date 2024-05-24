@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wtc/accountPages/edit_settings.dart';
+import 'package:wtc/auth/auth.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -16,9 +18,14 @@ class _AccountPage extends State<AccountPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+  final provider = FirebaseAuth.instance.currentUser!.providerData.first;
 
   void signout(){
     FirebaseAuth.instance.signOut();
+    if(GoogleAuthProvider().providerId == provider.providerId){
+      GoogleSignIn().disconnect();
+    }
   }
 
 
@@ -115,8 +122,8 @@ class _AccountPage extends State<AccountPage> {
                     const SizedBox(height: 20),
 
                     // Edit Settings
-                    GestureDetector(
-                      onTap: (){
+                    OutlinedButton(
+                        onPressed: (){
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
@@ -136,10 +143,11 @@ class _AccountPage extends State<AccountPage> {
                         );
                       },
                       child: const Text(
-                        "Edit Settings",
+                        "Settings",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: Colors.black
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -157,11 +165,20 @@ class _AccountPage extends State<AccountPage> {
                         ),
                       child: Column(
                         children: [
-                          Text(
-                            'Full Name:\n $name',
-                            style: const TextStyle(fontSize: 24),
+                          const Text(
+                            'Full Name:',
+                            style: TextStyle(fontSize: 24),
                             textAlign: TextAlign.center,
                           ),
+
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+
                           const Text(
                             'Email:',
                             style: TextStyle(
@@ -173,9 +190,9 @@ class _AccountPage extends State<AccountPage> {
                           Text(
                             email,
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                             ),
-                            textAlign: TextAlign.justify,
+                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(
                             height: 20,
@@ -227,7 +244,8 @@ class _AccountPage extends State<AccountPage> {
             )
           );
           } else {
-            return const Text("no data");
+            signout();
+            return const AuthPage();
           }
         },
       ),

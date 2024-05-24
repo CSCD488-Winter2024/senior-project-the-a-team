@@ -1,17 +1,19 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wtc/auth/auth.dart';
 
 class GettingStartedPage extends StatefulWidget {
-  const GettingStartedPage({super.key, required this.email, required this.uid});
+  const GettingStartedPage({
+    super.key, 
+    required this.uid,
+  });
 
-  final String email;
   final String uid;
 
   @override
@@ -45,13 +47,32 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
     'Youth Sports',
   ];
 
+  User? currentUser = FirebaseAuth.instance.currentUser;
+
+  Future<void> createAccountDoc(var tags, String profilePic){
+    return FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUser!.email)
+      .set({
+        'email': currentUser!.email,
+        'username': currentUser!.email!.split('@')[0],
+        'name': currentUser!.displayName,
+        'tier': "Viewer",
+        'isBusiness': false,
+        'uid': currentUser!.uid,
+        'isPending': false,
+        'tags': tags,
+        'pfp': profilePic,
+    });
+  }
+
   Future<void> setAccountInfo(var tags, String profilePic){
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(widget.email.toLowerCase())
+      .doc(currentUser!.email)
       .update({
-      'tags': tags,
-      'pfp': profilePic,
+        'tags': tags,
+        'pfp': profilePic,
     });
   }
 
@@ -61,15 +82,32 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
         .collection('tags')
         .doc(tags[i])
         .update({
-          'users': FieldValue.arrayUnion([widget.email.toLowerCase()])
+          'users': FieldValue.arrayUnion([currentUser!.email])
         });
     }
   }
 
   List<String> tags = [];
 
+  final provider = FirebaseAuth.instance.currentUser?.providerData.first;
+
   @override
   Widget build(BuildContext context) {
+
+    Image pfp;
+
+    if(currentUser!.photoURL != null){
+      pfp = Image.network(
+        currentUser!.photoURL!,
+        fit: BoxFit.cover,
+      );
+    }
+    else{
+      pfp = const Image(
+        image: AssetImage("images/profile.jpg"),
+        fit: BoxFit.cover,
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -103,18 +141,18 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                 ),
               )
               :
-              CircleAvatar(
-                radius: 61.5,
-                backgroundColor: Colors.black,
-                
+              Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black
+                  ),
+                  shape: BoxShape.circle,
+                ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
-                  child: const Image(
-                    image: AssetImage('images/profile.jpg'),
-                    height: 120,
-                    width: 120,
-                    
-                  )
+                  child: pfp
                 ),
               ),
 
@@ -198,6 +236,13 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                             ),
                             TextButton(
                               onPressed: ()async{
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                );
                                 if(selectedImage != null){
                                   Reference ref = FirebaseStorage.instance
                                     .ref('profilePictures')
@@ -208,21 +253,32 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                                   profilePic = await ref.getDownloadURL();
                                 }
 
-                                await setAccountInfo(tags, profilePic);
+                                if(GoogleAuthProvider().providerId == provider!.providerId ||
+                                  AppleAuthProvider().providerId == provider!.providerId)
+                                {
+                                  if(selectedImage == null){
+                                    profilePic = currentUser!.photoURL!;
+                                  }
+                                  await createAccountDoc(tags, profilePic);
+                                }
+                                else{
+                                  await setAccountInfo(tags, profilePic);                                  
+                                }
+
                                 await setTags(tags);
 
                                 tags.clear();
 
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
 
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context, 
-                                  MaterialPageRoute(
+                                  CupertinoPageRoute(
                                     builder: (context) => const AuthPage()
-                                  )
+                                  ),
+                                  (route) => false
                                 );
+
+                                
                               }, 
                               child: const Text("Yes"),
                             )
