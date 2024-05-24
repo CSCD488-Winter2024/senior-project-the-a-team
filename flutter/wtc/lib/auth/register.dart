@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/components/button.dart';
-//import 'package:wtc/components/square_tile.dart';
+import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/auth/welcome_page.dart';
-//import 'package:wtc/services/auth_services.dart';
+import 'package:wtc/services/auth_services.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({super.key});
@@ -55,13 +55,32 @@ class _RegisterPageState extends State<RegisterPage> {
           password: passwordController.text.trim()
         );
 
+        //email verification
+        await userCredential.user!.sendEmailVerification();
+
         createUserDocument(userCredential);
+
+        await showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: const Text("Email Verification"),
+            content: const Text("A verification email has been sent to your inbox. You may have to check your spam folder."),
+            actions: [
+              TextButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                }, 
+                child: const Text("OK")
+              )
+            ],
+          ) 
+        );
 
         if(context.mounted){
           Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
-              builder: (context) => IntroPage(email: emailController.text, uid: userCredential.user!.uid)
+              builder: (context) => IntroPage(uid: userCredential.user!.uid)
             )
           );
         }
@@ -106,8 +125,8 @@ class _RegisterPageState extends State<RegisterPage> {
         surfaceTintColor: Colors.transparent,
         scrolledUnderElevation: 0,
         elevation: 0,
-        //title: const Text("Register"),
       ),
+      
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -116,22 +135,24 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //logo
-                SizedBox(
-                  height: 220,
-                  width: 220,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: const Image(image: AssetImage("images/wtcLogo.png")),
-                  ),
-                ),
+                // SizedBox(
+                //   // height: 150,
+                //   width: 99999,
+                //   child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(40),
+                //     child: const Image(
+                //       image: AssetImage("images/WTC_BLANK.png"),
+                //       fit: BoxFit.fill,
+                //     ),
+                //   ),
+                // ),
 
-                const SizedBox(height: 20,),
-
-                // app name
                 const Text(
                   "Welcome To Cheney",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 24),
                 ),
+
+                const SizedBox(height: 15,),
 
                 //username textfield
                 MyTextField(
@@ -184,6 +205,49 @@ class _RegisterPageState extends State<RegisterPage> {
                   text: 'Register', 
                   onTap: register
                 ),
+
+                const SizedBox(height: 15,),
+
+                const Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Divider()
+                    ),
+
+                    Text("Or Continue With"),        
+
+                    Expanded(
+                      child: Divider()
+                    ),
+                  ]
+                ),
+
+                const SizedBox(height: 15,),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SquareTile(
+                      imagePath: "images/google.png",
+                      onTap: (){
+                        AuthService().signInWithGoogle();
+                        Navigator.pop(context);
+                      },
+                    ),
+
+                    SquareTile(
+                      imagePath: "images/apple.png",
+                      onTap: (){
+                        AuthService().signInWithApple();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20,),
+
+                
 
                 // register
                 GestureDetector(
