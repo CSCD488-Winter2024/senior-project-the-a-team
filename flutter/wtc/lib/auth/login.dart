@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:wtc/auth/forgot_password.dart';
 import 'package:wtc/auth/register.dart';
 import 'package:wtc/components/button.dart';
+import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
+import 'package:wtc/services/auth_services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -147,26 +149,71 @@ class _LoginPageState extends State<LoginPage>{
                   onTap: login
                 ),
 
-                const SizedBox(height: 10,),
+                
+
+                const SizedBox(height: 15,),
+
+                const Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Divider()
+                    ),
+
+                    Text("Or Sign In With"),
+
+                    Expanded(
+                      child: Divider()
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 15,), 
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SquareTile(
+                      onTap: () => AuthService().signInWithGoogle(),                      
+                      imagePath: 'images/google.png'
+                    ),
+
+                    SquareTile(
+                      onTap: () => AuthService().signInWithApple(),
+                      imagePath: 'images/apple.png'
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20,),
+
 
                 // register
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => const RegisterPage()
-                      )
-                    );
-                  },
-                  child: const Text(
-                    "Register Here",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    const Text(
+                      "Don't have an account? "
                     ),
-                  ),
-                  
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const RegisterPage()
+                          )
+                        );
+                      },
+                      child: const Text(
+                        "Register Here",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      
+                    ),
+                  ],
                 ),
               ]
             ),

@@ -229,8 +229,8 @@ class _NavBars extends State<App> {
             onTap: () {
               Navigator.pop(context); // Close the drawer
               setState(() {
-                title = "Account Settings";
-                prevTitle = "Account Settings";
+                title = "Account";
+                prevTitle = "Account";
 
                 currentPageIndex = 4;
                 showJobsPage = false;
@@ -448,7 +448,7 @@ class _NavBars extends State<App> {
       case 3:
         return "Calendar";
       case 4:
-        return "Account Settings";
+        return "Account";
       case 5:
         return "Approve Posts";
       case 6:
