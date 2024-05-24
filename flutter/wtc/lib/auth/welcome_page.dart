@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -7,23 +8,25 @@ import 'package:wtc/intro_screens/intro_page2.dart';
 import 'package:wtc/auth/getting_started.dart';
 
 class IntroPage extends StatefulWidget {
-  const IntroPage({super.key, required this.email, required this.uid});
+  const IntroPage({super.key, required this.uid});
 
-  final String email;
   final String uid;
 
   @override
   State<IntroPage> createState() => _IntroPageState();
 }
 
+User? currentUser = FirebaseAuth.instance.currentUser;
+
 class _IntroPageState extends State<IntroPage> {
 
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   bool _isLastPage = false;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         children: [
@@ -62,9 +65,10 @@ class _IntroPageState extends State<IntroPage> {
                 _isLastPage ?
                 GestureDetector(
                    onTap: (){
-                    Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                       context, 
-                      CupertinoPageRoute(builder: (context) => GettingStartedPage(email: widget.email, uid: widget.uid))
+                      CupertinoPageRoute(builder: (context) => GettingStartedPage(uid: widget.uid)),
+                      (route) => false
                     );
                   },
                   child: const Text("Done"),

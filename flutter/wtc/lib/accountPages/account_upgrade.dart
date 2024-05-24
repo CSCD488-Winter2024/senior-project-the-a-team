@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:intl_phone_number_input/intl_phone_number_input.dart";
 import "package:wtc/components/hour_input.dart";
@@ -28,6 +29,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
 
   @override
   void dispose() {
@@ -97,7 +99,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
         "about": about,
         "phone": phone,
         "isBusiness": isBusiness,
-        "address": address,
+        "address": "$address, Cheney, WA",
         "businessHours": businessHours,
         "email": email,
       }
@@ -114,6 +116,8 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    _cityController.text = "Cheney, WA";
 
     bool isPoster = widget.tier == "Poster";
     if(isPoster){ 
@@ -189,11 +193,30 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   const SizedBox(height: 20),
 
                   // Business Address
-                  TextField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      labelText: "Business Address",
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _addressController,
+                          decoration: const InputDecoration(
+                            labelText: "Business Address",
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: TextField(
+                          //enabled: false,
+                          readOnly: true,
+                          controller: _cityController,
+                          decoration: const InputDecoration(
+                            labelText: "",
+                          ),
+                        )
+                      ),
+                      
+                    ],
                   ),
 
                   const SizedBox(height: 20),
