@@ -45,9 +45,6 @@ class _LoginPageState extends State<LoginPage>{
 
   @override
   Widget build(BuildContext context){
-    while(Navigator.canPop(context)){
-      Navigator.pop(context);
-    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(

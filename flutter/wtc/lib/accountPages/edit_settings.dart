@@ -10,6 +10,7 @@ import 'package:wtc/accountPages/account_upgrade.dart';
 import 'package:wtc/accountPages/edit_business.dart';
 import 'package:wtc/accountPages/edit_profile.dart';
 import 'package:wtc/accountPages/edit_tags.dart';
+import 'package:wtc/auth/auth.dart';
 import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/services/auth_services.dart';
 
@@ -576,9 +577,13 @@ class _EditSettingsState extends State<EditSettings> {
         
                                     await deleteAccount(widget.email, widget.tags, widget.uid);
                                     await GoogleSignIn().disconnect();
-                                    while(Navigator.canPop(context)){
-                                      Navigator.pop(context);
-                                    }                                
+                                    Navigator.pushAndRemoveUntil(
+                                      context, 
+                                      CupertinoPageRoute(
+                                        builder: (context) => const AuthPage()
+                                      ), 
+                                      (route) => false
+                                    );                               
                                   } on FirebaseAuthException catch(e){
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -635,9 +640,13 @@ class _EditSettingsState extends State<EditSettings> {
         
                                     await deleteAccount(widget.email, widget.tags, widget.uid);
                                     FirebaseFirestore.instance.clearPersistence();                                 
-                                    while(Navigator.canPop(context)){
-                                      Navigator.pop(context);
-                                    }                                    
+                                    Navigator.pushAndRemoveUntil(
+                                      context, 
+                                      CupertinoPageRoute(
+                                        builder: (context) => const AuthPage()
+                                      ), 
+                                      (route) => false
+                                    );                                  
                                   } on FirebaseAuthException catch(e){
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -711,9 +720,13 @@ class _EditSettingsState extends State<EditSettings> {
         
                                       await deleteAccount(widget.email, widget.tags, widget.uid);
                                       await FirebaseFirestore.instance.clearPersistence();
-                                      while(Navigator.canPop(context)){
-                                        Navigator.pop(context);
-                                      }
+                                      Navigator.pushAndRemoveUntil(
+                                      context, 
+                                      CupertinoPageRoute(
+                                        builder: (context) => const AuthPage()
+                                      ), 
+                                      (route) => false
+                                    );
                                   }on FirebaseAuthException catch(e){ 
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
