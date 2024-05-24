@@ -66,14 +66,14 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
     super.dispose();
   }
 
-  Future<void> submitApplication(String oldAddress, String newAddress, String name) async {
+  Future<void> submitApplication(String newAddress, String name) async {
     await FirebaseFirestore.instance
       .collection("_review_account")
       .doc(user!.uid)
       .set({
         "email": user!.email,
         "name": name,
-        "about": "Old Address: $oldAddress",
+        "about": _bioController.text,
         "phone": _phoneController.text,
         "isBusiness": true,
         "businessHours": {
@@ -338,7 +338,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                                   ),
                                   TextButton(
                                     onPressed: ()async{                                      
-                                      await submitApplication(address, _addressController.text, name);
+                                      await submitApplication(_addressController.text, name);
                                       Navigator.pop(context);
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
