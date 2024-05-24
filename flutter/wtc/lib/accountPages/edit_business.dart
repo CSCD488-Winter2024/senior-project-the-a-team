@@ -85,7 +85,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
           "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
           "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
         }, 
-        "address": newAddress,
+        "address": "$newAddress, Cheney, WA",
 
       }
     );
