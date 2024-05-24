@@ -35,7 +35,7 @@ exports.deleteUserByEmail = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').onUpdate((change, context) => {
+exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').onWrite((change, context) => {
   const postID = context.params.PostID;
 
   if (!change.after.exists) {
