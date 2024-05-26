@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
+import 'package:wtc/widgets/going_maybe_count_buttons.dart';
 
 class EventCalendar extends StatefulWidget {
   const EventCalendar({super.key});
@@ -134,12 +135,9 @@ class _EventCalendar extends State<EventCalendar> {
                               PostTagBox(tags: _selectedEvents[index].tags),
                               PostBodyBox(
                                   body: "\n${_selectedEvents[index].body}\n"),
-                              SizedBox(
-                                  width: 600,
-                                  child: Text(
-                                    "Attending: ${_selectedEvents[index].attendingCount}   Maybe Going: ${_selectedEvents[index].maybeCount}",
-                                    textAlign: TextAlign.center,
-                                  ))
+                              GoingMaybeCountButtons(
+                                postID: _selectedEvents[index].postId,
+                              )
                             ],
                           ));
                     });

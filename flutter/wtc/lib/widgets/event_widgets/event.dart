@@ -2,12 +2,14 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
+import 'package:wtc/widgets/going_maybe_count_buttons.dart';
 
 class Event extends Post {
   Event({
@@ -49,7 +51,7 @@ class Event extends Post {
                     currentUser?.email == userEmail)) {
               return InkWell(
                 onTap: () {
-                  showEventDialog(context);
+                  showEventDialog(context, postId);
                 },
                 child: Column(
                   children: [
@@ -64,14 +66,13 @@ class Event extends Post {
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                     RSVPButtons(postID: postId, uid: currentUser?.email),
                     PostDeleteEditBox(post: this),
-                    
                   ],
                 ),
               );
             } else {
               return InkWell(
                 onTap: () {
-                  showEventDialog(context);
+                  showEventDialog(context, postId);
                 },
                 child: Column(
                   children: [
@@ -103,7 +104,7 @@ class Event extends Post {
     );
   }
 
-  void showEventDialog(BuildContext context) {
+  void showEventDialog(BuildContext context, Guid postID) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -127,12 +128,7 @@ class Event extends Post {
                       "Where: $location\n",
                       textAlign: TextAlign.left,
                     )),
-                SizedBox(
-                    width: 600,
-                    child: Text(
-                      "Attending: $attendingCount     Maybe Going: $maybeCount",
-                      textAlign: TextAlign.center,
-                    ))
+                GoingMaybeCountButtons(postID: postID)
               ],
             ),
           );
