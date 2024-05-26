@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
-import 'package:wtc/widgets/post_widgets/post.dart';
+import 'package:wtc/widgets/post_widgets/post_review_widget.dart';
 
-class PostReview extends Post {
+class PostReview extends Post_Review_Widget {
   PostReview({
     Key? key,
     required Guid postId,
