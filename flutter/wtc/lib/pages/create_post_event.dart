@@ -186,8 +186,8 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
-      'attending' : {},
-      'maybe' : {}
+      'attending': {},
+      'maybe': {}
     });
 
     // Clear the fields
@@ -202,6 +202,8 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Post submitted successfully')),
     );
+
+    Navigator.of(context).pop();
   }
 
   @override
