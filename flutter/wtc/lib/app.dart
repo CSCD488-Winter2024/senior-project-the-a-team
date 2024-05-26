@@ -194,7 +194,7 @@ class _NavBars extends State<App> {
               setState(() {
                 title = "Jobs";
                 prevTitle = "Jobs";
-                showJobsPage = !showJobsPage;
+                showJobsPage = true;
                 showVolunteerPage = false;
                 showNotification = false;
                 showApprovePostsPage = false;
@@ -215,7 +215,7 @@ class _NavBars extends State<App> {
                 prevTitle = "Volunteer";
                 showJobsPage = false;
                 showNotification = false;
-                showVolunteerPage = !showVolunteerPage;
+                showVolunteerPage = true;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
@@ -283,7 +283,7 @@ class _NavBars extends State<App> {
                 setState(() {
                   title = "Approve Posts";
                   prevTitle = "Approve Posts";
-                  showApprovePostsPage = !showApprovePostsPage;
+                  showApprovePostsPage = true;
                   showVolunteerPage = false;
                   showNotification = false;
                   showJobsPage = false;
@@ -307,7 +307,7 @@ class _NavBars extends State<App> {
                   showNotification = false;
                   showJobsPage = false;
                   showAboutUsPage = false;
-                  showSearchUsers = !showSearchUsers;
+                  showSearchUsers = true;
                   showAccountUpgradePage = false;
                 });
               },
@@ -321,7 +321,7 @@ class _NavBars extends State<App> {
                 setState(() {
                   title = "Upgrade Accounts";
                   prevTitle = "Upgrade Accounts";
-                  showAccountUpgradePage = !showAccountUpgradePage;
+                  showAccountUpgradePage = true;
                   showApprovePostsPage = false;
                   showVolunteerPage = false;
                   showNotification = false;
@@ -339,7 +339,7 @@ class _NavBars extends State<App> {
               setState(() {
                 title = "About Us";
                 prevTitle = "About Us";
-                showAboutUsPage = !showAboutUsPage;
+                showAboutUsPage = true;
                 showJobsPage = false;
                 showNotification = false;
                 showVolunteerPage = false;
