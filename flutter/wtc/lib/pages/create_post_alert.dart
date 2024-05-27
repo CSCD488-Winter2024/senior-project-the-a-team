@@ -163,6 +163,8 @@ class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Post submitted successfully')),
     );
+
+    Navigator.of(context).pop();
   }
 
   @override
