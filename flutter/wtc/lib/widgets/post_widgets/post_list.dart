@@ -1,20 +1,52 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
-class PostList extends StatelessWidget {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class PostList extends StatefulWidget {
+  const PostList({super.key});
 
-  PostList({super.key});
+  @override
+  State<PostList> createState() => _PostListState();
+}
+
+class _PostListState extends State<PostList> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late List<String> _userTags = ['NONE'];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUserTags();
+  }
+
+  Future<void> _initializeUserTags() async {
+    var userTags = await _getUsersTags();
+    setState(() {
+      if (userTags.isNotEmpty) {
+        _userTags = userTags;
+      }
+    });
+  }
+
+  Future<List<String>> _getUsersTags() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var userInfo =
+        await _firestore.collection("users").doc(currentUser?.email).get();
+    List<dynamic> userTagsDynamic = userInfo.data()?['tags'] ?? ['none'];
+    List<String> userTags = userTagsDynamic.cast<String>();
+    return userTags;
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: _firestore
             .collection('_posts')
+            .where('tags', arrayContainsAny: _userTags)
             .orderBy('timestamp', descending: true)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
