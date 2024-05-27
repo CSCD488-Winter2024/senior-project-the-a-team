@@ -50,6 +50,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
   Future<void> createAccountDoc(var tags, String profilePic){
+    List<dynamic> newSavedPostList = List.empty();
     return FirebaseFirestore.instance
       .collection('users')
       .doc(currentUser!.email)
@@ -63,6 +64,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
         'isPending': false,
         'tags': tags,
         'pfp': profilePic,
+        'saved_posts': newSavedPostList
     });
   }
 

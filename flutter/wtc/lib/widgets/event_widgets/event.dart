@@ -64,7 +64,7 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
                     PostDeleteEditBox(post: this),
                   ],
                 ),

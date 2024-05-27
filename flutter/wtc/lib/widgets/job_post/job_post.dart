@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
+import 'package:wtc/widgets/save_post.dart';
 import '../post_widgets/post.dart';
 import '../post_widgets/post_body_box.dart';
 import '../post_widgets/post_tag_box.dart';
@@ -58,6 +59,7 @@ class JobPost extends Post {
                       textAlign: TextAlign.left,
                     )),
                 JobWageBox(wageType: wageType, wage: wage),
+                SavePost(postId: postId, currentUserId: currentUser?.uid.toString()),
                 PostDeleteEditBox(post: this)
               ];
 
@@ -82,7 +84,8 @@ class JobPost extends Post {
                       "posted on: $month-$day-$year",
                       textAlign: TextAlign.left,
                     )),
-                JobWageBox(wageType: wageType, wage: wage)
+                JobWageBox(wageType: wageType, wage: wage),
+                SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
               ];
 
               // Return the Column with all children

@@ -8,6 +8,7 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/save_post.dart';
 
 class Post extends StatelessWidget {
   Post(
@@ -60,6 +61,7 @@ class Post extends StatelessWidget {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    SavePost(postId: postId, currentUserId: currentUser?.uid.toString()),
                     PostDeleteEditBox(post: this)
                   ],
                 ),
@@ -79,7 +81,8 @@ class Post extends StatelessWidget {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
                   ],
                 ),
               );
