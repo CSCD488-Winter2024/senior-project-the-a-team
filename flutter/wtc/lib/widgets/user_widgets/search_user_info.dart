@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wtc/widgets/user_widgets/search_user_delete_edit.dart';
 
 class SearchUserInfo extends StatelessWidget {
@@ -40,16 +41,34 @@ class SearchUserInfo extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Column(
-              children: [
-                Text("Email: $email"),
-                const SizedBox(height: 10),
-                Text("Username: $username"),
-                const SizedBox(height: 10),
-                Text("Name: $name"),
-                const SizedBox(height: 10),
-                Text("Tier: $tier"),
-              ],
+            Flexible(
+              child: Column(
+                children: [
+                  Text(
+                    "Email: $email",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Username: $username",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Name: $name",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tier: $tier",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
             )
           ],
         ),

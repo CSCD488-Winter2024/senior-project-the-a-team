@@ -59,7 +59,7 @@ class Post extends StatelessWidget {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
+                    PostBodyBox(body: header),
                     PostDeleteEditBox(post: this)
                   ],
                 ),
@@ -79,7 +79,7 @@ class Post extends StatelessWidget {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
+                    PostBodyBox(body: header)
                   ],
                 ),
               );
