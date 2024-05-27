@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wtc/widgets/save_post.dart';
 
 // ignore: must_be_immutable
 class RSVPButtons extends StatefulWidget {
@@ -94,10 +95,8 @@ class _RSVPButtons extends State<RSVPButtons> {
 
   Future<void> checkIfAttending(String postID, String uid) async {
     try {
-      DocumentSnapshot documentSnapshot = await _firestore
-          .collection('_posts')
-          .doc(postID)
-          .get();
+      DocumentSnapshot documentSnapshot =
+          await _firestore.collection('_posts').doc(postID).get();
 
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
@@ -124,10 +123,8 @@ class _RSVPButtons extends State<RSVPButtons> {
 
   Future<void> checkIfMaybeAttending(String postID, String uid) async {
     try {
-      DocumentSnapshot documentSnapshot = await _firestore
-          .collection('_posts')
-          .doc(postID)
-          .get();
+      DocumentSnapshot documentSnapshot =
+          await _firestore.collection('_posts').doc(postID).get();
 
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
@@ -155,7 +152,8 @@ class _RSVPButtons extends State<RSVPButtons> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: _firestore.collection('_posts').doc(widget.postID.toString()).get(),
+      future:
+          _firestore.collection('_posts').doc(widget.postID.toString()).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -165,26 +163,38 @@ class _RSVPButtons extends State<RSVPButtons> {
         }
 
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton.icon(
-              onPressed: () {
-                changeIsAttending();
-              },
-              label: const Text("Attend"),
-              icon: isAttending
-                  ? const Icon(color: Colors.green, Icons.check_box)
-                  : const Icon(color: Colors.green, Icons.check_box_outlined),
-            ),
-            TextButton.icon(
-              onPressed: () {
-                changeIsMaybeAttending();
-              },
-              label: const Text("Interested"),
-              icon: isMaybeAttending
-                  ? const Icon(color:Color.fromARGB(255, 160, 146, 21),Icons.star_rounded)
-                  : const Icon(color:Color.fromARGB(255, 160, 146, 21),Icons.star_outline_rounded),
-            ),
+            SavePost(postId: widget.postID, currentUserId: widget.uid),
+            Container(
+              child: Row(
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      changeIsAttending();
+                    },
+                    label: const Text("Attend"),
+                    icon: isAttending
+                        ? const Icon(color: Colors.green, Icons.check_box)
+                        : const Icon(
+                            color: Colors.green, Icons.check_box_outlined),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      changeIsMaybeAttending();
+                    },
+                    label: const Text("Interested"),
+                    icon: isMaybeAttending
+                        ? const Icon(
+                            color: Color.fromARGB(255, 160, 146, 21),
+                            Icons.star_rounded)
+                        : const Icon(
+                            color: Color.fromARGB(255, 160, 146, 21),
+                            Icons.star_outline_rounded),
+                  ),
+                ],
+              ),
+            )
           ],
         );
       },
