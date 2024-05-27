@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -26,6 +27,7 @@ class _EventCalendar extends State<EventCalendar> {
       {}; //Used to show events as dots on the calendar
   List<Event> _selectedEvents =
       []; //Actual list of events that will be displayed beneath the calendar
+  List<String> _userTags = ['NONE'];
 
   @override
   void initState() {
@@ -33,10 +35,17 @@ class _EventCalendar extends State<EventCalendar> {
     today = DateTime.now();
     _focusedDay = DateTime.utc(today!.year, today!.month, today!.day);
     _selectedDay = _focusedDay;
+    print(_userTags);
     _initializeEvents();
   }
 
   Future<void> _initializeEvents() async {
+    var userTags = await _getUsersTags();
+    setState(() {
+      if (userTags.isNotEmpty) {
+        _userTags = userTags;
+      }
+    });
     eventPosts = await getEvents();
     setState(() {
       for (var event in eventPosts!) {
@@ -52,6 +61,15 @@ class _EventCalendar extends State<EventCalendar> {
 
   List<Event> _getEventsForDay(DateTime day) {
     return events[day] ?? [];
+  }
+
+  Future<List<String>> _getUsersTags() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var userInfo =
+        await _firestore.collection("users").doc(currentUser?.email).get();
+    List<dynamic> userTagsDynamic = userInfo.data()?['tags'] ?? ['none'];
+    List<String> userTags = userTagsDynamic.cast<String>();
+    return userTags;
   }
 
   @override
@@ -156,6 +174,7 @@ class _EventCalendar extends State<EventCalendar> {
       CollectionReference collection = _firestore.collection('_posts');
       QuerySnapshot snapshot = await collection
           .where('type', isEqualTo: 'Event')
+          .where('tags', arrayContainsAny: _userTags)
           .orderBy('timestamp', descending: true)
           .get();
       for (var doc in snapshot.docs) {
