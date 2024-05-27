@@ -48,28 +48,18 @@ class _LoginPageState extends State<LoginPage>{
     }
   }
   void storeNotifToken(String email) async{
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    //getNotifPermissions
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
     //get user's notif token
     String? token = await FirebaseMessaging.instance.getToken();
     //store it in firestore
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    Future<void> updateUser() {
-      return users
-        .doc(email)
-        .update({'notificationToken': token})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
-    }
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance 
+      .collection('users') 
+      .where('email', isEqualTo: email) 
+      .get(); 
+    DocumentSnapshot documentSnapshot = querySnapshot.docs.first; 
+    await FirebaseFirestore.instance 
+      .collection('users') 
+      .doc(documentSnapshot.id) 
+      .update({'notificationToken': token}); 
   }
   @override
   Widget build(BuildContext context){
