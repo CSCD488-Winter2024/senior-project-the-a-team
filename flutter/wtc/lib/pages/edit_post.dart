@@ -21,12 +21,22 @@ class _EditPostPageState extends State<EditPostPage> {
   final TextEditingController _headerController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   Map<String, bool> tags = {
-    'Eastern': false,
-    'Traffic': false,
-    'Accident': false,
+    'News': false,
     'Weather': false,
+    'Business': false,
+    'Shopping': false,
+    'Eastern': false,
+    'Entertainment': false,
+    'Food': false,
+    'Government': false,
+    'Pets': false,
+    'Public Resources': false,
+    'Schools': false,
+    'Sports': false,
+    'Adult Sports': false,
+    'Youth Sports': false,
+    'Traffic': false,
     'Construction': false,
-    'Event': false,
   };
   bool _isAlert = false;
 
@@ -56,35 +66,37 @@ class _EditPostPageState extends State<EditPostPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Tags'),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: tags.keys.map((String tag) {
-                  return CheckboxListTile(
-                    title: Text(tag),
-                    value: tags[tag],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Update the selection state of the tag
-                        tags[tag] = value!;
-                      });
-                    },
-                  );
-                }).toList(),
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+        return SingleChildScrollView(
+          child: AlertDialog(
+            title: const Text('Select Tags'),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: tags.keys.map((String tag) {
+                    return CheckboxListTile(
+                      title: Text(tag),
+                      value: tags[tag],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          // Update the selection state of the tag
+                          tags[tag] = value!;
+                        });
+                      },
+                    );
+                  }).toList(),
+                );
               },
-              child: const Text('Done'),
             ),
-          ],
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Done'),
+              ),
+            ],
+          ),
         );
       },
     );
