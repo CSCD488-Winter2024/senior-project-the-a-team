@@ -15,7 +15,7 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  late List<String> _userTags = ['NONE'];
+  List<String> _userTags = ['NONE'];
 
   @override
   void initState() {
