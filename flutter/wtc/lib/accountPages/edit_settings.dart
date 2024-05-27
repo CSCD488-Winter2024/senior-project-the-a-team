@@ -639,7 +639,6 @@ class _EditSettingsState extends State<EditSettings> {
                                     //await FirebaseAuth.instance.revokeTokenWithAuthorizationCode();
         
                                     await deleteAccount(widget.email, widget.tags, widget.uid);
-                                    FirebaseFirestore.instance.clearPersistence();                                 
                                     Navigator.pushAndRemoveUntil(
                                       context, 
                                       CupertinoPageRoute(
@@ -709,18 +708,16 @@ class _EditSettingsState extends State<EditSettings> {
                                         );
                                       }
                                     );
-                                      await FirebaseAuth.instance.currentUser!
-                                        .reauthenticateWithCredential(
-                                          EmailAuthProvider.credential(
-                                            email: widget.email, 
-                                            password: passwordController.text.trim()
-                                          )
-                                      );
-                                    //print("reauthenticated successfully");
-        
-                                      await deleteAccount(widget.email, widget.tags, widget.uid);
-                                      await FirebaseFirestore.instance.clearPersistence();
-                                      Navigator.pushAndRemoveUntil(
+                                    await FirebaseAuth.instance.currentUser!
+                                      .reauthenticateWithCredential(
+                                        EmailAuthProvider.credential(
+                                          email: widget.email, 
+                                          password: passwordController.text.trim()
+                                        )
+                                    );
+                                    
+                                    await deleteAccount(widget.email, widget.tags, widget.uid);
+                                    Navigator.pushAndRemoveUntil(
                                       context, 
                                       CupertinoPageRoute(
                                         builder: (context) => const AuthPage()

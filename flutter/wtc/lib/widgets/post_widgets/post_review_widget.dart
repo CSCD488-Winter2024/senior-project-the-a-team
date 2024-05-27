@@ -1,39 +1,34 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_this
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
-import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
-import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
-import 'package:wtc/widgets/going_maybe_count_buttons.dart';
 
-class Event extends Post {
-  Event({
-    super.key,
-    required super.title,
-    required super.body,
-    required super.tags,
-    required super.header,
-    required super.interestCount,
-    required super.created,
-    required super.postId,
-    required super.userEmail,
-    required this.date,
-    required this.time,
-    required this.location,
-    required this.attendingCount,
-    required this.maybeCount,
-  });
+class Post_Review_Widget extends StatelessWidget {
+  Post_Review_Widget(
+      {Key? key,
+      required this.title,
+      required this.body,
+      required this.tags,
+      required this.header,
+      required this.userEmail,
+      required this.interestCount,
+      required this.created,
+      required this.postId})
+      : super(key: key);
 
-  final DateTime date;
-  final TimeOfDay time;
-  final String location;
-  int attendingCount;
-  int maybeCount;
+  Guid postId;
+  final String title;
+  final String header;
+  final List<String> tags;
+  final String body;
+  final String userEmail;
+  final int interestCount;
+  final DateTime created;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +46,7 @@ class Event extends Post {
                     currentUser?.email == userEmail)) {
               return InkWell(
                 onTap: () {
-                  showEventDialog(context, postId);
+                  showPostDialog(context);
                 },
                 child: Column(
                   children: [
@@ -64,15 +59,13 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
-                    PostDeleteEditBox(post: this),
                   ],
                 ),
               );
             } else {
               return InkWell(
                 onTap: () {
-                  showEventDialog(context, postId);
+                  showPostDialog(context);
                 },
                 child: Column(
                   children: [
@@ -84,8 +77,7 @@ class Event extends Post {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
                   ],
                 ),
               );
@@ -104,34 +96,37 @@ class Event extends Post {
     );
   }
 
-  void showEventDialog(BuildContext context, Guid postID) {
+  void showPostDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            scrollable: true,
-            title: PostTitleBox(title: title),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                PostTagBox(tags: tags),
-                PostBodyBox(body: "$body\n"),
-                SizedBox(
-                    width: 600,
-                    child: Text(
-                      "When: ${date.toString().split(" ")[0]} ${time.toString().split("(")[1].split(")")[0]}",
-                      textAlign: TextAlign.left,
-                    )),
-                SizedBox(
-                    width: 600,
-                    child: Text(
-                      "Where: $location\n",
-                      textAlign: TextAlign.left,
-                    )),
-                GoingMaybeCountButtons(postID: postID)
-              ],
-            ),
-          );
+              scrollable: true,
+              title: PostTitleBox(title: title),
+              content: Column(
+                  children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
         });
   }
+
+  Future<String> fetchUserTier() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String userTier = "";
+    if (currentUser != null && currentUser.email != null) {
+      DocumentSnapshot<Map<String, dynamic>> userDetails =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(currentUser.email)
+              .get();
+
+      userTier = userDetails.data()?['tier'] ??
+          'viewer'; // Store user tier or default to viewer
+    }
+    return userTier;
+  }
+}
+
+extension UtilExtensions on String {
+  List<String> multiSplit(Iterable<String> delimeters) => delimeters.isEmpty
+      ? [this]
+      : this.split(RegExp(delimeters.map(RegExp.escape).join('|')));
 }

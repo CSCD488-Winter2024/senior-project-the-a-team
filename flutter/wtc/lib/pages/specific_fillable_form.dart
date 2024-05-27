@@ -146,6 +146,8 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Post submitted successfully')),
     );
+
+    Navigator.of(context).pop();
   }
 
   @override

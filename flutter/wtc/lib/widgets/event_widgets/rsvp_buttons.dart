@@ -167,24 +167,23 @@ class _RSVPButtons extends State<RSVPButtons> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-              iconSize: 36,
+            TextButton.icon(
               onPressed: () {
                 changeIsAttending();
               },
+              label: const Text("Attend"),
               icon: isAttending
                   ? const Icon(color: Colors.green, Icons.check_box)
                   : const Icon(color: Colors.green, Icons.check_box_outlined),
             ),
-            IconButton(
-              color: const Color.fromARGB(255, 160, 146, 21),
-              iconSize: 38,
+            TextButton.icon(
               onPressed: () {
                 changeIsMaybeAttending();
               },
+              label: const Text("Interested"),
               icon: isMaybeAttending
-                  ? const Icon(Icons.star_rounded)
-                  : const Icon(Icons.star_outline_rounded),
+                  ? const Icon(color:Color.fromARGB(255, 160, 146, 21),Icons.star_rounded)
+                  : const Icon(color:Color.fromARGB(255, 160, 146, 21),Icons.star_outline_rounded),
             ),
           ],
         );
