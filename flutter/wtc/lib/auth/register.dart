@@ -42,7 +42,13 @@ class _RegisterPageState extends State<RegisterPage> {
       )
     );
 
-    if(passwordController.text != confirmPasswordController.text){
+    if(usernameController.text.isEmpty || nameController.text.isEmpty || 
+      emailController.text.isEmpty || passwordController.text.isEmpty || 
+      confirmPasswordController.text.isEmpty){
+        Navigator.pop(context);
+        displayMessageToUser("Please fill out all fields", context);
+    }
+    else if(passwordController.text != confirmPasswordController.text){
       Navigator.pop(context);
       displayMessageToUser("Passwords don't match", context);
     }
@@ -61,6 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
         createUserDocument(userCredential);
 
         await showDialog(
+          barrierDismissible: false,
           context: context, 
           builder: (context) => AlertDialog(
             title: const Text("Email Verification"),
@@ -86,7 +93,24 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       } on FirebaseAuthException catch (e){
         Navigator.pop(context);
-        displayMessageToUser(e.code , context);
+        if(e.code == 'channel-error'){
+          displayMessageToUser("Please enter a valid email and password.", context);
+        }
+        else if(e.code == 'email-already-in-use'){
+          displayMessageToUser("This email is already in use.", context);
+        }
+        else if(e.code == 'invalid-credential'){
+          displayMessageToUser("Sorry, your email or password was incorrect. Please try again.", context);
+        }
+        else if(e.code == 'invalid-email'){
+          displayMessageToUser("Please enter a valid email.", context);
+        }
+        else if(e.code == 'weak-password'){
+          displayMessageToUser("Password is too weak.", context);
+        }
+        else{
+          displayMessageToUser("Sorry, an error occurred. Please try again.", context);
+        }
       }
     }
   }
@@ -134,18 +158,6 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //logo
-                // SizedBox(
-                //   // height: 150,
-                //   width: 99999,
-                //   child: ClipRRect(
-                //     borderRadius: BorderRadius.circular(40),
-                //     child: const Image(
-                //       image: AssetImage("images/WTC_BLANK.png"),
-                //       fit: BoxFit.fill,
-                //     ),
-                //   ),
-                // ),
 
                 const Text(
                   "Welcome To Cheney",
