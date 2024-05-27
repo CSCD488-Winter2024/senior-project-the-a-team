@@ -87,6 +87,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
                 tier: filteredUsers[index]['tier'] as String,
                 pfp: filteredUsers[index]['pfp'] as String,
                 onUpdatePage: _updatePage,
+                uid: filteredUsers[index]['uid'] as String,
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

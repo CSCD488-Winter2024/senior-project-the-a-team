@@ -117,7 +117,7 @@ class Post extends StatelessWidget {
       DocumentSnapshot<Map<String, dynamic>> userDetails =
           await FirebaseFirestore.instance
               .collection("users")
-              .doc(currentUser.email)
+              .doc(currentUser.uid)
               .get();
 
       userTier = userDetails.data()?['tier'] ??

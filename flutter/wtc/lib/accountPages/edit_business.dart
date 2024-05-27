@@ -18,7 +18,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
   Future<DocumentSnapshot<Map<String, dynamic>>> getBusinessInfo() async {
     return await FirebaseFirestore.instance
         .collection("users")
-        .doc(user!.email)
+        .doc(user!.uid)
         .get();
   }
 

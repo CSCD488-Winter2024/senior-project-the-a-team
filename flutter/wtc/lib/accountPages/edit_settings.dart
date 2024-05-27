@@ -49,7 +49,7 @@ Future<void> deleteAccount(String email, List<String> tags, String uid) async{
   //Delete user from users collection
   await FirebaseFirestore.instance
     .collection('users')
-    .doc(email.toLowerCase())
+    .doc(uid)
     .delete();
 
   // // Delete user from tags collection

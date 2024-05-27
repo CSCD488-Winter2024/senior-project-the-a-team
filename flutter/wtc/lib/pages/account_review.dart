@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/user_widgets/user_review.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -73,6 +74,13 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
         content: Text("User review denied and deleted successfully!"),
         backgroundColor: Colors.green,
       ));
+    FirebaseFirestore.instance
+        .collection('_review_account')
+        .doc(reviewId)
+        .update(
+          {'isPending': false},
+        );
+         
 
       setState(() {
         futureUserReviews = UserReview.fetchUsersFromFirestore();
@@ -89,7 +97,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     DocumentReference userDoc =
-        firestore.collection('users').doc(userReview.email);
+        firestore.collection('users').doc(userReview.uid);
 
     GeoPoint coordinates = GeoPoint(0, 0);
     try {

@@ -45,7 +45,7 @@ class _EditTagsState extends State<EditTags> {
   ];
 
   Future<void> updateTags(List<String> tags){
-    return user.doc(currentUser!.email).update({
+    return user.doc(currentUser!.uid).update({
       'tags': tags
     });
   }
