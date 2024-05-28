@@ -9,7 +9,6 @@ import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:wtc/services/auth_services.dart';
 
 class LoginPage extends StatefulWidget{
@@ -37,29 +36,21 @@ class _LoginPageState extends State<LoginPage>{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
-      if(context.mounted){
-        storeNotifToken(emailController.text);
-        Navigator.pop(context);
-      }
+      storeNotifToken(FirebaseAuth.instance.currentUser!.uid);
+      Navigator.pop(context);  
     }
     on FirebaseAuthException catch(e){
       Navigator.pop(context);
       displayMessageToUser(e.code, context);
     }
   }
-  void storeNotifToken(String email) async{
+  Future<void> storeNotifToken(String uid) async{
     //get user's notif token
     String? token = await FirebaseMessaging.instance.getToken();
     //store it in firestore
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance 
-      .collection('users') 
-      .where('email', isEqualTo: email) 
-      .get(); 
-    DocumentSnapshot documentSnapshot = querySnapshot.docs.first; 
-    await FirebaseFirestore.instance 
-      .collection('users') 
-      .doc(documentSnapshot.id) 
-      .update({'notificationToken': token}); 
+    await FirebaseFirestore.instance.collection("users").doc(uid).update({
+      "notifToken": token
+    }); 
   }
   @override
   Widget build(BuildContext context){
