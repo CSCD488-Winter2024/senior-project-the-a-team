@@ -93,11 +93,12 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> createUserDocument(UserCredential? userCredential) async{
+    List<dynamic> newSavedPostList = List.empty();
     if(userCredential != null && userCredential.user != null){
       String? token = await FirebaseMessaging.instance.getToken();
       await FirebaseFirestore.instance
       .collection("users")
-      .doc(userCredential.user!.email)
+      .doc(userCredential.user!.uid)
       .set({
         'email': userCredential.user!.email,
         'username': usernameController.text.trim(),
@@ -108,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'tags': [],
         'uid': userCredential.user!.uid,
         'isPending': false,
+        'saved_posts': newSavedPostList,
         'notificationToken': token
       });
     }
