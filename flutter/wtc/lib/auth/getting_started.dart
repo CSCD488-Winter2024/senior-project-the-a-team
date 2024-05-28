@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +50,12 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future<void> createAccountDoc(var tags, String profilePic){
+  Future<void> createAccountDoc(var tags, String profilePic) async{
+    String? token = await FirebaseMessaging.instance.getToken();
+    List<dynamic> newSavedPostList = List.empty();
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(currentUser!.email)
+      .doc(currentUser!.uid)
       .set({
         'email': currentUser!.email,
         'username': currentUser!.email!.split('@')[0],
@@ -63,13 +66,15 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
         'isPending': false,
         'tags': tags,
         'pfp': profilePic,
+        'saved_posts': newSavedPostList,
+        'notificationToken': token
     });
   }
 
   Future<void> setAccountInfo(var tags, String profilePic){
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(currentUser!.email)
+      .doc(currentUser!.uid)
       .update({
         'tags': tags,
         'pfp': profilePic,
