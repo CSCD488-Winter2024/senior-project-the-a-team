@@ -75,7 +75,7 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
         backgroundColor: Colors.green,
       ));
     FirebaseFirestore.instance
-        .collection('_review_account')
+        .collection('users')
         .doc(reviewId)
         .update(
           {'isPending': false},
