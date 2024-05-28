@@ -191,7 +191,7 @@ class _RSVPButtons extends State<RSVPButtons> {
                             color: Color.fromARGB(255, 160, 146, 21),
                             Icons.star_outline_rounded),
                   ),
-                  const SizedBox(width: 152),
+                  const SizedBox(width: 40),
                   SavePost(postId: widget.postID, currentUserId: widget.uid)
                 ],
               ),
