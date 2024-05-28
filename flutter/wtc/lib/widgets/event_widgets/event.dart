@@ -64,7 +64,8 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: header),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+
                     PostDeleteEditBox(post: this),
                   ],
                 ),
@@ -85,7 +86,7 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: header),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
                   ],
                 ),
               );

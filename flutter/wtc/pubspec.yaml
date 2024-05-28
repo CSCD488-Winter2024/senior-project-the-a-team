@@ -55,6 +55,7 @@ dependencies:
   sign_in_with_apple: ^6.1.0
   crypto: ^3.0.3
   flutter_launcher_icons: ^0.13.1
+  web: ^0.4.0
 
 
 dev_dependencies:

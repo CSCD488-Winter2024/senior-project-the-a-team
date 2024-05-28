@@ -92,6 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> createUserDocument(UserCredential? userCredential) async{
+    List<dynamic> newSavedPostList = List.empty();
     if(userCredential != null && userCredential.user != null){
       await FirebaseFirestore.instance
       .collection("users")
@@ -105,7 +106,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'tags': [],
         'isBusiness': false,
         'uid': userCredential.user!.uid,
-        'isPending': false
+        'isPending': false,
+        'saved_posts': newSavedPostList
       });
     }
   }

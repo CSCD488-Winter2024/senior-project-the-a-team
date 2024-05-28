@@ -24,8 +24,24 @@ class _SavePostState extends State<SavePost> {
     checkIfSaved(widget.postId.toString(), widget.currentUserId ?? '');
   }
 
+Future<void> addArrayFieldToCollection(String collectionName, String fieldName, List<dynamic> fieldValue) async {
+  final CollectionReference collectionRef = FirebaseFirestore.instance.collection(collectionName);
+
+  final QuerySnapshot snapshot = await collectionRef.get();
+  WriteBatch batch = FirebaseFirestore.instance.batch();
+
+  for (QueryDocumentSnapshot doc in snapshot.docs) {
+    DocumentReference docRef = collectionRef.doc(doc.id);
+    batch.update(docRef, {fieldName: fieldValue});
+  }
+
+  await batch.commit();
+  print("Added array field '$fieldName' with value '$fieldValue' to all documents in the '$collectionName' collection.");
+}
+
+
   Future<void> changeSavedPosts() async {
-    if (isSaved) {
+    if (!isSaved) {
       try {
         await _firestore
             .collection('users')
@@ -56,7 +72,7 @@ class _SavePostState extends State<SavePost> {
   Future<void> checkIfSaved(String postId, String userId) async {
     try {
       DocumentSnapshot documentSnapshot =
-          await _firestore.collection('_posts').doc(postId).get();
+          await _firestore.collection('users').doc(userId).get();
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
@@ -84,8 +100,9 @@ class _SavePostState extends State<SavePost> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: isSaved ? Icon(Icons.bookmark_border) : Icon(Icons.bookmark),
+    return TextButton.icon(
+      label:const Text("Save"),
+      icon: isSaved ? const Icon(color: Colors.blueGrey, Icons.bookmark) : const Icon(color: Colors.blueGrey, Icons.bookmark_border_outlined),
       onPressed: () {
         setState(() {
           changeSavedPosts();
