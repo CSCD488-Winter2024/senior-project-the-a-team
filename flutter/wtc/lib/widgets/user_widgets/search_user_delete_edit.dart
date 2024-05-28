@@ -73,7 +73,7 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
                 TextButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
-                    await _deleteUser(widget.user.email);
+                    await _deleteUser(widget.user.email, widget.user.uid);
                     void noParam;
                     widget.onUpdatePage(noParam);
                   },
@@ -115,7 +115,7 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
                         TextButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
-                            _editUserTier(widget.user.email, newTier);
+                            _editUserTier(widget.user.uid, newTier);
                             void noParam;
                             widget.onUpdatePage(noParam);
                           },
@@ -131,9 +131,9 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
         });
   }
 
-  Future<void> _deleteUser(String email) async {
+  Future<void> _deleteUser(String email, String uid) async {
     try {
-      await FirebaseFirestore.instance.collection("users").doc(email).delete();
+      await FirebaseFirestore.instance.collection("users").doc(uid).delete();
       FirebaseFunctions functions = FirebaseFunctions.instance;
       HttpsCallable callable = functions.httpsCallable('deleteUserByEmail');
       final response = await callable.call(<String, dynamic>{
@@ -145,10 +145,10 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
     }
   }
 
-  Future<void> _editUserTier(String email, String newTier) async {
+  Future<void> _editUserTier(String uid, String newTier) async {
     await FirebaseFirestore.instance
         .collection("users")
-        .doc(email)
+        .doc(uid)
         .update({'tier': newTier});
   }
 }

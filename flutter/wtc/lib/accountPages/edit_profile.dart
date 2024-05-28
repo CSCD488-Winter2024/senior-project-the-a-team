@@ -38,14 +38,14 @@ class _EditProfile extends State<EditProfile>{
   final TextEditingController confirmPasswordController = TextEditingController();
 
   Future<void> updateAccount(TextEditingController usernameController, TextEditingController nameController){
-    return user.doc(currentUser!.email).update({
+    return user.doc(currentUser!.uid).update({
       'username': usernameController.text,
       'name': nameController.text,
     });
   }
 
   Future<void> setPfp(String img){
-    return user.doc(currentUser!.email).update({
+    return user.doc(currentUser!.uid).update({
       'pfp': img
     });
   }

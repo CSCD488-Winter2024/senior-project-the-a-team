@@ -53,7 +53,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
     List<dynamic> newSavedPostList = List.empty();
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(currentUser!.email)
+      .doc(currentUser!.uid)
       .set({
         'email': currentUser!.email,
         'username': currentUser!.email!.split('@')[0],
@@ -71,7 +71,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
   Future<void> setAccountInfo(var tags, String profilePic){
     return FirebaseFirestore.instance
       .collection('users')
-      .doc(currentUser!.email)
+      .doc(currentUser!.uid)
       .update({
         'tags': tags,
         'pfp': profilePic,

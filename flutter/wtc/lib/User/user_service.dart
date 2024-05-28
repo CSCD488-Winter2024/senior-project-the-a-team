@@ -10,7 +10,7 @@ class UserService {
     if (currentUser != null && currentUser.email != null) {
       try {
         DocumentSnapshot<Map<String, dynamic>> userDetails =
-            await firestore.collection("users").doc(currentUser.email).get();
+            await firestore.collection("users").doc(currentUser.uid).get();
         String tier = userDetails.data()?['tier'] ??
             'viewer'; // Default to 'viewer' if not found
         return tier;

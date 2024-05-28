@@ -18,7 +18,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
   Future<DocumentSnapshot<Map<String, dynamic>>> getBusinessInfo() async {
     return await FirebaseFirestore.instance
         .collection("users")
-        .doc(user!.email)
+        .doc(user!.uid)
         .get();
   }
 
@@ -92,7 +92,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
 
     await FirebaseFirestore.instance
       .collection("users")
-      .doc(user!.email)
+      .doc(user!.uid)
       .update({
         "isPending": true,
       }
@@ -356,7 +356,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                       
                           await FirebaseFirestore.instance
                               .collection("users")
-                              .doc(user!.email)
+                              .doc(user!.uid)
                               .update({
                                 "about": _bioController.text,
                                 "phone": _phoneController.text,

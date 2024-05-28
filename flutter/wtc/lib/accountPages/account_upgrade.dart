@@ -107,7 +107,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
 
     await FirebaseFirestore.instance
       .collection("users")
-      .doc(email)
+      .doc(widget.uid)
       .update({
         "isPending": true,
       }

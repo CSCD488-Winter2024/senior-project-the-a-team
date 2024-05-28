@@ -11,7 +11,8 @@ class SearchUserInfo extends StatelessWidget {
       required this.name,
       required this.tier,
       required this.pfp,
-      required this.onUpdatePage});
+      required this.onUpdatePage,
+      required this.uid});
 
   final String email;
   final String username;
@@ -19,6 +20,7 @@ class SearchUserInfo extends StatelessWidget {
   final String tier;
   final String pfp;
   final ValueChanged<void> onUpdatePage;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
