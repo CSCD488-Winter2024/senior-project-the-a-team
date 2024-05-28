@@ -165,7 +165,6 @@ class _RSVPButtons extends State<RSVPButtons> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SavePost(postId: widget.postID, currentUserId: widget.uid),
             Container(
               child: Row(
                 children: [
@@ -192,6 +191,8 @@ class _RSVPButtons extends State<RSVPButtons> {
                             color: Color.fromARGB(255, 160, 146, 21),
                             Icons.star_outline_rounded),
                   ),
+                  const SizedBox(width: 152),
+                  SavePost(postId: widget.postID, currentUserId: widget.uid)
                 ],
               ),
             )

@@ -62,7 +62,7 @@ class Post extends StatelessWidget {
                         )),
 
                     PostBodyBox(body: header),
-                    SavePost(postId: postId, currentUserId: currentUser?.uid.toString()),
+Row(children: [const SizedBox(width:377,), SavePost(postId: postId, currentUserId: currentUser?.uid.toString())]),
                     PostDeleteEditBox(post: this)
                   ],
                 ),
@@ -82,8 +82,8 @@ class Post extends StatelessWidget {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: header)
-                    SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
+                    PostBodyBox(body: header),
+                    Row(children: [const SizedBox(width:377,), SavePost(postId: postId, currentUserId: currentUser?.uid.toString())])
                   ],
                 ),
               );

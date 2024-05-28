@@ -59,7 +59,7 @@ class JobPost extends Post {
                       textAlign: TextAlign.left,
                     )),
                 JobWageBox(wageType: wageType, wage: wage),
-                SavePost(postId: postId, currentUserId: currentUser?.uid.toString()),
+                Row(children: [const SizedBox(width:385,), SavePost(postId: postId, currentUserId: currentUser?.uid.toString())]),
                 PostDeleteEditBox(post: this)
               ];
 
@@ -85,7 +85,7 @@ class JobPost extends Post {
                       textAlign: TextAlign.left,
                     )),
                 JobWageBox(wageType: wageType, wage: wage),
-                SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
+                Row(children: [const SizedBox(width:377,), SavePost(postId: postId, currentUserId: currentUser?.uid.toString())])
               ];
 
               // Return the Column with all children
