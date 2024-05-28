@@ -37,7 +37,7 @@ class _AccountPage extends State<AccountPage> {
       body: StreamBuilder(
         stream: _firestore
           .collection('users')
-          .doc(currentUser!.email)
+          .doc(currentUser!.uid)
           .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,18 +58,19 @@ class _AccountPage extends State<AccountPage> {
             List<String> tags = [];
             bool isBusiness = user['isBusiness'];
             bool isPending = user['isPending'];
-            String? uid = user['uid'];
-            if(uid == null){
+            String uid = user['uid'];
+
+            for(int i = 0; i < tempTags.length; i++){
+              tags.add(tempTags[i]);
+            }
+
+            if (pfp.isEmpty && currentUser?.providerData.first.photoURL != null) {
               FirebaseFirestore.instance
                 .collection("users")
                 .doc(email)
                 .update({
-                  'uid': currentUser!.uid,
+                  'pfp': currentUser!.providerData.first.photoURL, 
                 });
-            }
-
-            for(int i = 0; i < tempTags.length; i++){
-              tags.add(tempTags[i]);
             }
 
             CachedNetworkImage profilePic = CachedNetworkImage(
