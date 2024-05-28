@@ -95,12 +95,14 @@ exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').o
                 const notification = {
                     title: `New Post: ${header}`,
                     body: body,
+                    image: "http://drive.google.com/uc?id=1SviebrgUNmd6dZVEwLTKJ3PiYt41pHqx"
                 };
             }
             else{ //Post is update
                 const notification = {
                     title: `Post Updated: ${header}`,
                     body: body,
+                    image: "http://drive.google.com/uc?id=1SviebrgUNmd6dZVEwLTKJ3PiYt41pHqx"
                 };
             }
 
