@@ -39,7 +39,6 @@ class DeleteAccount extends StatelessWidget {
         'users': FieldValue.arrayRemove([email.toLowerCase()])
       });
   }
-
   // // Delete pfps from storage
   try{
     await FirebaseStorage.instance
@@ -55,7 +54,6 @@ class DeleteAccount extends StatelessWidget {
   }on FirebaseAuthException{
     // do nothing
   }
-  
   }
 
   @override
@@ -67,8 +65,8 @@ class DeleteAccount extends StatelessWidget {
             context: context, 
             builder: (context){
               return AlertDialog(
-                title: const Text("Delete Account"),
-                content: const Text("Are you sure you want to delete your account? This action is irreversible"),
+                title: const Text("Delete Account?"),
+                content: const Text("This action is irreversible."),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -78,36 +76,75 @@ class DeleteAccount extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () async {
-                      try{
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context, 
-                          builder: (context){
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        );
+                      bool confirmed = false;
+                      await showDialog(
+                        context: context, 
+                        builder: (context){
+                          return AlertDialog(
+                            title: const Text("Are you sure?"),
+                            content: const Text(
+                              "This will delete your account permanently.",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  confirmed = true;
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      );
+                      if(confirmed){
+                        try{
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context, 
+                            builder: (context){
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          );
 
-                        await FirebaseAuth.instance.currentUser!
-                          .reauthenticateWithProvider(GoogleAuthProvider());
+                          await FirebaseAuth.instance.currentUser!
+                            .reauthenticateWithProvider(GoogleAuthProvider());
 
-                        await deleteAccount(email, tags, uid);
-                        await GoogleSignIn().disconnect();
-                        Navigator.pushAndRemoveUntil(
-                          context, 
-                          CupertinoPageRoute(
-                            builder: (context) => const AuthPage()
-                          ), 
-                          (route) => false
-                        );                               
-                      } on FirebaseAuthException catch(e){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(e.code),
-                          )
-                        );
-                        Navigator.pop(context);
+                          await deleteAccount(email, tags, uid);
+                          await GoogleSignIn().disconnect();
+                          Navigator.pushAndRemoveUntil(
+                            context, 
+                            CupertinoPageRoute(
+                              builder: (context) => const AuthPage()
+                            ), 
+                            (route) => false
+                          );                               
+                        } on FirebaseAuthException catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.code),
+                            )
+                          );
+                          Navigator.pop(context);
+                        }
                       }
                     },
                     child: const Text(
@@ -127,7 +164,7 @@ class DeleteAccount extends StatelessWidget {
             context: context, 
             builder: (context){
               return AlertDialog(
-                title: const Text("Delete Account"),
+                title: const Text("Delete Account?"),
                 content: const Text("Are you sure you want to delete your account? This action is irreversible"),
                 actions: [
                   TextButton(
@@ -138,38 +175,77 @@ class DeleteAccount extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () async {
-                      try{
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context, 
-                          builder: (context){
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        );
+                      bool confirmed = false;
+                      await showDialog(
+                        context: context, 
+                        builder: (context){
+                          return AlertDialog(
+                            title: const Text("Are you sure?"),
+                            content: const Text(
+                              "This will delete your account permanently.",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  confirmed = true;
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      );
+                      if(confirmed){
+                        try{
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context, 
+                            builder: (context){
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          );
 
-                        await FirebaseAuth.instance.currentUser!
-                          .reauthenticateWithProvider(AppleAuthProvider());
+                          await FirebaseAuth.instance.currentUser!
+                            .reauthenticateWithProvider(AppleAuthProvider());
 
-                        // revoke apple token
-                        //await FirebaseAuth.instance.revokeTokenWithAuthorizationCode();
+                          // revoke apple token
+                          //await FirebaseAuth.instance.revokeTokenWithAuthorizationCode();
 
-                        await deleteAccount(email, tags, uid);                                 
-                        Navigator.pushAndRemoveUntil(
-                          context, 
-                          CupertinoPageRoute(
-                            builder: (context) => const AuthPage()
-                          ), 
-                          (route) => false
-                        );                                  
-                      } on FirebaseAuthException catch(e){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(e.code),
-                          )
-                        );
-                        Navigator.pop(context);
+                          await deleteAccount(email, tags, uid);                                 
+                          Navigator.pushAndRemoveUntil(
+                            context, 
+                            CupertinoPageRoute(
+                              builder: (context) => const AuthPage()
+                            ), 
+                            (route) => false
+                          );                                  
+                        } on FirebaseAuthException catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.code),
+                            )
+                          );
+                          Navigator.pop(context);
+                        }
                       }
                     },
                     child: const Text(
@@ -191,10 +267,22 @@ class DeleteAccount extends StatelessWidget {
               return AlertDialog(
                 title: const Text("Reauthenticate"),
                 content: SizedBox(
-                  height: 120,
+                  height: 140,
                   child: Column(
                     children: [
-                      const Text("Please reauthenticate to delete your account"),
+                      const Text("Please re-enter your password to delete your account."),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "This action is irreversible.",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
                       TextField(
                         decoration: const InputDecoration(
                           labelText: "Password",
@@ -232,7 +320,6 @@ class DeleteAccount extends StatelessWidget {
                               password: passwordController.text.trim()
                             )
                         );
-                        //print("reauthenticated successfully");
 
                         await deleteAccount(email, tags, uid);
                         Navigator.pushAndRemoveUntil(
@@ -242,17 +329,16 @@ class DeleteAccount extends StatelessWidget {
                           ), 
                           (route) => false
                         );
-                      }on FirebaseAuthException catch(e){ 
+                      }on FirebaseAuthException{ 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(e.code),
+                          const SnackBar(
+                            content: Text("Invalid password"),
                           )
                         );
                         passwordController.clear();
                         Navigator.pop(context);
                       }                             
-                    },
-                    
+                    },                   
                     child: const Text(
                       "Confirm",
                       style: TextStyle(
