@@ -66,7 +66,7 @@ class _EventCalendar extends State<EventCalendar> {
   Future<List<String>> _getUsersTags() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     var userInfo =
-        await _firestore.collection("users").doc(currentUser?.email).get();
+        await _firestore.collection("users").doc(currentUser?.uid).get();
     List<dynamic> userTagsDynamic = userInfo.data()?['tags'] ?? ['none'];
     List<String> userTags = userTagsDynamic.cast<String>();
     return userTags;
