@@ -102,6 +102,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
+      'tags': ['Job'],
     });
     // Clear the fields
     _titleController.clear();

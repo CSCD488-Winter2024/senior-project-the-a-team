@@ -63,8 +63,9 @@ class Event extends Post {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    PostBodyBox(body: header),
+                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+
                     PostDeleteEditBox(post: this),
                   ],
                 ),
@@ -84,8 +85,8 @@ class Event extends Post {
                           "Posted on: ${created.toString().split(" ")[0]}\n",
                           textAlign: TextAlign.left,
                         )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
-                    RSVPButtons(postID: postId, uid: currentUser?.email),
+                    PostBodyBox(body: header),
+                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
                   ],
                 ),
               );

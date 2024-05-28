@@ -41,7 +41,24 @@ class _LoginPageState extends State<LoginPage>{
     }
     on FirebaseAuthException catch(e){
       Navigator.pop(context);
-      displayMessageToUser(e.code, context);
+      if(e.code == 'channel-error'){
+        displayMessageToUser("Please enter a valid email and password.", context);
+      }
+      else if(e.code == 'invalid-credential'){
+        displayMessageToUser("Sorry, your email or password was incorrect. Please try again.", context);
+      }
+      else if(e.code == 'wrong-password'){
+        displayMessageToUser("Sorry, your password was incorrect. Please try again.", context);
+      }
+      else if(e.code == 'invalid-email'){
+        displayMessageToUser("Please enter a valid email.", context);
+      }
+      else if(e.code == 'too-many-requests'){
+        displayMessageToUser("Sorry, too many requests. Please try again later.", context);
+      }
+      else{
+        displayMessageToUser("Sorry, an error occurred. Please try again.", context);
+      }
     }
   }
   Future<void> storeNotifToken(String uid) async{
@@ -54,6 +71,9 @@ class _LoginPageState extends State<LoginPage>{
   }
   @override
   Widget build(BuildContext context){
+    // while(Navigator.canPop(context)){
+    //   Navigator.pop(context);
+    // }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(

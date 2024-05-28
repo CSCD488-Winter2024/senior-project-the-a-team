@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/user_widgets/search_user_info.dart';
 
@@ -14,6 +15,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<QueryDocumentSnapshot> allUsers = [];
   List<QueryDocumentSnapshot> filteredUsers = [];
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -22,7 +24,10 @@ class _SearchUserPageState extends State<SearchUserPage> {
   }
 
   Future<void> getAllUsers() async {
-    var querySnapshot = await _firestore.collection('users').get();
+    var querySnapshot = await _firestore
+        .collection('users')
+        .where('email', isNotEqualTo: currentUser?.email)
+        .get();
     setState(() {
       allUsers = querySnapshot.docs;
       filteredUsers = querySnapshot.docs;
@@ -87,6 +92,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
                 tier: filteredUsers[index]['tier'] as String,
                 pfp: filteredUsers[index]['pfp'] as String,
                 onUpdatePage: _updatePage,
+                uid: filteredUsers[index]['uid'] as String,
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

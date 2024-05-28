@@ -11,6 +11,7 @@ class UserReview extends StatelessWidget {
   final String name;
   final String phone;
   final String reviewId;
+  final String uid;
 
   UserReview({
     required this.about,
@@ -21,6 +22,7 @@ class UserReview extends StatelessWidget {
     required this.name,
     required this.phone,
     required this.reviewId,
+    required this.uid
   });
 
   @override
@@ -57,6 +59,7 @@ class UserReview extends StatelessWidget {
         name: doc['name'],
         phone: doc['phone'],
         reviewId: doc.id,
+        uid: doc.id,
       );
     }).toList();
     return users;
