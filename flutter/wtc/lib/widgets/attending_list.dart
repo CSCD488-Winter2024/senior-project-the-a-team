@@ -57,7 +57,7 @@ class _AttendingList extends State<AttendingList> {
         for (int i = 0; i < attendingList.length; i++) {
           QuerySnapshot querySnapshot = await _firestore
               .collection('users')
-              .where('email', isEqualTo: attendingList[i])
+              .where('uid', isEqualTo: attendingList[i])
               .get();
           querySnapshot.docs.forEach((doc) {
             fetchedNames.add(doc['name']);
