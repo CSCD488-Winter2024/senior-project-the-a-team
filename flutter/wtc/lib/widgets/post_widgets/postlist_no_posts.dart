@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/accountPages/edit_tags.dart';
 
@@ -35,7 +36,7 @@ class PostListNoPosts extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                CupertinoPageRoute(
                     builder: (context) =>
                         EditTags(tags: userTags, origTags: origTags)),
               ).whenComplete(() => refreshPage());
