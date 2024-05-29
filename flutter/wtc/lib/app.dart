@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wtc/pages/search_user.dart';
 import 'package:wtc/pages/account_review.dart';
-import 'widgets/navbutton.dart';
 import 'User/user_service.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
@@ -19,7 +19,6 @@ import 'widgets/notifications_window.dart';
 import 'pages/specific_fillable_form.dart';
 import 'pages/admin_review.dart';
 import 'pages/about_us.dart';
-import 'pages/geocode_testing_page.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -394,8 +393,8 @@ class _NavBars extends State<App> {
           if (showAccountUpgradePage) const AccountReviewPage(),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
+      bottomNavigationBar: GNav(
+        onTabChange: (int index) {
           setState(() {
             currentPageIndex = index;
             title = setTitle(index);
@@ -412,26 +411,24 @@ class _NavBars extends State<App> {
             showAccountUpgradePage = false;
           });
         },
-        indicatorColor: Colors.white,
+        activeColor: Colors.white,
+        color: Colors.black,
         backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavButton(
-              label: "Alerts",
-              icon: Icons.crisis_alert,
-              outlinedIcon: Icons.crisis_alert_outlined),
-          NavButton(
-              label: "Maps", icon: Icons.map, outlinedIcon: Icons.map_outlined),
-          NavButton(
-              label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
-          NavButton(
-              label: "Calendar",
-              icon: Icons.calendar_month,
-              outlinedIcon: Icons.calendar_month_outlined),
-          NavButton(
-              label: "Account",
-              icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined)
+        gap: 8,
+        duration: const Duration(milliseconds: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20 ),
+        tabs: const [
+          GButton(    
+              icon: Icons.crisis_alert),
+          GButton(
+               icon: Icons.map),
+          GButton(
+               icon: Icons.home),
+          GButton(  
+              icon: Icons.calendar_month),
+          GButton(     
+              icon: Icons.manage_accounts)
         ],
       ),
     );
