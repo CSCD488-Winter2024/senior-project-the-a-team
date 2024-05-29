@@ -252,7 +252,7 @@ class _NavBars extends State<App> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
+            leading: const Icon(Icons.bookmark),
             title: const Text('Saved Posts'),
             onTap: () {
               Navigator.pop(context); // Close the drawer

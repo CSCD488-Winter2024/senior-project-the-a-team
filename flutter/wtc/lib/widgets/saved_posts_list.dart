@@ -69,7 +69,7 @@ class _SavedPostsListState extends State<SavedPostsList> {
                   return const Center(child: Text("No saved posts found"));
                 }
 
-                return ListView.separated(
+                return RefreshIndicator(onRefresh: fetchPostIDs, child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: savedPosts.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -181,7 +181,7 @@ class _SavedPostsListState extends State<SavedPostsList> {
                         },
                         separatorBuilder: (BuildContext context, int index) =>
                         const Divider(),
-                        );
+                        ) ); 
 
             });
   }
