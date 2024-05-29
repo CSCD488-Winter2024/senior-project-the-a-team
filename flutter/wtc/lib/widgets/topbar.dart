@@ -13,15 +13,12 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
       this.showNotifications = false,
       this.title = "Welcome To Cheney"});
 
-
   @override
   // ignore: library_private_types_in_public_api
   _TopBarState createState() => _TopBarState();
 
   @override
   Size get preferredSize => Size.fromHeight(preferredHeight);
-
- 
 }
 
 class _TopBarState extends State<TopBar> {
@@ -36,16 +33,12 @@ class _TopBarState extends State<TopBar> {
         child: Text(widget.title, style: const TextStyle(color: Colors.white)),
       ),
       actions: [
-        Badge(
-          alignment: const AlignmentDirectional(0.5, 0),
-          label: const Text('3'),
-          child: IconButton(
-            icon: widget.showNotifications
-                ? const Icon(Icons.notifications)
-                : const Icon(Icons.notifications_outlined),
-            onPressed: widget.onNotificationsPressed,
-          ),
-        )
+        IconButton(
+          icon: widget.showNotifications
+              ? const Icon(Icons.refresh_outlined)
+              : const Icon(Icons.refresh_outlined),
+          onPressed: () {},
+        ),
       ],
       //Drawer handles the rest
     );
