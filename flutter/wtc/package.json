@@ -1,5 +1,9 @@
 {
   "devDependencies": {
-    "eslint": "^9.3.0"
+    "eslint": "^8.57.0"
+  },
+  "dependencies": {
+    "firebase-functions": "^5.0.1",
+    "firebase-messaging": "^1.0.6"
   }
 }
