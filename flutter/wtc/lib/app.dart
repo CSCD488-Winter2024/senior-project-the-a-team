@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wtc/pages/saved_posts_page.dart';
 import 'package:wtc/pages/search_user.dart';
 import 'package:wtc/pages/account_review.dart';
+import 'package:wtc/widgets/saved_posts_list.dart';
 import 'widgets/navbutton.dart';
 import 'User/user_service.dart';
 import 'pages/home.dart';
@@ -48,6 +50,7 @@ class _NavBars extends State<App> {
   bool showAboutUsPage = false;
   bool showSearchUsers = false;
   bool showAccountUpgradePage = false;
+  bool showSavedPosts = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -162,6 +165,7 @@ class _NavBars extends State<App> {
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
           ),
@@ -181,6 +185,7 @@ class _NavBars extends State<App> {
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
           ),
@@ -201,6 +206,7 @@ class _NavBars extends State<App> {
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
           ),
@@ -220,6 +226,7 @@ class _NavBars extends State<App> {
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
           ),
@@ -240,8 +247,30 @@ class _NavBars extends State<App> {
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: const Text('Saved Posts'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              setState(() {
+                title = "Saved Posts";
+                prevTitle = "Saved Posts";
+
+                showSavedPosts = true;
+                showJobsPage = false;
+                showVolunteerPage = false;
+                showNotification = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                
+              });
+            }
           ),
           (userTier == "Admin" || userTier == "Poster")
               ? ListTile(
@@ -258,6 +287,7 @@ class _NavBars extends State<App> {
                       showAboutUsPage = false;
                       showSearchUsers = false;
                       showAccountUpgradePage = false;
+                      showSavedPosts = false;
                     });
                   },
                 )
@@ -290,6 +320,7 @@ class _NavBars extends State<App> {
                   showAboutUsPage = false;
                   showSearchUsers = false;
                   showAccountUpgradePage = false;
+                  showSavedPosts = false;
                 });
               },
             ),
@@ -309,6 +340,7 @@ class _NavBars extends State<App> {
                   showAboutUsPage = false;
                   showSearchUsers = true;
                   showAccountUpgradePage = false;
+                  showSavedPosts = false;
                 });
               },
             ),
@@ -327,6 +359,7 @@ class _NavBars extends State<App> {
                   showNotification = false;
                   showJobsPage = false;
                   showAboutUsPage = false;
+                  showSavedPosts = false;
                 });
               },
             ),
@@ -346,6 +379,7 @@ class _NavBars extends State<App> {
                 showApprovePostsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
+                showSavedPosts = false;
               });
             },
           ),
@@ -381,9 +415,12 @@ class _NavBars extends State<App> {
           // Main content of your app
           getPageContent(currentPageIndex),
           // Notification window (conditional rendering)
-          if (showNotification)
+          if (showNotification || showJobsPage 
+          || showVolunteerPage || showApprovePostsPage 
+          || showAboutUsPage || showSearchUsers 
+          || showAccountUpgradePage || showSavedPosts)
             const Opacity(
-                opacity: 0.5, child: ModalBarrier(color: Colors.black)),
+                opacity: 1, child: ModalBarrier(color: Colors.white)),
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
@@ -392,6 +429,7 @@ class _NavBars extends State<App> {
           if (showAboutUsPage) const AboutUsPage(),
           if (showSearchUsers) const SearchUserPage(),
           if (showAccountUpgradePage) const AccountReviewPage(),
+          if (showSavedPosts) const SavedPosts()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -410,6 +448,7 @@ class _NavBars extends State<App> {
             showAboutUsPage = false;
             showSearchUsers = false;
             showAccountUpgradePage = false;
+            showSavedPosts = false;
           });
         },
         indicatorColor: Colors.white,

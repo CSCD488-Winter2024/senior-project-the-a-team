@@ -12,9 +12,9 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     //final ThemeData theme = Theme.of(context);
-    return Card(
+    return const Card(
       shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(8.0),
       child: SizedBox.expand(
         child: PostList(),
       ),
