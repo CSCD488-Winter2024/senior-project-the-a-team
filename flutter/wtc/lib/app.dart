@@ -451,12 +451,14 @@ class _NavBars extends State<App> {
         },
         activeColor: Colors.white,
         color: Colors.black,
+        gap: 8,
+        duration: const Duration(milliseconds: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
         tabs: const[
           GButton(
-              icon: Icons.crisis_alert,
-          ),
+              icon: Icons.crisis_alert,),
           GButton(
               icon: Icons.map),
           GButton(
