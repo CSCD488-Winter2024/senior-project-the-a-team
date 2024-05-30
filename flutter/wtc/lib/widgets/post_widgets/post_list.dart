@@ -51,6 +51,7 @@ class _PostListState extends State<PostList> {
   }
 
   Future<void> _refreshPosts() async {
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {
       _postsFuture = _fetchPosts();
     });
