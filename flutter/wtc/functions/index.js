@@ -95,19 +95,16 @@ exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').o
                 title: "Title",
                 body: "body"
             };
-            const imageURL = "https://firebasestorage.googleapis.com/v0/b/welcometocheney-77d11.appspot.com/o/thumbnail_image0-removebg-preview.png?alt=media&token=e036e4a0-d610-43a3-9ed5-f0bd314b55bb";
             if(!change.before.exists){ //Post is new, not update
                 notificationItem = {
                     title: `New Post: ${header}`,
                     body: body,
-                    image: imageURL
                 };
             }
             else{ //Post is update
                 notificationItem = {
                     title: `Post Updated: ${header}`,
                     body: body,
-                    image: imageURL
                 };
             }
 
