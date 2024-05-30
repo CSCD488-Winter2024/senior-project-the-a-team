@@ -44,6 +44,7 @@ dependencies:
   cloud_functions: ^4.6.8
   firebase_storage: ^11.6.9
   image_picker: ^1.0.8
+  liquid_pull_to_refresh: ^3.0.1
 
   flutter_map: ^6.1.0
   latlong2: ^0.9.1
