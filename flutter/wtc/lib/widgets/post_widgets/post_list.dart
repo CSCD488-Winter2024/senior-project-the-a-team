@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +21,13 @@ class PostList extends StatefulWidget {
 class _PostListState extends State<PostList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late Future<List<String>> _userTagsFuture;
+  late Future<List<QueryDocumentSnapshot>> _postsFuture;
 
   @override
   void initState() {
     _userTagsFuture = _getUsersTags();
+    _postsFuture = _fetchPosts();
+    _refreshPosts();
     super.initState();
   }
 
@@ -35,11 +40,26 @@ class _PostListState extends State<PostList> {
     return userTags;
   }
 
-  Future<void> _testRefresh() async {}
+  Future<List<QueryDocumentSnapshot>> _fetchPosts() async {
+    List<String> userTags = await _getUsersTags();
+    var querySnapshot = await _firestore
+        .collection('_posts')
+        .where('tags', arrayContainsAny: userTags)
+        .orderBy('timestamp', descending: true)
+        .get();
+    return querySnapshot.docs;
+  }
+
+  Future<void> _refreshPosts() async {
+    setState(() {
+      _postsFuture = _fetchPosts();
+    });
+  }
 
   void _refresh() {
     setState(() {
       _userTagsFuture = _getUsersTags();
+      _postsFuture = _fetchPosts();
     });
   }
 
@@ -59,13 +79,9 @@ class _PostListState extends State<PostList> {
           );
         } else {
           List<String> userTags = snapshot.data!;
-          return StreamBuilder(
-            stream: _firestore
-                .collection('_posts')
-                .where('tags', arrayContainsAny: userTags)
-                .orderBy('timestamp', descending: true)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          return FutureBuilder(
+            future: _postsFuture,
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -74,7 +90,7 @@ class _PostListState extends State<PostList> {
               if (snapshot.hasError) {
                 return Center(child: Text("Error: ${snapshot.error}"));
               }
-              if (snapshot.data!.docs.isEmpty) {
+              if (snapshot.data!.isEmpty) {
                 return PostListNoPosts(
                     userTags: userTags, refreshPage: _refresh);
               }
@@ -82,12 +98,12 @@ class _PostListState extends State<PostList> {
               return LiquidPullToRefresh(
                 color: const Color(0xFF469AB8),
                 backgroundColor: const Color(0xffd4bc93),
-                onRefresh: _testRefresh,
+                onRefresh: _refreshPosts,
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),
-                  itemCount: snapshot.data?.docs.length ?? 0,
+                  itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
-                    var document = snapshot.data?.docs[index];
+                    var document = snapshot.data?[index];
                     String type = document?['type'] as String;
                     String dateCreated = document?['createdAt'] as String;
 
