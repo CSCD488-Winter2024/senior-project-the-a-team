@@ -112,7 +112,7 @@ exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').o
 
             let messages = tokens.map(token => ({
                 token: token,
-                notification: notification,
+                notification: notificationItem,
             }));
 
             return admin.messaging().sendAll(messages).then(batchResponse => {
