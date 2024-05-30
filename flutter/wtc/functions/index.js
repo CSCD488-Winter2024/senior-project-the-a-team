@@ -91,16 +91,19 @@ exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').o
             if (tokens.length === 0) {
                 return null;
             }
-
+            const notificationItem = {
+                title: "Title",
+                body: "body"
+            };
             if(!change.before.exists){ //Post is new, not update
-                const notification = {
+                notificationItem = {
                     title: `New Post: ${header}`,
                     body: body,
                     image: "http://drive.google.com/uc?id=1SviebrgUNmd6dZVEwLTKJ3PiYt41pHqx"
                 };
             }
             else{ //Post is update
-                const notification = {
+                notificationItem = {
                     title: `Post Updated: ${header}`,
                     body: body,
                     image: "http://drive.google.com/uc?id=1SviebrgUNmd6dZVEwLTKJ3PiYt41pHqx"
