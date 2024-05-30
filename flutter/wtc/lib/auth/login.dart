@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage>{
     String? token = await FirebaseMessaging.instance.getToken();
     //store it in firestore
     await FirebaseFirestore.instance.collection("users").doc(uid).update({
-      "notifToken": token
+      "notificationToken": token
     }); 
   }
   @override
