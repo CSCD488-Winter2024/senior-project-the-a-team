@@ -1,21 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
-class OrganizationPostList extends StatelessWidget {
+class MyPostsList extends StatefulWidget {
+  const MyPostsList({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _MyPostsListState createState() => _MyPostsListState();
+}
+
+class _MyPostsListState extends State<MyPostsList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String userEmail;
-  OrganizationPostList({super.key, required this.userEmail});
+
+  String? curUserEmail;
+
+  Future<void> _getUserEmail() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? email = currentUser?.email;
+    setState(() {
+      curUserEmail = email;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserEmail();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _firestore
           .collection('_posts')
-          .where('user', isEqualTo: userEmail)
+          .where('user', isEqualTo: curUserEmail)
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -35,15 +60,12 @@ class OrganizationPostList extends StatelessWidget {
             var document = snapshot.data?.docs[index];
             String type = document?['type'] as String;
             String dateCreated = document?['createdAt'] as String;
-
-            //use if-elseif-else block to return the correct type of Post for the proper formatting
+            print("current email: $curUserEmail");
+            // Use if-else block to return the correct type of Post for the proper formatting
             if (type == "Event") {
               var tempTags = document?['tags'] as List<dynamic>;
-              List<String> postTags = [];
+              List<String> postTags = tempTags.cast<String>();
 
-              for (int i = 0; i < tempTags.length; i++) {
-                postTags.add(tempTags[i]);
-              }
               String dateOfEvent = document?['eventDate'] as String;
               String timeOfEvent = document?['eventTime'] as String;
               var time = timeOfEvent.split(' ');
@@ -79,7 +101,7 @@ class OrganizationPostList extends StatelessWidget {
                 location: document?['address'] as String,
                 attendingCount: document?['attendingCount'] as int,
                 maybeCount: document?['maybeCount'] as int,
-                isMyPost: false,
+                isMyPost: true,
               );
             } else if (type == "Job") {
               var wage = document?['wage'];
@@ -100,7 +122,7 @@ class OrganizationPostList extends StatelessWidget {
                 postId: Guid(document?['postID'] as String),
                 wage: wage,
                 wageType: document?['wageType'] as String,
-                isMyPost: false,
+                isMyPost: true,
               );
             } else if (type == "Volunteer") {
               return JobPost(
@@ -116,15 +138,11 @@ class OrganizationPostList extends StatelessWidget {
                     int.parse(dateCreated.split("-")[2])),
                 postId: Guid(document?['postID'] as String),
                 volunteer: true,
-                isMyPost: false,
+                isMyPost: true,
               );
             } else {
               var tempTags = document?['tags'] as List<dynamic>;
-              List<String> postTags = [];
-
-              for (int i = 0; i < tempTags.length; i++) {
-                postTags.add(tempTags[i]);
-              }
+              List<String> postTags = tempTags.cast<String>();
               return Post(
                 postId: Guid(document?['postID'] as String),
                 header: document?['header'] as String,
@@ -137,7 +155,7 @@ class OrganizationPostList extends StatelessWidget {
                 title: document?['title'] as String,
                 tags: postTags,
                 body: document?['body'] as String,
-                isMyPost: false,
+                isMyPost: true,
               );
             }
           },

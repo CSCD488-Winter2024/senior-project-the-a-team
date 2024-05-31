@@ -124,6 +124,7 @@ class _PostListState extends State<PostList> {
                       location: document?['address'] as String,
                       attendingCount: document?['attendingCount'] as int,
                       maybeCount: document?['maybeCount'] as int,
+                      isMyPost: false,
                     );
                   } else if (type == "Job") {
                     var wage = document?['wage'];
@@ -144,6 +145,7 @@ class _PostListState extends State<PostList> {
                       postId: Guid(document?['postID'] as String),
                       wage: wage,
                       wageType: document?['wageType'] as String,
+                      isMyPost: false,
                     );
                   } else if (type == "Volunteer") {
                     return JobPost(
@@ -159,6 +161,7 @@ class _PostListState extends State<PostList> {
                           int.parse(dateCreated.split("-")[2])),
                       postId: Guid(document?['postID'] as String),
                       volunteer: true,
+                      isMyPost: false,
                     );
                   } else {
                     var tempTags = document?['tags'] as List<dynamic>;
@@ -175,6 +178,7 @@ class _PostListState extends State<PostList> {
                       title: document?['title'] as String,
                       tags: postTags,
                       body: document?['body'] as String,
+                      isMyPost: false,
                     );
                   }
                 },

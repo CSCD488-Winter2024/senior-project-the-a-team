@@ -220,6 +220,7 @@ class _EventCalendar extends State<EventCalendar> {
           location: doc['address'] as String,
           attendingCount: doc['attendingCount'] as int,
           maybeCount: doc['maybeCount'] as int,
+          isMyPost: false,
         );
 
         events.add(event);
