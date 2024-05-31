@@ -148,52 +148,10 @@ class _NavBars extends State<App> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Welcome to Cheney";
-                prevTitle = "Welcome to Cheney";
-                currentPageIndex = 2;
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-                showApprovePostsPage = false;
-                showAboutUsPage = false;
-                showSearchUsers = false;
-                showAccountUpgradePage = false;
-                showSavedPosts = false;
-              });
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.warning),
-            title: const Text('Alerts'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Alerts";
-                prevTitle = "Alerts";
-                currentPageIndex = 0;
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-                showApprovePostsPage = false;
-                showAboutUsPage = false;
-                showSearchUsers = false;
-                showAccountUpgradePage = false;
-                showSavedPosts = false;
-              });
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.work),
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              /*Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const JobsPage()));*/
               setState(() {
                 title = "Jobs";
                 prevTitle = "Jobs";
@@ -229,47 +187,24 @@ class _NavBars extends State<App> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text('Account'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Account";
-                prevTitle = "Account";
+              leading: const Icon(Icons.bookmark),
+              title: const Text('Saved Posts'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                setState(() {
+                  title = "Saved Posts";
+                  prevTitle = "Saved Posts";
 
-                currentPageIndex = 4;
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-                showApprovePostsPage = false;
-                showAboutUsPage = false;
-                showSearchUsers = false;
-                showAccountUpgradePage = false;
-                showSavedPosts = false;
-              });
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.bookmark),
-            title: const Text('Saved Posts'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Saved Posts";
-                prevTitle = "Saved Posts";
-
-                showSavedPosts = true;
-                showJobsPage = false;
-                showVolunteerPage = false;
-                showNotification = false;
-                showApprovePostsPage = false;
-                showAboutUsPage = false;
-                showSearchUsers = false;
-                showAccountUpgradePage = false;
-                
-              });
-            }
-          ),
+                  showSavedPosts = true;
+                  showJobsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                });
+              }),
           (userTier == "Admin" || userTier == "Poster")
               ? ListTile(
                   leading: const Icon(Icons.create),
@@ -413,12 +348,15 @@ class _NavBars extends State<App> {
           // Main content of your app
           getPageContent(currentPageIndex),
           // Notification window (conditional rendering)
-          if (showNotification || showJobsPage 
-          || showVolunteerPage || showApprovePostsPage 
-          || showAboutUsPage || showSearchUsers 
-          || showAccountUpgradePage || showSavedPosts)
-            const Opacity(
-                opacity: 1, child: ModalBarrier(color: Colors.white)),
+          if (showNotification ||
+              showJobsPage ||
+              showVolunteerPage ||
+              showApprovePostsPage ||
+              showAboutUsPage ||
+              showSearchUsers ||
+              showAccountUpgradePage ||
+              showSavedPosts)
+            const Opacity(opacity: 1, child: ModalBarrier(color: Colors.white)),
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
@@ -456,17 +394,20 @@ class _NavBars extends State<App> {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         backgroundColor: const Color(0xFF469AB8),
         selectedIndex: currentPageIndex,
-        tabs: const[
+        tabs: const [
           GButton(
-              icon: Icons.crisis_alert,),
+            icon: Icons.crisis_alert,
+          ),
+          GButton(icon: Icons.map),
           GButton(
-              icon: Icons.map),
+            icon: Icons.home,
+          ),
           GButton(
-              icon: Icons.home,),
+            icon: Icons.calendar_month,
+          ),
           GButton(
-              icon: Icons.calendar_month,),
-          GButton(
-              icon: Icons.manage_accounts,)
+            icon: Icons.manage_accounts,
+          )
         ],
       ),
     );

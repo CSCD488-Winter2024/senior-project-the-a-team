@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/auth/auth.dart';
 import 'package:wtc/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 /*
   -- This will be the in point of our app
   -- home is set to our nav bar since this will be housing our page
@@ -27,6 +28,10 @@ void main() async {
       provisional: false,
       sound: true,
     );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const WTCApp());
 }
 
