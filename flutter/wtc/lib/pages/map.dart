@@ -148,11 +148,10 @@ class _MapPage extends State<MapPage> {
 
   Future<void> fetchOrganizations() async {
     CollectionReference organizations =
-        FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('businesses');
 
-    Query query = organizations
-        .where('tier', isEqualTo: "Poster")
-        .where('isBusiness', isEqualTo: true);
+    Query query = organizations;
+
     QuerySnapshot querySnapshot = await query.get();
     final filteredData = querySnapshot.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
