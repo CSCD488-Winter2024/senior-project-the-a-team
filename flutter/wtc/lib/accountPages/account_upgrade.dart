@@ -355,12 +355,23 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   );
                 }
                 else{
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text('Submitting Application...'),
+                        content: LinearProgressIndicator(),
+                      );
+                    }
+                  );
                   await submitApplication(widget.email, isBusiness);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Application submitted successfully"),
                     ),
                   );
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }

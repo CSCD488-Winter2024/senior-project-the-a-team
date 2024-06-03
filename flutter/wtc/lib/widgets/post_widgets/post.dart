@@ -64,10 +64,9 @@ class Post extends StatelessWidget {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: header),
-                    Row(children: [
-                      const SizedBox(
-                        width: 270,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                       SavePost(
                           postId: postId,
                           currentUserId: currentUser?.uid.toString())
