@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:wtc/pages/my_posts.dart';
 import 'package:wtc/pages/saved_posts_page.dart';
 import 'package:wtc/pages/search_user.dart';
 import 'package:wtc/pages/account_review.dart';
@@ -49,6 +50,7 @@ class _NavBars extends State<App> {
   bool showSearchUsers = false;
   bool showAccountUpgradePage = false;
   bool showSavedPosts = false;
+  bool showMyPosts = false;
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -163,6 +165,7 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
             },
           ),
@@ -183,6 +186,28 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.comment),
+            title: const Text('My Posts'),
+            onTap: () {
+              // Navigate to Volunteer page
+              Navigator.pop(context);
+              setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = true;
               });
             },
           ),
@@ -203,6 +228,7 @@ class _NavBars extends State<App> {
                   showAboutUsPage = false;
                   showSearchUsers = false;
                   showAccountUpgradePage = false;
+                  showMyPosts = false;
                 });
               }),
           (userTier == "Admin" || userTier == "Poster")
@@ -212,16 +238,6 @@ class _NavBars extends State<App> {
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     showCreatePostOptions(context);
-                    setState(() {
-                      showJobsPage = false;
-                      showVolunteerPage = false;
-                      showNotification = false;
-                      showApprovePostsPage = false;
-                      showAboutUsPage = false;
-                      showSearchUsers = false;
-                      showAccountUpgradePage = false;
-                      showSavedPosts = false;
-                    });
                   },
                 )
               : ListTile(
@@ -254,6 +270,7 @@ class _NavBars extends State<App> {
                   showSearchUsers = false;
                   showAccountUpgradePage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
@@ -274,6 +291,7 @@ class _NavBars extends State<App> {
                   showSearchUsers = true;
                   showAccountUpgradePage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
@@ -293,6 +311,7 @@ class _NavBars extends State<App> {
                   showJobsPage = false;
                   showAboutUsPage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
@@ -313,6 +332,7 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
             },
           ),
@@ -355,7 +375,8 @@ class _NavBars extends State<App> {
               showAboutUsPage ||
               showSearchUsers ||
               showAccountUpgradePage ||
-              showSavedPosts)
+              showSavedPosts ||
+              showMyPosts)
             const Opacity(opacity: 1, child: ModalBarrier(color: Colors.white)),
 
           if (showNotification) const NotificationsWindow(),
@@ -365,7 +386,8 @@ class _NavBars extends State<App> {
           if (showAboutUsPage) const AboutUsPage(),
           if (showSearchUsers) const SearchUserPage(),
           if (showAccountUpgradePage) const AccountReviewPage(),
-          if (showSavedPosts) const SavedPosts()
+          if (showSavedPosts) const SavedPosts(),
+          if (showMyPosts) const MyPostsPage()
         ],
       ),
       bottomNavigationBar: GNav(
@@ -385,6 +407,7 @@ class _NavBars extends State<App> {
             showSearchUsers = false;
             showAccountUpgradePage = false;
             showSavedPosts = false;
+            showMyPosts = false;
           });
         },
         activeColor: Colors.white,

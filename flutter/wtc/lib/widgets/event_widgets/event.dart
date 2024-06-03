@@ -27,6 +27,7 @@ class Event extends Post {
     required this.location,
     required this.attendingCount,
     required this.maybeCount,
+    required super.isMyPost,
   });
 
   final DateTime date;
@@ -48,7 +49,8 @@ class Event extends Post {
             User? currentUser = FirebaseAuth.instance.currentUser;
             if (currentUserTier == "Admin" ||
                 (currentUserTier == "Poster" &&
-                    currentUser?.email == userEmail)) {
+                    currentUser?.email == userEmail) ||
+                isMyPost) {
               return InkWell(
                 onTap: () {
                   showEventDialog(context, postId);
@@ -64,8 +66,8 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: header),
-                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
-
+                    RSVPButtons(
+                        postID: postId, uid: currentUser?.uid.toString()),
                     PostDeleteEditBox(post: this),
                   ],
                 ),
@@ -86,7 +88,8 @@ class Event extends Post {
                           textAlign: TextAlign.left,
                         )),
                     PostBodyBox(body: header),
-                    RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+                    RSVPButtons(
+                        postID: postId, uid: currentUser?.uid.toString()),
                   ],
                 ),
               );

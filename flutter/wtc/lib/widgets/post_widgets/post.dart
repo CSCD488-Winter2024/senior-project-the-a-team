@@ -20,7 +20,8 @@ class Post extends StatelessWidget {
       required this.userEmail,
       required this.interestCount,
       required this.created,
-      required this.postId})
+      required this.postId,
+      required this.isMyPost})
       : super(key: key);
 
   Guid postId;
@@ -31,6 +32,7 @@ class Post extends StatelessWidget {
   final String userEmail;
   final int interestCount;
   final DateTime created;
+  final bool isMyPost;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,8 @@ class Post extends StatelessWidget {
             User? currentUser = FirebaseAuth.instance.currentUser;
             if (currentUserTier == "Admin" ||
                 (currentUserTier == "Poster" &&
-                    currentUser?.email == userEmail)) {
+                    currentUser?.email == userEmail) ||
+                isMyPost) {
               return InkWell(
                 onTap: () {
                   showPostDialog(context);
