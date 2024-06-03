@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/postlist_no_posts.dart';
 import 'package:wtc/widgets/post_widgets/postlist_no_tags.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class PostList extends StatefulWidget {
   const PostList({super.key});
@@ -18,10 +21,13 @@ class PostList extends StatefulWidget {
 class _PostListState extends State<PostList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late Future<List<String>> _userTagsFuture;
+  late Future<List<QueryDocumentSnapshot>> _postsFuture;
 
   @override
   void initState() {
     _userTagsFuture = _getUsersTags();
+    _postsFuture = _fetchPosts();
+    _refreshPosts();
     super.initState();
   }
 
@@ -34,9 +40,27 @@ class _PostListState extends State<PostList> {
     return userTags;
   }
 
+  Future<List<QueryDocumentSnapshot>> _fetchPosts() async {
+    List<String> userTags = await _getUsersTags();
+    var querySnapshot = await _firestore
+        .collection('_posts')
+        .where('tags', arrayContainsAny: userTags)
+        .orderBy('timestamp', descending: true)
+        .get();
+    return querySnapshot.docs;
+  }
+
+  Future<void> _refreshPosts() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _postsFuture = _fetchPosts();
+    });
+  }
+
   void _refresh() {
     setState(() {
       _userTagsFuture = _getUsersTags();
+      _postsFuture = _fetchPosts();
     });
   }
 
@@ -56,13 +80,9 @@ class _PostListState extends State<PostList> {
           );
         } else {
           List<String> userTags = snapshot.data!;
-          return StreamBuilder(
-            stream: _firestore
-                .collection('_posts')
-                .where('tags', arrayContainsAny: userTags)
-                .orderBy('timestamp', descending: true)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          return FutureBuilder(
+            future: _postsFuture,
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -71,39 +91,42 @@ class _PostListState extends State<PostList> {
               if (snapshot.hasError) {
                 return Center(child: Text("Error: ${snapshot.error}"));
               }
-              if (snapshot.data!.docs.isEmpty) {
+              if (snapshot.data!.isEmpty) {
                 return PostListNoPosts(
                     userTags: userTags, refreshPage: _refresh);
               }
 
-              return ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: snapshot.data?.docs.length ?? 0,
-                itemBuilder: (BuildContext context, int index) {
-                  var document = snapshot.data?.docs[index];
-                  String type = document?['type'] as String;
-                  String dateCreated = document?['createdAt'] as String;
+              return LiquidPullToRefresh(
+                color: const Color(0xFF469AB8),
+                backgroundColor: const Color(0xffd4bc93),
+                onRefresh: _refreshPosts,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: snapshot.data?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    var document = snapshot.data?[index];
+                    String type = document?['type'] as String;
+                    String dateCreated = document?['createdAt'] as String;
 
-                  // Use if-else block to return the correct type of Post for the proper formatting
-                  if (type == "Event") {
-                    var tempTags = document?['tags'] as List<dynamic>;
-                    List<String> postTags = tempTags.cast<String>();
+                    // Use if-else block to return the correct type of Post for the proper formatting
+                    if (type == "Event") {
+                      var tempTags = document?['tags'] as List<dynamic>;
+                      List<String> postTags = tempTags.cast<String>();
 
-                    String dateOfEvent = document?['eventDate'] as String;
-                    String timeOfEvent = document?['eventTime'] as String;
-                    var time = timeOfEvent.split(' ');
-                    int hour = 0;
-                    if (time[1] == "PM") {
-                      if (time[0].split(":")[0] == "12") {
-                        hour = 12;
+                      String dateOfEvent = document?['eventDate'] as String;
+                      String timeOfEvent = document?['eventTime'] as String;
+                      var time = timeOfEvent.split(' ');
+                      int hour = 0;
+                      if (time[1] == "PM") {
+                        if (time[0].split(":")[0] == "12") {
+                          hour = 12;
+                        } else {
+                          hour = int.parse(time[0].split(":")[0]) + 12;
+                        }
                       } else {
-                        hour = int.parse(time[0].split(":")[0]) + 12;
+                        hour = int.parse(time[0].split(":")[0]);
                       }
-                    } else {
-                      hour = int.parse(time[0].split(":")[0]);
-                    }
-                    int minute = int.parse(time[0].split(":")[1]);
-
+                      int minute = int.parse(time[0].split(":")[1]);
                     return Event(
                       title: document?['title'] as String,
                       body: document?['body'] as String,

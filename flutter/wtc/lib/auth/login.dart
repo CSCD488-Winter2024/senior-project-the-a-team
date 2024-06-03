@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wtc/auth/forgot_password.dart';
+import 'package:wtc/auth/register.dart';
 import 'package:wtc/components/button.dart';
 import 'package:wtc/components/square_tile.dart';
 import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
-import 'package:wtc/auth/forgot_password.dart';
-import 'package:wtc/auth/register.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wtc/services/auth_services.dart';
 
 class LoginPage extends StatefulWidget{
@@ -34,7 +36,8 @@ class _LoginPageState extends State<LoginPage>{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
-      Navigator.pop(context);
+      storeNotifToken(FirebaseAuth.instance.currentUser!.uid);
+      Navigator.pop(context);  
     }
     on FirebaseAuthException catch(e){
       Navigator.pop(context);
@@ -58,8 +61,14 @@ class _LoginPageState extends State<LoginPage>{
       }
     }
   }
-
-
+  Future<void> storeNotifToken(String uid) async{
+    //get user's notif token
+    String? token = await FirebaseMessaging.instance.getToken();
+    //store it in firestore
+    await FirebaseFirestore.instance.collection("users").doc(uid).update({
+      "notificationToken": token
+    }); 
+  }
   @override
   Widget build(BuildContext context){
     // while(Navigator.canPop(context)){

@@ -44,6 +44,7 @@
       "codebase": "default",
       "ignore": [
         "node_modules",
+        "venv",
         ".git",
         "firebase-debug.log",
         "firebase-debug.*.log"
@@ -52,5 +53,9 @@
         "npm --prefix \"$RESOURCE_DIR\" run lint"
       ]
     }
-  ]
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
 }
