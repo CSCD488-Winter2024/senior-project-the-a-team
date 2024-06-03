@@ -8,6 +8,7 @@ import 'package:wtc/components/textfield.dart';
 import 'package:wtc/helper/helper_functions.dart';
 import 'package:wtc/auth/welcome_page.dart';
 import 'package:wtc/services/auth_services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class RegisterPage extends StatefulWidget{
   const RegisterPage({super.key});
@@ -118,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> createUserDocument(UserCredential? userCredential) async{
     List<dynamic> newSavedPostList = List.empty();
     if(userCredential != null && userCredential.user != null){
+      String? token = await FirebaseMessaging.instance.getToken();
       await FirebaseFirestore.instance
       .collection("users")
       .doc(userCredential.user!.uid)
@@ -127,11 +129,12 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': nameController.text.trim(),
         'tier': "Viewer",
         'pfp': "",
-        'tags': [],
         'isBusiness': false,
+        'tags': [],
         'uid': userCredential.user!.uid,
         'isPending': false,
-        'saved_posts': newSavedPostList
+        'saved_posts': newSavedPostList,
+        'notificationToken': token
       });
     }
   }
