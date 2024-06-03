@@ -106,9 +106,11 @@ class _RSVPButtons extends State<RSVPButtons> {
           List<dynamic> attendingList = data['attending'];
 
           if (attendingList.contains(uid)) {
-            setState(() {
-              isAttending = true;
-            });
+            if (mounted) {
+              setState(() {
+                isAttending = true;
+              });
+            }
             return;
           }
         }
@@ -116,9 +118,11 @@ class _RSVPButtons extends State<RSVPButtons> {
     } catch (e) {
       print('Error checking user attendance: $e');
     }
-    setState(() {
-      isAttending = false;
-    });
+    if (mounted) {
+      setState(() {
+        isAttending = false;
+      });
+    }
   }
 
   Future<void> checkIfMaybeAttending(String postID, String uid) async {
@@ -134,9 +138,12 @@ class _RSVPButtons extends State<RSVPButtons> {
           List<dynamic> maybeList = data['maybe'];
 
           if (maybeList.contains(uid)) {
-            setState(() {
-              isMaybeAttending = true;
-            });
+            if (mounted) {
+              // Check if the widget is still in the tree
+              setState(() {
+                isMaybeAttending = true;
+              });
+            }
             return;
           }
         }
@@ -144,9 +151,12 @@ class _RSVPButtons extends State<RSVPButtons> {
     } catch (e) {
       print('Error checking user maybe attendance: $e');
     }
-    setState(() {
-      isMaybeAttending = false;
-    });
+    if (mounted) {
+      // Check again before setting the state
+      setState(() {
+        isMaybeAttending = false;
+      });
+    }
   }
 
   @override
