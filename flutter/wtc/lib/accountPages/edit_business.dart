@@ -386,6 +386,16 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                             );
 
                             if(confirm){
+                              showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    title: Text('Updating Information...'),
+                                    content: LinearProgressIndicator(),
+                                  );
+                                }
+                              );
                             await FirebaseFirestore.instance
                                 .collection("businesses")
                                 .doc(user!.uid)
@@ -402,6 +412,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                                     "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
                                   }
                                 });
+                                Navigator.pop(context);
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
