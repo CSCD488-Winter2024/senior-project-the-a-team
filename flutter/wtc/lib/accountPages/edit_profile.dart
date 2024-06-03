@@ -258,9 +258,7 @@ class _EditProfile extends State<EditProfile>{
                         builder: (context) {
                           return  AlertDialog(
                             title: const Text("Confirmation"),
-                            content: const Text("You're about to make changes to your account",
-                              style: TextStyle(fontSize: 18),
-                              textAlign: TextAlign.center,
+                            content: const Text("You're about to make changes to your account.",
                             ),
                             actions:[
                               TextButton(
