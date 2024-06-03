@@ -127,7 +127,8 @@ class _EditSettingsState extends State<EditSettings> {
                       tier: widget.tier, 
                       name: widget.name, 
                       email: widget.email, 
-                      uid: widget.uid
+                      uid: widget.uid,
+                      pfp: widget.profilePic?.imageUrl ?? "",
                     ),
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a poster",
@@ -140,7 +141,8 @@ class _EditSettingsState extends State<EditSettings> {
                       tier: widget.tier, 
                       name: widget.name, 
                       email: widget.email, 
-                      uid: widget.uid
+                      uid: widget.uid,
+                      pfp: widget.profilePic?.imageUrl ?? "",
                     ),
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a Business",

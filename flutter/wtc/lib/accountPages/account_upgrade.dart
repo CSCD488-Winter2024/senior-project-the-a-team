@@ -12,12 +12,14 @@ class AccountUpgradePage extends StatefulWidget {
     required this.name, 
     required this.email,
     required this.uid,
+    required this.pfp,
   });
 
   final String tier;
   final String name;
   final String email;
   final String uid;
+  final String pfp;
 
   @override
   State<AccountUpgradePage> createState() => _AccountUpgradePageState();
@@ -102,6 +104,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
         "address": "$address, Cheney, WA",
         "businessHours": businessHours,
         "email": email,
+        "pfp": widget.pfp,
       }
     );
 

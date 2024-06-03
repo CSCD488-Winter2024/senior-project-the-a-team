@@ -58,7 +58,6 @@ class _AccountPage extends State<AccountPage> {
             List<String> tags = [];
             bool isBusiness = user['isBusiness'];
             bool isPending = user['isPending'];
-            String uid = user['uid'];
 
             for(int i = 0; i < tempTags.length; i++){
               tags.add(tempTags[i]);
