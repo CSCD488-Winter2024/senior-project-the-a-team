@@ -238,17 +238,6 @@ class _NavBars extends State<App> {
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     showCreatePostOptions(context);
-                    setState(() {
-                      showJobsPage = false;
-                      showVolunteerPage = false;
-                      showNotification = false;
-                      showApprovePostsPage = false;
-                      showAboutUsPage = false;
-                      showSearchUsers = false;
-                      showAccountUpgradePage = false;
-                      showSavedPosts = false;
-                      showMyPosts = false;
-                    });
                   },
                 )
               : ListTile(
