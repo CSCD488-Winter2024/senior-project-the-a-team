@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:wtc/User/global_user_info.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
@@ -36,84 +37,64 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: fetchUserTier(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            String currentUserTier = snapshot.data!;
-            User? currentUser = FirebaseAuth.instance.currentUser;
-            if (currentUserTier == "Admin" ||
-                (currentUserTier == "Poster" &&
-                    currentUser?.email == userEmail) ||
-                isMyPost) {
-              return InkWell(
-                onTap: () {
-                  showPostDialog(context);
-                },
-                child: Column(
-                  children: [
-                    PostTitleBox(title: title),
-                    PostTagBox(tags: tags),
-                    SizedBox(
-                        width: 600,
-                        child: Text(
-                          "Posted on: ${created.toString().split(" ")[0]}\n",
-                          textAlign: TextAlign.left,
-                        )),
-                    PostBodyBox(body: header),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                      SavePost(
-                          postId: postId,
-                          currentUserId: currentUser?.uid.toString())
-                    ]),
-                    PostDeleteEditBox(post: this)
-                  ],
-                ),
-              );
-            } else {
-              return InkWell(
-                onTap: () {
-                  showPostDialog(context);
-                },
-                child: Column(
-                  children: [
-                    PostTitleBox(title: title),
-                    PostTagBox(tags: tags),
-                    SizedBox(
-                        width: 600,
-                        child: Text(
-                          "Posted on: ${created.toString().split(" ")[0]}\n",
-                          textAlign: TextAlign.left,
-                        )),
-                    PostBodyBox(body: header),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                      SavePost(
-                          postId: postId,
-                          currentUserId: currentUser?.uid.toString())
-                    ])
-                  ],
-                ),
-              );
-            }
-          } else {
-            // This handles the case where snapshot has data but it's null or some unexpected condition
-            return const Text('Unexpected error. Please try again later.');
-          }
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Show loading spinner while waiting for data
-        } else {
-          // This handles any other unanticipated state of the snapshot
-          return const Text('Something went wrong. Please try again.');
-        }
-      },
-    );
+    String currentUserTier = GlobalUserInfo.getData('tier');
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUserTier == "Admin" ||
+        (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
+        isMyPost) {
+      return InkWell(
+        onTap: () {
+          showPostDialog(context);
+        },
+        child: Column(
+          children: [
+            PostTitleBox(title: title),
+            PostTagBox(tags: tags),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  textAlign: TextAlign.left,
+                )),
+            PostBodyBox(body: header),
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
+            ]),
+            PostDeleteEditBox(post: this)
+          ],
+        ),
+      );
+    } else {
+      return InkWell(
+        onTap: () {
+          showPostDialog(context);
+        },
+        child: Column(
+          children: [
+            PostTitleBox(title: title),
+            PostTagBox(tags: tags),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  textAlign: TextAlign.left,
+                )),
+            PostBodyBox(body: header),
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
+               ])
+          ],
+        ),
+      );
+    }
   }
 
   void showPostDialog(BuildContext context) {
