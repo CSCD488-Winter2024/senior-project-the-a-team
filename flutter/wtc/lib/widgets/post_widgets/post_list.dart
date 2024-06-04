@@ -84,6 +84,7 @@ class _PostListState extends State<PostList> {
               color: const Color(0xFF469AB8),
               backgroundColor: const Color(0xffd4bc93),
               onRefresh: _refreshPosts,
+              showChildOpacityTransition: false,
               child: ListView.separated(
                 padding: const EdgeInsets.all(8),
                 itemCount: snapshot.data?.length ?? 0,
