@@ -22,13 +22,13 @@ class _OrganizationPostPage extends State<OrganizationPostPage> {
             Navigator.pop(context);
 
            },
-           icon: const Icon(Icons.arrow_back)
+           icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+           )           
            ),title: 
-           Align(
-              alignment: Alignment.center,
-              child: Text(style: const TextStyle(color: Colors.white),"Posts by ${widget.username}"),
-              )
-           ,
+            Text(style: const TextStyle(color: Colors.white),"Posts by ${widget.username}"),
+            centerTitle: true,
            backgroundColor: const Color(0xFF469AB8),
            surfaceTintColor: Colors.transparent,
            scrolledUnderElevation: 0,

@@ -61,10 +61,9 @@ class JobPost extends Post {
                       textAlign: TextAlign.left,
                     )),
                 JobWageBox(wageType: wageType, wage: wage),
-                Row(children: [
-                  const SizedBox(
-                    width: 270,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                   SavePost(
                       postId: postId,
                       currentUserId: currentUser?.uid.toString())
@@ -94,10 +93,9 @@ class JobPost extends Post {
                       textAlign: TextAlign.left,
                     )),
                 JobWageBox(wageType: wageType, wage: wage),
-                Row(children: [
-                  const SizedBox(
-                    width: 270,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                   SavePost(
                       postId: postId,
                       currentUserId: currentUser?.uid.toString())

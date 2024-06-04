@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/map_card.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -15,9 +13,7 @@ class OrganizationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: _firestore
-            .collection('users')
-            .where('tier', isEqualTo: 'Poster')
-            .where('isBusiness', isEqualTo: true)
+            .collection('businesses')
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
