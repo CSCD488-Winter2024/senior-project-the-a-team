@@ -59,6 +59,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   web: ^0.5.1
   google_nav_bar: ^5.0.6
+  showcaseview: ^3.0.0
 
 
 dev_dependencies:

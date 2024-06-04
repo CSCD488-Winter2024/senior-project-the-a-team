@@ -65,7 +65,7 @@ class MapPin extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.all(8),
                         child: Text(
-                            "Business Hours:\n\n ${(formatBusinessHours(businessHours))}")),
+                            "Business Hours:\n\n${(formatBusinessHours(businessHours))}")),
                     Padding(
                         padding: const EdgeInsets.all(12),
                         child: GestureDetector(
