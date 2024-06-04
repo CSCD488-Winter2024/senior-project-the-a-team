@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wtc/User/global_user_info.dart';
 import 'package:wtc/app.dart';
 import 'package:wtc/auth/welcome_page.dart';
 
@@ -12,9 +13,10 @@ class HomeSetupPage extends StatelessWidget {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     User? user = FirebaseAuth.instance.currentUser;
     return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(user!.uid).get(), 
-      builder: 
-      (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      future: users.doc(user!.uid).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        GlobalUserInfo.initialize();
         if (snapshot.hasError) {
           return const Text("Something went wrong");
         }

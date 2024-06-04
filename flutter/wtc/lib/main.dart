@@ -32,7 +32,6 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await GlobalUserInfo.initialize();
   runApp(const WTCApp());
 }
 

@@ -8,18 +8,12 @@ class GlobalUserInfo {
   static Future<void> initialize() async {
     User? user = FirebaseAuth.instance.currentUser;
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot document = await FirebaseFirestore.instance
           .collection('users')
-          .where('email', isEqualTo: user?.email)
+          .doc(user?.uid)
           .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot document = querySnapshot.docs.first;
-        _documentId = document.id;
-        _data = document.data() as Map<String, dynamic>;
-      } else {
-        print('No document found for email: ${user?.email}');
-      }
+      _data = document.data() as Map<String, dynamic>;
     } catch (e) {
       print('Error fetching document: $e');
     }
@@ -34,15 +28,11 @@ class GlobalUserInfo {
   }
 
   static Future<void> updateFirestore() async {
-    if (_documentId == null) {
-      print('No document ID found. Cannot update Firestore.');
-      return;
-    }
-
+    User? user = FirebaseAuth.instance.currentUser;
     try {
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(_documentId)
+          .doc(user?.uid)
           .set(_data, SetOptions(merge: true));
     } catch (e) {
       print('Error updating document: $e');

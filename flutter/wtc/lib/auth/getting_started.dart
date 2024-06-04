@@ -7,11 +7,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wtc/User/global_user_info.dart';
 import 'package:wtc/auth/auth.dart';
 
 class GettingStartedPage extends StatefulWidget {
   const GettingStartedPage({
-    super.key, 
+    super.key,
     required this.uid,
   });
 
@@ -21,10 +22,7 @@ class GettingStartedPage extends StatefulWidget {
   State<GettingStartedPage> createState() => _GettingStartedPageState();
 }
 
-
-
 class _GettingStartedPageState extends State<GettingStartedPage> {
-
   File? selectedImage;
 
   final items = [
@@ -50,45 +48,42 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future<void> createAccountDoc(var tags, String profilePic) async{
+  Future<void> createAccountDoc(var tags, String profilePic) async {
     String? token = await FirebaseMessaging.instance.getToken();
     List<dynamic> newSavedPostList = List.empty();
     return FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUser!.uid)
-      .set({
-        'email': currentUser!.email,
-        'username': currentUser!.email!.split('@')[0],
-        'name': currentUser!.displayName,
-        'tier': "Viewer",
-        'isBusiness': false,
-        'uid': currentUser!.uid,
-        'isPending': false,
-        'tags': tags,
-        'pfp': profilePic,
-        'saved_posts': newSavedPostList,
-        'notificationToken': token
-    });
+        .collection('users')
+        .doc(currentUser!.uid)
+        .set({
+      'email': currentUser!.email,
+      'username': currentUser!.email!.split('@')[0],
+      'name': currentUser!.displayName,
+      'tier': "Viewer",
+      'isBusiness': false,
+      'uid': currentUser!.uid,
+      'isPending': false,
+      'tags': tags,
+      'pfp': profilePic,
+      'saved_posts': newSavedPostList,
+      'notificationToken': token
+    }).whenComplete(() async => await GlobalUserInfo.initialize());
   }
 
-  Future<void> setAccountInfo(var tags, String profilePic){
+  Future<void> setAccountInfo(var tags, String profilePic) {
     return FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUser!.uid)
-      .update({
-        'tags': tags,
-        'pfp': profilePic,
-    });
+        .collection('users')
+        .doc(currentUser!.uid)
+        .update({
+      'tags': tags,
+      'pfp': profilePic,
+    }).whenComplete(() async => await GlobalUserInfo.initialize());
   }
 
-  Future<void> setTags(var tags)async {
-    for(int i = 0; i < tags.length; i++){
-      FirebaseFirestore.instance
-        .collection('tags')
-        .doc(tags[i])
-        .update({
-          'users': FieldValue.arrayUnion([currentUser!.email])
-        });
+  Future<void> setTags(var tags) async {
+    for (int i = 0; i < tags.length; i++) {
+      FirebaseFirestore.instance.collection('tags').doc(tags[i]).update({
+        'users': FieldValue.arrayUnion([currentUser!.email])
+      });
     }
   }
 
@@ -98,16 +93,14 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
 
   @override
   Widget build(BuildContext context) {
-
     Image pfp;
 
-    if(currentUser!.photoURL != null){
+    if (currentUser!.photoURL != null) {
       pfp = Image.network(
         currentUser!.photoURL!,
         fit: BoxFit.cover,
       );
-    }
-    else{
+    } else {
       pfp = const Image(
         image: AssetImage("images/profile.jpg"),
         fit: BoxFit.cover,
@@ -120,9 +113,7 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
         backgroundColor: const Color(0xFF469AB8),
         title: const Text(
           "Getting Started",
-          style: TextStyle(
-            color: Colors.white
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -131,52 +122,46 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-
               //pfp selection
-              selectedImage != null ?
-              SizedBox(
-                height: 120,
-                width: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: Image.file(
-                    selectedImage!,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-              :
-              Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: pfp
-                ),
-              ),
+              selectedImage != null
+                  ? SizedBox(
+                      height: 120,
+                      width: 120,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(200),
+                        child: Image.file(
+                          selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  : Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        shape: BoxShape.circle,
+                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(200), child: pfp),
+                    ),
 
               // select pfp
               GestureDetector(
-                    onTap: () async{
-                      final image = await ImagePicker()
-                        .pickImage(
-                          source: ImageSource.gallery
-                        );
+                onTap: () async {
+                  final image = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
 
-                      setState((){
-                        selectedImage = File(image!.path);
-                      });
-                    },
-                    child: const Text("Edit Profile Picture"),
-                  ),
+                  setState(() {
+                    selectedImage = File(image!.path);
+                  });
+                },
+                child: const Text("Edit Profile Picture"),
+              ),
 
-              const SizedBox(height: 45.0,),
+              const SizedBox(
+                height: 45.0,
+              ),
 
               // tags selection
               const Align(
@@ -185,12 +170,9 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                   padding: EdgeInsets.all(8.0),
                   child: Text(
                     "Select Tags:",
-                    style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold
-                    ),
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                   ),
-                ),  
+                ),
               ),
 
               Padding(
@@ -201,101 +183,96 @@ class _GettingStartedPageState extends State<GettingStartedPage> {
                     spacing: 6.0,
                     alignment: WrapAlignment.center,
                     runSpacing: 1.0,
-                    children: items.map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: FilterChip(
-                          label: Text(e),
-                          selected: tags.contains(e),
-                          onSelected: (bool value){
-                            if(tags.contains(e)){
-                              tags.remove(e);
-                            }else{
-                              tags.add(e);
-                            }
-                            setState(() {});
-                          }
+                    children: items
+                        .map(
+                          (e) => Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: FilterChip(
+                                  label: Text(e),
+                                  selected: tags.contains(e),
+                                  onSelected: (bool value) {
+                                    if (tags.contains(e)) {
+                                      tags.remove(e);
+                                    } else {
+                                      tags.add(e);
+                                    }
+                                    setState(() {});
+                                  })),
                         )
-                      ),
-                    ).toList(),
+                        .toList(),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 25.0,),
+              const SizedBox(
+                height: 25.0,
+              ),
 
               // confirm selection
               ElevatedButton(
-                onPressed: () async{
+                  onPressed: () async {
                     String profilePic = "";
                     await showDialog(
-                      context: context, 
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Confirm Settings?'),
-                          content: const Text("You can change these settings later"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(), 
-                              child: const Text('No'),
-                            ),
-                            TextButton(
-                              onPressed: ()async{
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (context) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                );
-                                if(selectedImage != null){
-                                  Reference ref = FirebaseStorage.instance
-                                    .ref('profilePictures')
-                                    .child('${widget.uid}.jpg');
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Confirm Settings?'),
+                            content: const Text(
+                                "You can change these settings later"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => const Center(
+                                            child: CircularProgressIndicator(),
+                                          ));
+                                  if (selectedImage != null) {
+                                    Reference ref = FirebaseStorage.instance
+                                        .ref('profilePictures')
+                                        .child('${widget.uid}.jpg');
 
-                                  await ref.putFile(File(selectedImage!.path));
+                                    await ref
+                                        .putFile(File(selectedImage!.path));
 
-                                  profilePic = await ref.getDownloadURL();
-                                }
-
-                                if(GoogleAuthProvider().providerId == provider!.providerId ||
-                                  AppleAuthProvider().providerId == provider!.providerId)
-                                {
-                                  if(selectedImage == null){
-                                    profilePic = currentUser!.photoURL!;
+                                    profilePic = await ref.getDownloadURL();
                                   }
-                                  await createAccountDoc(tags, profilePic);
-                                }
-                                else{
-                                  await setAccountInfo(tags, profilePic);                                  
-                                }
 
-                                await setTags(tags);
+                                  if (GoogleAuthProvider().providerId ==
+                                          provider!.providerId ||
+                                      AppleAuthProvider().providerId ==
+                                          provider!.providerId) {
+                                    if (selectedImage == null) {
+                                      profilePic = currentUser!.photoURL!;
+                                    }
+                                    await createAccountDoc(tags, profilePic);
+                                  } else {
+                                    await setAccountInfo(tags, profilePic);
+                                  }
 
-                                tags.clear();
+                                  await setTags(tags);
 
+                                  tags.clear();
 
-                                Navigator.pushAndRemoveUntil(
-                                  context, 
-                                  CupertinoPageRoute(
-                                    builder: (context) => const AuthPage()
-                                  ),
-                                  (route) => false
-                                );
-
-                                
-                              }, 
-                              child: const Text("Yes"),
-                            )
-                          ],
-                        );
-                      }
-                    );
-                },
-                child: const Text(
-                  "Finish Setup"
-                )
-              ),
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const AuthPage()),
+                                      (route) => false);
+                                },
+                                child: const Text("Yes"),
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  child: const Text("Finish Setup")),
             ],
           ),
         ),
