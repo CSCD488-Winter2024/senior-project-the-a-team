@@ -587,7 +587,13 @@ class _NavBars extends State<App> {
           )),
           NavigationDestination(
               label: "Account",
-              selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it, we hope you find our app useful!", child: const Icon(Icons.manage_accounts)) ,
+              selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it, we hope you find our app useful!", child: const Icon(Icons.manage_accounts),
+              onBarrierClick: () {
+                setState(() {
+                  currentPageIndex = 2;
+                });
+              },
+              ) ,
               icon: const Icon(Icons.manage_accounts_outlined))
         ],
       ),
