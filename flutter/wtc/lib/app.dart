@@ -346,7 +346,7 @@ class _NavBars extends State<App> {
     return Scaffold(
       appBar: TopBar(
         title: title,
-        preferredHeight: 70.0,
+        preferredHeight: 56,
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
           setState(() {

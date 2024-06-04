@@ -57,12 +57,12 @@ class Post extends StatelessWidget {
                   textAlign: TextAlign.left,
                 )),
             PostBodyBox(body: header),
-            Row(children: [
-              const SizedBox(
-                width: 270,
-              ),
-              SavePost(
-                  postId: postId, currentUserId: currentUser?.uid.toString())
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
             ]),
             PostDeleteEditBox(post: this)
           ],
@@ -84,13 +84,13 @@ class Post extends StatelessWidget {
                   textAlign: TextAlign.left,
                 )),
             PostBodyBox(body: header),
-            Row(children: [
-              const SizedBox(
-                width: 270,
-              ),
-              SavePost(
-                  postId: postId, currentUserId: currentUser?.uid.toString())
-            ])
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
+               ])
           ],
         ),
       );

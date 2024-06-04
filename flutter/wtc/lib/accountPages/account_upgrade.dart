@@ -12,12 +12,14 @@ class AccountUpgradePage extends StatefulWidget {
     required this.name, 
     required this.email,
     required this.uid,
+    required this.pfp,
   });
 
   final String tier;
   final String name;
   final String email;
   final String uid;
+  final String pfp;
 
   @override
   State<AccountUpgradePage> createState() => _AccountUpgradePageState();
@@ -102,6 +104,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
         "address": "$address, Cheney, WA",
         "businessHours": businessHours,
         "email": email,
+        "pfp": widget.pfp,
       }
     );
 
@@ -352,12 +355,23 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   );
                 }
                 else{
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text('Submitting Application...'),
+                        content: LinearProgressIndicator(),
+                      );
+                    }
+                  );
                   await submitApplication(widget.email, isBusiness);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Application submitted successfully"),
                     ),
                   );
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }

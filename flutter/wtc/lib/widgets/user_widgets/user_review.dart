@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 
 class UserReview extends StatelessWidget {
   final String about;
@@ -12,8 +11,10 @@ class UserReview extends StatelessWidget {
   final String phone;
   final String reviewId;
   final String uid;
+  final String pfp;
 
-  UserReview({
+  const UserReview({
+    super.key, 
     required this.about,
     required this.address,
     required this.businessHours,
@@ -22,14 +23,15 @@ class UserReview extends StatelessWidget {
     required this.name,
     required this.phone,
     required this.reviewId,
-    required this.uid
+    required this.uid,
+    required this.pfp,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Review'),
+        title: const Text('User Review'),
       ),
       body: Column(
         children: <Widget>[
@@ -60,6 +62,7 @@ class UserReview extends StatelessWidget {
         phone: doc['phone'],
         reviewId: doc.id,
         uid: doc.id,
+        pfp: doc['pfp'],
       );
     }).toList();
     return users;
