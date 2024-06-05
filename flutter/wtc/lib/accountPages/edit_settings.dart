@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:wtc/accountPages/account_upgrade.dart';
 import 'package:wtc/accountPages/edit_business.dart';
 import 'package:wtc/accountPages/edit_profile.dart';
@@ -45,11 +48,54 @@ class _EditSettingsState extends State<EditSettings> {
   final TextEditingController passwordController = TextEditingController();
 
   final provider = FirebaseAuth.instance.currentUser?.providerData.first;
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final GlobalKey key1 = GlobalKey();
+  final GlobalKey key2 = GlobalKey();
+  final GlobalKey key3 = GlobalKey();
+  final GlobalKey key4 = GlobalKey();
+  final GlobalKey key5 = GlobalKey(); 
+  bool tour = false;
+  @override
+  void initState() {
+    super.initState();
+    _fetchTourStatus();
+  }
   @override
   void dispose(){
     passwordController.dispose();
     super.dispose();
+  }
+
+
+  Future<void> _fetchTourStatus() async {
+  await isTouring(); // wait for isTouring to complete
+  if (!tour){
+        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5]));
+  }
+  }
+  void skipTour() {
+    ShowCaseWidget.of(context).dismiss();
+    setTourStatus(true);
+
+  }
+
+  Future<void> isTouring() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var userInfo =
+        await _firestore.collection("users").doc(currentUser?.uid).get();
+    
+    setState(() {
+      tour = userInfo.data()?['sawTour'];
+    });
+    
+  }
+
+  Future<void> setTourStatus(bool status) async {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  
+  await _firestore.collection("users").doc(currentUser?.uid).update({
+    'sawTour': status
+  });
   }
 
   String errorPassword = ""; 
@@ -80,9 +126,12 @@ class _EditSettingsState extends State<EditSettings> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-        
                 // edit profile
-                EditButton(
+                Showcase(key: key1, description: "Users can change their profile picture, username, name, and password in Edit Profile.\n\n(Press and hold the button to skip tour)", 
+                onTargetLongPress: () {
+                  skipTour();
+                },
+                child: EditButton(
                   route: EditProfile(
                     uid: widget.uid, 
                     name: widget.name,
@@ -91,27 +140,35 @@ class _EditSettingsState extends State<EditSettings> {
                   ), 
                   icon: const Icon(Icons.person), 
                   text: "Edit Profile",
-                ),
+                )),
         
                 const SizedBox(height: 20,),
         
                 // edit tags
-                EditButton(
+                Showcase(key: key2, description: "Change the tags to update the different categories of posts relevant to your liking.\n\n(Press and hold the button to skip tour)", 
+                onTargetLongPress: () {
+                  skipTour();
+                },
+                child: EditButton(
                   route: EditTags(
                     tags: widget.tags,
                     origTags: origTags,
                   ), 
                   icon: const Icon(Icons.miscellaneous_services), 
                   text: "Edit Tags",
-                ),
+                )),
         
                 const SizedBox(height: 20,),
         
                 // link accounts
-                const LinkAccounts(),
-        
+                Showcase(key: key3, 
+                onTargetLongPress: () {
+                  skipTour();
+                },
+                description: "Have an external account you want to link to your current account? You can do that here.\n\n(Press and hold the button to skip tour)", 
+                child: const LinkAccounts())
+               ,
                 const SizedBox(height: 20,),
-        
                 // acount is business
                 if(widget.isBusiness)
                   const EditButton(
@@ -122,6 +179,11 @@ class _EditSettingsState extends State<EditSettings> {
         
                   // acount is not business or a poster
                 if(!widget.isBusiness && widget.tier == "Viewer"  && !widget.isPending)
+                  Showcase(key: key4, description: "Have a business you want to advertise or want to become a certified poster on the app? You can apply to be a poster here. Fill out the necessary application for admin review.\n\n(Press and hold the button to skip tour)", 
+                  onTargetLongPress: () {
+                    skipTour();
+                  },
+                  child:
                   EditButton(
                     route: AccountUpgradePage(
                       tier: widget.tier, 
@@ -131,7 +193,7 @@ class _EditSettingsState extends State<EditSettings> {
                     ),
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a poster",
-                  ),
+                  )),
         
                   // account is a poster but not a business
                 if(widget.tier == "Poster" && !widget.isBusiness && !widget.isPending)
@@ -184,13 +246,22 @@ class _EditSettingsState extends State<EditSettings> {
                 const SizedBox(height: 20,),
         
                 // delete account
+                Showcase(key: key5, description: "You can also delete the app if you no longer want a presence on the application.\n\n(Press and hold the button to skip tour)", 
+                onTargetLongPress: () {
+                  skipTour();
+                },
+                onBarrierClick: () {
+                  Navigator.pop(context);
+                  skipTour();
+                },
+                child:
                 DeleteAccount(
                   email: widget.email, 
                   tags: widget.tags, 
                   uid: widget.uid, 
                   provider: provider, 
                   passwordController: passwordController
-                ),
+                )),
               ],
             ),
           ),

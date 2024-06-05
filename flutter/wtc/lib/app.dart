@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -5,8 +7,9 @@ import 'package:wtc/pages/my_posts.dart';
 import 'package:wtc/pages/saved_posts_page.dart';
 import 'package:wtc/pages/search_user.dart';
 import 'package:wtc/pages/account_review.dart';
+
+import 'package:wtc/user/user_service.dart';
 import 'package:wtc/widgets/navbutton.dart';
-import 'User/user_service.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
 import 'pages/alerts.dart';
@@ -67,6 +70,9 @@ class _NavBars extends State<App> {
   bool showAccountUpgradePage = false;
   bool showSavedPosts = false;
   bool showMyPosts = false;
+  bool tour = false;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -75,13 +81,45 @@ class _NavBars extends State<App> {
   void initState() {
     super.initState();
     _initUserTier();
+    _fetchTourStatus();
+    //print("we're touring: $tour");
+
+    
+  }
+
+  Future<void> _fetchTourStatus() async {
+  await isTouring(); // wait for isTouring to complete
+  print("we're touring: $tour");
+  if (!tour){
+        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11]));
+  }
+}
+
+  Future<void> isTouring() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var userInfo =
+        await _firestore.collection("users").doc(currentUser?.uid).get();
+    
+    setState(() {
+      tour = userInfo.data()?['sawTour'];
+    });
+    
+  }
+
+  Future<void> setTourStatus(bool status) async {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  
+  await _firestore.collection("users").doc(currentUser?.uid).update({
+    'sawTour': status
+  });
   }
 
   void _initUserTier() async {
     String tier = await UserService().fetchUserTier(); // Await the Future
     setState(() {
       userTier = tier;
-      WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12])); // Assign the result within setState to trigger a rebuild
+      
+ // Assign the result within setState to trigger a rebuild
     });
   }
 
@@ -166,7 +204,11 @@ class _NavBars extends State<App> {
             ),
             child: Showcase(
               key: key5, 
-              description: 'press the button in the upperleft corner to view the hamburger menu',  
+              description: 'press the button in the upperleft corner to view the hamburger menu.\n\n(Press and hold the icon to skip the tour)',  
+              onTargetLongPress: () {
+                skipTour();
+               
+              },
               onBarrierClick: () {
                 setState(() {
                   title = "Jobs";
@@ -187,8 +229,12 @@ class _NavBars extends State<App> {
               ),
           ),
           ListTile(
-            leading: Showcase(key: key6, description: "Are you in need of a job? You can check out job postings by Cheney organizations here in the Jobs page.",child: const Icon(Icons.work)),
+            leading: Showcase(key: key6, description: "Are you in need of a job? You can check out job postings by Cheney organizations here in the Jobs page.\n\n(Press and hold the icon to skip the tour)",child: const Icon(Icons.work)),
             title: const Text('Jobs'),
+            onLongPress: () {
+              skipTour();
+            
+            },
             onTap: () {
               Navigator.pop(context);
               setState(() {
@@ -208,8 +254,12 @@ class _NavBars extends State<App> {
           ),
           ListTile(
             leading: Showcase(
-            key: key7, description: 'Interested in volunteering?\nVolunteer postings can be seen in the volunteer page.', 
+            key: key7, description: 'Interested in volunteering?\nVolunteer postings can be seen in the volunteer page.\n\n(Press and hold the icon to skip the tour)', 
             child: const Icon(Icons.volunteer_activism),
+            onTargetLongPress: () {
+              skipTour();
+             
+            },
             onBarrierClick: () {
                setState(() {
                 title = "Volunteer";
@@ -246,7 +296,11 @@ class _NavBars extends State<App> {
             },
           ),
           ListTile(
-            leading: Showcase(key: key8, description: "Any posts created by you can be displayed here under the 'My Posts' page. If you are a poster, you can edit or delete posts; however, regular viewers can only delete posts as posts by a viewer need approval by an admin first.", child: const Icon(Icons.comment), 
+            leading: Showcase(key: key8, description: "Any posts created by you can be displayed here under the 'My Posts' page. If you are a poster, you can edit or delete posts; however, regular viewers can only delete posts as posts by a viewer need approval by an admin first.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.comment), 
+            onTargetLongPress: () {
+              skipTour();
+           
+            },
             onBarrierClick: () {
               setState(() {
                 title = "My Posts";
@@ -284,7 +338,11 @@ class _NavBars extends State<App> {
             },
           ),
           ListTile(
-              leading: Showcase(key: key9, description: "You can save any post on the app by pressing the 'Save' button located on a post. The post then can be viewed here. To remove a post, you can tap the 'save' button again.", child: const Icon(Icons.bookmark),
+              leading: Showcase(key: key9, description: "You can save any post on the app by pressing the 'Save' button located on a post. The post then can be viewed here. To remove a post, you can tap the 'save' button again.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.bookmark),
+              onTargetLongPress: () {
+                skipTour();
+             
+              },
               onBarrierClick: () {
                   title = "Saved Posts";
                   prevTitle = "Saved Posts";
@@ -307,7 +365,6 @@ class _NavBars extends State<App> {
                 setState(() {
                   title = "Saved Posts";
                   prevTitle = "Saved Posts";
-
                   showSavedPosts = true;
                   showJobsPage = false;
                   showVolunteerPage = false;
@@ -329,7 +386,11 @@ class _NavBars extends State<App> {
                   },
                 )
               : ListTile(
-                  leading: Showcase(key: key10, description: "Have some information to dispell to the public? Fill out the form under 'Post for Admin Review'. As it reads, if approved by an admin, your form will be posted to the application.", child:  const Icon(Icons.create), 
+                  leading: Showcase(key: key10, description: "Have some information to dispell to the public? Fill out the form under 'Post for Admin Review'. As it reads, if approved by an admin, your form will be posted to the application.\n\n(Press and hold the icon to skip the tour)", child:  const Icon(Icons.create), 
+                  onTargetLongPress: () {
+                    skipTour();
+                    
+                  },
                   onBarrierClick: () {
                     setState(() {
                       title = "About Us";
@@ -420,9 +481,14 @@ class _NavBars extends State<App> {
               },
             ),
           ListTile(
-            leading: Showcase(key: key11, description: "You can see a little bit about the founders and creator of the app, here in the About Us page.",
+            leading: Showcase(key: key11, description: "You can see a little bit about the founders and creator of the app, here in the About Us page.\n\n(Press and hold the icon to skip the tour)",
             child: const Icon(Icons.person),
-            onBarrierClick: () {
+            disposeOnTap: true,
+            onTargetLongPress: () {
+              skipTour();
+              
+            },
+            onTargetClick: () {
                 setState(() {
                 showAboutUsPage = false;
                 showJobsPage = false;
@@ -436,7 +502,21 @@ class _NavBars extends State<App> {
                 scaffoldKey.currentState?.closeDrawer();
                 currentPageIndex = 4;
                 });
-
+            },
+            onBarrierClick: () {
+              setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
             },
             
             ) ,
@@ -463,6 +543,12 @@ class _NavBars extends State<App> {
       ),
     );
   }
+
+  void skipTour() {
+    ShowCaseWidget.of(context).dismiss();
+    setTourStatus(true);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -511,7 +597,8 @@ class _NavBars extends State<App> {
           if (showSearchUsers) const SearchUserPage(),
           if (showAccountUpgradePage) const AccountReviewPage(),
           if (showSavedPosts) const SavedPosts(),
-          if (showMyPosts) const MyPostsPage()
+          if (showMyPosts) const MyPostsPage(),
+
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -542,8 +629,11 @@ class _NavBars extends State<App> {
               label: "Alerts",
               selectedIcon:  Showcase(
               key: key4, 
-              description: 'View all alert posts in the alert page.', 
-              child: const Icon(Icons.crisis_alert), 
+              description: 'View all alert posts in the alert page.\n\n(Press and hold the icon to skip the tour)', 
+              child: const Icon(Icons.crisis_alert),
+              onTargetLongPress: () {
+                  skipTour();
+                },  
               onBarrierClick: () {
                 scaffoldKey.currentState?.openDrawer();
               }),
@@ -553,9 +643,12 @@ class _NavBars extends State<App> {
           NavigationDestination(
               label: "Maps", selectedIcon: Showcase(
               key: key2, 
-              description: "Do you want to know about the businesses in Cheney?\n\nWithin the map page, you can browse all of the app registered organizations. You can see where they're located and what they're all about!", 
+              description: "Do you want to know about the businesses in Cheney?\n\nWithin the map page, you can browse all of the app registered organizations. You can see where they're located and what they're all about!\n\n(Press and hold the icon to skip the tour)", 
               targetShapeBorder: const CircleBorder(), 
               child: const Icon(Icons.map),
+              onTargetLongPress: () {
+                  skipTour();
+              }, 
               onBarrierClick: () {
                 setState(() {
                   currentPageIndex = 3;
@@ -567,8 +660,12 @@ class _NavBars extends State<App> {
               selectedIcon: Showcase(
                 key: key1, 
                 targetShapeBorder: const CircleBorder(), 
-                description: 'Hello there!\n\nPlease tap on the screen to learn about using the Welcome to Cheney notification app. We will start at the home page as this will be center of the app!\n\nThis is the homepage, here you can find all posts relevant to your selected tags. ', 
-                child: const Icon(Icons.home_outlined), onBarrierClick: () {
+                description: 'Hello there!\n\nPlease tap on the screen to learn about using the Welcome to Cheney notification app. We will start at the home page as this will be center of the app!\n\nThis is the homepage, here you can find all posts relevant to your selected tags.\n\n(Press and hold the icon to skip the tour)', 
+                child: const Icon(Icons.home_outlined),
+                onTargetLongPress: () {
+                  skipTour();
+                }, 
+                onBarrierClick: () {
                 setState(() {
                   currentPageIndex = 1;
                 });
@@ -577,8 +674,11 @@ class _NavBars extends State<App> {
               label: "Calendar",
               icon: const Icon(Icons.calendar_month_outlined),
               selectedIcon:  Showcase(
-                key: key3, description: "Welcome to Cheney is about keeping you up to date on what's happening in the city. You can view events relevant to your selected tags in the Calendar page.", 
+                key: key3, description: "Welcome to Cheney is about keeping you up to date on what's happening in the city. You can view events relevant to your selected tags in the Calendar page.\n\n(Press and hold the icon to skip the tour)", 
                 child: const Icon(Icons.calendar_month),
+                onTargetLongPress: () {
+                  skipTour();
+                }, 
                 onBarrierClick: () {
                   setState(() {
                     currentPageIndex = 0;
@@ -588,6 +688,7 @@ class _NavBars extends State<App> {
           NavigationDestination(
               label: "Account",
               selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it, we hope you find our app useful!", child: const Icon(Icons.manage_accounts),
+           
               onBarrierClick: () {
                 setState(() {
                   currentPageIndex = 2;
@@ -634,7 +735,7 @@ class _NavBars extends State<App> {
       case 3:
         return const CalendarPage();
       case 4:
-        return const AccountPage();
+        return ShowCaseWidget(builder: (context) =>  AccountPage(currentPageIndex: currentPageIndex,)); 
 
       default:
         return Container(); // Default empty container
