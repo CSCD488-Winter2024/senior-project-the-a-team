@@ -18,7 +18,7 @@ class MapPage extends StatefulWidget {
 void updateCoordinates(double latitude, double longitude) {}
 
 class _MapPage extends State<MapPage> {
-  LatLng center = LatLng(47.50595337523408, -117.56739882687351);
+  LatLng center = const LatLng(47.50595337523408, -117.56739882687351);
   double zoom = 12.0;
   List<MapCard> organizations = List<MapCard>.empty(growable: true);
 
@@ -150,9 +150,7 @@ class _MapPage extends State<MapPage> {
     CollectionReference organizations =
         FirebaseFirestore.instance.collection('businesses');
 
-    Query query = organizations;
-
-    QuerySnapshot querySnapshot = await query.get();
+    QuerySnapshot querySnapshot = await organizations.get();
     final filteredData = querySnapshot.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
         .toList();

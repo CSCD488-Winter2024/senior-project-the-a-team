@@ -27,11 +27,8 @@ class _TopBarState extends State<TopBar> {
     return AppBar(
       backgroundColor: const Color(0xFF469AB8),
       iconTheme: const IconThemeData(color: Colors.white),
-      title: Align(
-        widthFactor: 5.0,
-        alignment: Alignment.center,
-        child: Text(widget.title, style: const TextStyle(color: Colors.white)),
-      ),
+      centerTitle: true,
+      title:  Text(widget.title, style: const TextStyle(color: Colors.white)),
       actions: [
         IconButton(
           icon: widget.showNotifications

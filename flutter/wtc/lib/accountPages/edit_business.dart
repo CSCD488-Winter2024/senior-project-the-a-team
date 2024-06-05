@@ -17,7 +17,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBusinessInfo() async {
     return await FirebaseFirestore.instance
-        .collection("users")
+        .collection("businesses")
         .doc(user!.uid)
         .get();
   }
@@ -204,7 +204,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                          ),
 
                          SizedBox(
-                          width: 90,
+                          width: 105,
                           child: TextField(
                             controller: _cityController,
                             readOnly: true,
@@ -353,24 +353,77 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                               )
                             );
                           }
-                      
-                          await FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(user!.uid)
-                              .update({
-                                "about": _bioController.text,
-                                "phone": _phoneController.text,
-                                "businessHours": {
-                                  "Monday": "${_mondayOpenController.text.trim()} - ${_mondayCloseController.text.trim()}",
-                                  "Tuesday": "${_tuesdayOpenController.text.trim()} - ${_tuesdayCloseController.text.trim()}",
-                                  "Wednesday": "${_wednesdayOpenController.text.trim()} - ${_wednesdayCloseController.text.trim()}",
-                                  "Thursday": "${_thursdayOpenController.text.trim()} - ${_thursdayCloseController.text.trim()}",
-                                  "Friday": "${_fridayOpenController.text.trim()} - ${_fridayCloseController.text.trim()}",
-                                  "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
-                                  "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
+                          else if(_bioController.text != data["about"] || _phoneController.text != data["phone"] 
+                                  || _mondayOpenController.text != monday.split(" - ")[0] || _mondayCloseController.text != monday.split(" - ")[1] 
+                                  || _tuesdayOpenController.text != tuesday.split(" - ")[0] || _tuesdayCloseController.text != tuesday.split(" - ")[1] 
+                                  || _wednesdayOpenController.text != wednesday.split(" - ")[0] || _wednesdayCloseController.text != wednesday.split(" - ")[1] 
+                                  || _thursdayOpenController.text != thursday.split(" - ")[0] || _thursdayCloseController.text != thursday.split(" - ")[1] 
+                                  || _fridayOpenController.text != friday.split(" - ")[0] || _fridayCloseController.text != friday.split(" - ")[1] 
+                                  || _saturdayOpenController.text != saturday.split(" - ")[0] || _saturdayCloseController.text != saturday.split(" - ")[1] 
+                                  || _sundayOpenController.text != sunday.split(" - ")[0] || _sundayCloseController.text != sunday.split(" - ")[1])
+                          {
+                            bool confirm = false;
+                            await showDialog(
+                              context: context, 
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Confirm Changes?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text('No'),
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        confirm = true;
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Yes'),
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+
+                            if(confirm){
+                              showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    title: Text('Updating Information...'),
+                                    content: LinearProgressIndicator(),
+                                  );
                                 }
-                              });
-                          Navigator.pop(context);                       
+                              );
+                            await FirebaseFirestore.instance
+                                .collection("businesses")
+                                .doc(user!.uid)
+                                .update({
+                                  "about": _bioController.text,
+                                  "phone": _phoneController.text,
+                                  "businessHours": {
+                                    "Monday": "${_mondayOpenController.text.trim()} - ${_mondayCloseController.text.trim()}",
+                                    "Tuesday": "${_tuesdayOpenController.text.trim()} - ${_tuesdayCloseController.text.trim()}",
+                                    "Wednesday": "${_wednesdayOpenController.text.trim()} - ${_wednesdayCloseController.text.trim()}",
+                                    "Thursday": "${_thursdayOpenController.text.trim()} - ${_thursdayCloseController.text.trim()}",
+                                    "Friday": "${_fridayOpenController.text.trim()} - ${_fridayCloseController.text.trim()}",
+                                    "Saturday": "${_saturdayOpenController.text.trim()} - ${_saturdayCloseController.text.trim()}",
+                                    "Sunday": "${_sundayOpenController.text.trim()} - ${_sundayCloseController.text.trim()}",
+                                  }
+                                });
+                                Navigator.pop(context);
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Changes saved"),
+                                )
+                              );
+                            }
+                          }
+                          else{
+                            Navigator.pop(context);
+                          }                         
                         },
                         child: const Text("Save Changes"),
                       ),
