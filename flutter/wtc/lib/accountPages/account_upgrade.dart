@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:intl_phone_number_input/intl_phone_number_input.dart";
 import "package:wtc/components/hour_input.dart";
 
@@ -128,6 +129,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
     }
     
     return Scaffold(
+      //backgroundColor: const Color(0xFFF0E8D6),
       appBar: AppBar(
         title: const Text(
           "Upgrade Account Application",
@@ -135,7 +137,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
             color: Colors.white
           ),
         ),
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -157,7 +159,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   textAlign: TextAlign.start,
                 ),
                 Switch(
-                  activeColor: Colors.grey[600],
+                  // activeColor: Color(0xFF),
                   value: isBusiness,
                   onChanged: (value) {
                     setState(() {
@@ -339,6 +341,9 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
 
             // Upgrade Button
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF584C33),
+              ),
               onPressed: () async{
                 if(_bioController.text.isEmpty || _nameController.text.isEmpty || _phoneController.text.isEmpty){
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -376,7 +381,12 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text("Submit"),
+              child: const Text(
+                "Submit",
+                style: TextStyle(
+                  color: Color(0xFFF0E8D6)
+                ),
+              ),
             ),
           ]
         ),

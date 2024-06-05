@@ -35,7 +35,7 @@ class _MapPage extends State<MapPage> {
       Stack(
         children: [
           Text("size of orgs: ${organizations.length}"),
-          Container(
+          SizedBox(
               width: 500,
               height: 400,
               child: FlutterMap(

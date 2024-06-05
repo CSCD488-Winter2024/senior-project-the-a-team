@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wtc/pages/my_posts.dart';
@@ -80,7 +81,13 @@ class _NavBars extends State<App> {
                 CrossAxisAlignment.center, // Center content horizontally
             children: <Widget>[
               ElevatedButton(
-                child: const Text("Normal Post"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF584C33),
+                ),
+                child: const Text(
+                  "Normal Post",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -91,7 +98,13 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                child: const Text("Alert Post"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF584C33),
+                ),
+                child: const Text(
+                  "Alert Post",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -102,7 +115,13 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                child: const Text("Event Post"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF584C33),
+                ),
+                child: const Text(
+                  "Event Post",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -113,7 +132,13 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                child: const Text("Job Post"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF584C33),
+                ),
+                child: const Text(
+                  "Job Post",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -138,13 +163,14 @@ class _NavBars extends State<App> {
 
   Drawer getDrawer(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
             child: Text('', style: TextStyle(color: Colors.white)),
             decoration: BoxDecoration(
-              color: Color(0xFF469AB8),
+              color: Color(0xFFBD9F4C),
               image: DecorationImage(
                   image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
@@ -415,11 +441,11 @@ class _NavBars extends State<App> {
         gap: 8,
         duration: const Duration(milliseconds: 0),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         selectedIndex: currentPageIndex,
         tabs: const [
           GButton(
-            icon: Icons.crisis_alert,
+            icon: Icons.notifications,
           ),
           GButton(icon: Icons.map),
           GButton(

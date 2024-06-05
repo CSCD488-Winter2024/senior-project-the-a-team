@@ -29,7 +29,7 @@ class _OrganizationPostPage extends State<OrganizationPostPage> {
            ),title: 
             Text(style: const TextStyle(color: Colors.white),"Posts by ${widget.username}"),
             centerTitle: true,
-           backgroundColor: const Color(0xFF469AB8),
+           backgroundColor: const Color(0xFFBD9F4C),
            surfaceTintColor: Colors.transparent,
            scrolledUnderElevation: 0,
            elevation: 0),
