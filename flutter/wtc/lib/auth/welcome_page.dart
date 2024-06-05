@@ -72,7 +72,8 @@ class _IntroPageState extends State<IntroPage> {
       'tags': tags,
       'pfp': profilePic,
       'saved_posts': newSavedPostList,
-      'notificationToken': token
+      'notificationToken': token,
+      'sawTour': false,
     }).whenComplete(() async => await GlobalUserInfo.initialize());
   }
 
@@ -224,7 +225,7 @@ class _IntroPageState extends State<IntroPage> {
                             child: Wrap(
                               spacing: 1.0,
                               alignment: WrapAlignment.center,
-                              runSpacing: 4.0,
+                              runSpacing: 0,
                               children: items
                                   .map(
                                     (e) => Padding(
