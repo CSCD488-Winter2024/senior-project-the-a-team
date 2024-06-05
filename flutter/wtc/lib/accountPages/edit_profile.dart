@@ -87,6 +87,7 @@ class _EditProfile extends State<EditProfile>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      //backgroundColor: const Color(0xFFF0E8D6),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () async {
@@ -110,7 +111,7 @@ class _EditProfile extends State<EditProfile>{
             color: Colors.white
           ),
         ),
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         centerTitle: true,
         iconTheme: const IconThemeData(
           color: Colors.white
@@ -243,6 +244,9 @@ class _EditProfile extends State<EditProfile>{
           
                 //confirm profile updates
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF584C33),
+                  ),
                   onPressed: () async{
           
                     bool changes = usernameController.text.isNotEmpty || nameController.text.isNotEmpty || 
@@ -327,7 +331,10 @@ class _EditProfile extends State<EditProfile>{
                       }
                     }
                   },
-                  child: const Text("Confirm Changes"),
+                  child: const Text(
+                    "Confirm Changes",
+                    style: TextStyle(color: Color(0xFFF0E8D6)),
+                  ),
                 )
               ],
             ),

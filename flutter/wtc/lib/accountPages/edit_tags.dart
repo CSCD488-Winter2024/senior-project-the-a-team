@@ -86,6 +86,7 @@ class _EditTagsState extends State<EditTags> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //backgroundColor: const Color(0xFFF0E8D6),
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {
@@ -109,7 +110,7 @@ class _EditTagsState extends State<EditTags> {
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: const Color(0xFF469AB8),
+          backgroundColor: const Color(0xFFBD9F4C),
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         body: Center(
@@ -140,16 +141,7 @@ class _EditTagsState extends State<EditTags> {
                 },
                 child: const SizedBox(),
               ),
-              const Align(
-                //alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Select Tags",
-                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Align(
@@ -164,7 +156,12 @@ class _EditTagsState extends State<EditTags> {
                                 padding: const EdgeInsets.all(5),
                                 child: FilterChip(
                                     showCheckmark: false,
+                                    backgroundColor: const Color(0xFFF0E8D6),
+                                    selectedColor: const Color(0xFF584C33),
                                     label: Text(e),
+                                    labelStyle: TextStyle(
+                                      color: widget.tags.contains(e) ? const Color(0xFFF0E8D6) : Colors.black,
+                                    ),
                                     selected: widget.tags.contains(e),
                                     onSelected: (bool value) {
                                       if (widget.tags.contains(e)) {
@@ -180,6 +177,9 @@ class _EditTagsState extends State<EditTags> {
               ),
               const Spacer(),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF584C33),
+                  ),
                   onPressed: () async {
                     if (listEquals(widget.tags, widget.origTags)) {
                       Navigator.of(context).pop();
@@ -232,7 +232,11 @@ class _EditTagsState extends State<EditTags> {
                           });
                     }
                   },
-                  child: const Text("Confirm")),
+                  child: const Text(
+                    "Confirm Changes",
+                    style: TextStyle(color: Color(0xFFF0E8D6)),
+                  )
+                ),
               const SizedBox(height: 40)
             ],
           ),

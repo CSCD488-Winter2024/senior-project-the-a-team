@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/global_user_info.dart';
@@ -81,12 +80,12 @@ class _PostListState extends State<PostList> {
           }
 
           return LiquidPullToRefresh(
-              color: const Color(0xFF469AB8),
-              backgroundColor: const Color(0xffd4bc93),
+              color: const Color(0xFFBD9F4C),
+              backgroundColor: const Color(0xfff0e8d6),
               onRefresh: _refreshPosts,
               showChildOpacityTransition: false,
               child: ListView.separated(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8.0),
                 itemCount: snapshot.data?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
                   var document = snapshot.data?[index];

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wtc/accountPages/edit_settings.dart';
 import 'package:wtc/auth/auth.dart';
@@ -33,7 +35,7 @@ class _AccountPage extends State<AccountPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      //backgroundColor: const Color(0xFFF0E8D6),
       body: StreamBuilder(
         stream: _firestore
           .collection('users')
@@ -82,7 +84,6 @@ class _AccountPage extends State<AccountPage> {
             );
 
             return Center(
-                child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
@@ -106,23 +107,36 @@ class _AccountPage extends State<AccountPage> {
                     // Display name
                     Container(
                       decoration: const BoxDecoration(
-                          color: Color(0xFF469AB8),
-                          borderRadius: BorderRadius.all(Radius.circular(250))),
+                          color: Color.fromARGB(255, 69, 45, 40),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       child: SizedBox(
                         width: 9999,
                         child: Text('Hello $username!',
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               color: Colors.white
                             ),
-                            textAlign: TextAlign.center),
+                            textAlign: TextAlign.center,),
                       ),
                     ),
 
                     const SizedBox(height: 20),
 
-                    // Edit Settings
-                    OutlinedButton(
+                    // Bio
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          '\tAccount Details',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+
+                        OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,                        
+                       ),
                         onPressed: (){
                         Navigator.push(
                           context,
@@ -143,88 +157,112 @@ class _AccountPage extends State<AccountPage> {
                         );
                       },
                       child: const Text(
-                        "Settings",
+                        "Edit Settings",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          //fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Colors.black
+                          color: Colors.black,
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
+                      ],
+                    ),
 
-                    const SizedBox(height: 20),
+                    const Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                    ),
 
-                    // Bio
-                    Container(
-                      width: 9999,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(color: Colors.black)
+                    const SizedBox(height: 10),
+
+                    // name
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,                     
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '\tName: $name',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Full Name:',
-                            style: TextStyle(fontSize: 24),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          Text(
-                            name,
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          const Text(
-                            'Email:',
-                            style: TextStyle(
-                              fontSize: 24,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          Text(
-                            email,
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
 
-             
-                    const SizedBox(
-                      height: 25,
+                    const SizedBox(height: 10),
+
+                    // email
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '\tEmail: $email',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
+                    const SizedBox(height: 10),
+
+                    // tier
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\tTier: $tier',
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Spacer(),
 
                     //logout
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF584C33),
+                      ),
                       onPressed: (){
                         showDialog(
                           context: context, 
                           builder: (context){
                             return AlertDialog(
-                              title: const Text("Are you sure you want to Logout?"),
+                              title: const Text(
+                                "Are you sure you want to Logout?",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                               actions:[
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text("No"),
+                                  child: const Text(
+                                    "No",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: (){
                                     Navigator.of(context).pop();
                                     signout();
                                   },
-                                  child: const Text("Yes"),
+                                  child: const Text(
+                                    "Yes",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
                               ]
                             );
@@ -235,13 +273,14 @@ class _AccountPage extends State<AccountPage> {
                         "Logout",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFFF0E8D6),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            )
+            
           );
           } else {
             signout();
