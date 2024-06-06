@@ -29,6 +29,8 @@ class JobPost extends Post {
     this.wage = 0.0,
     required super.userEmail,
     required super.isMyPost,
+    required super.username,
+    required super.pfp
   });
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
+import 'package:wtc/User/global_user_info.dart';
 
 class CreatePostPage extends StatefulWidget {
   const CreatePostPage({super.key});
@@ -151,6 +152,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
       'interestCount': 0,
       'postID': newGuid.toString(),
       'user': currentUser!.email,
+      'username': GlobalUserInfo.getData('username')  ,
+      'pfp': GlobalUserInfo.getData('pfp')  
     });
 
     // Clear the fields

@@ -127,6 +127,8 @@ class _SavedPostsListState extends State<SavedPostsList> {
                       attendingCount: document['attendingCount'] as int,
                       maybeCount: document['maybeCount'] as int,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Job") {
                     var wage = document['wage'];
@@ -148,6 +150,8 @@ class _SavedPostsListState extends State<SavedPostsList> {
                       wage: wage,
                       wageType: document['wageType'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Volunteer") {
                     return JobPost(
@@ -164,6 +168,8 @@ class _SavedPostsListState extends State<SavedPostsList> {
                       postId: Guid(document['postID'] as String),
                       volunteer: true,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else {
                     var tempTags = document['tags'] as List<dynamic>;
@@ -185,6 +191,8 @@ class _SavedPostsListState extends State<SavedPostsList> {
                       tags: postTags,
                       body: document['body'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   }
                 },

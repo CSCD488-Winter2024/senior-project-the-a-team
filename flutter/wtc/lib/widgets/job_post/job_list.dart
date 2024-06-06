@@ -52,6 +52,8 @@ class JobPostList extends StatelessWidget {
                 wage: wage,
                 wageType: document?['wageType'] as String,
                 isMyPost: false,
+                pfp: document?['pfp'] as String,
+                username: document?['username'] as String,
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

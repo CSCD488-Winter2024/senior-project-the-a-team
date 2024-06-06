@@ -1,5 +1,4 @@
-// ignore_for_file: must_be_immutable, unnecessary_this
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,9 @@ class Post extends StatelessWidget {
       required this.interestCount,
       required this.created,
       required this.postId,
-      required this.isMyPost})
+      required this.isMyPost,
+      required this.username,
+      required this.pfp})
       : super(key: key);
 
   Guid postId;
@@ -34,6 +35,8 @@ class Post extends StatelessWidget {
   final int interestCount;
   final DateTime created;
   final bool isMyPost;
+  final String username;
+  final String pfp;
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +51,24 @@ class Post extends StatelessWidget {
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}",
-                  textAlign: TextAlign.left,
-                )),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted by: $userEmail\n",
-                  textAlign: TextAlign.left,
-                )),    
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             PostBodyBox(body: header),
             Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-            ]),
-            PostDeleteEditBox(post: this)
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SavePost(
+                  postId: postId,
+                  currentUserId: currentUser?.uid.toString(),
+                ),
+              ],
+            ),
+            PostTagBox(tags: tags),
+            PostDeleteEditBox(post: this),
           ],
         ),
       );
@@ -81,22 +79,24 @@ class Post extends StatelessWidget {
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             PostBodyBox(body: header),
             Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-               ])
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SavePost(
+                  postId: postId,
+                  currentUserId: currentUser?.uid.toString(),
+                ),
+              ],
+            ),
+            PostTagBox(tags: tags),
+            PostDeleteEditBox(post: this),
           ],
         ),
       );
@@ -109,7 +109,12 @@ class Post extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
               scrollable: true,
-              title: PostTitleBox(title: title),
+              title: PostTitleBox(
+                title: title,
+                username: username,
+                created: created,
+                pfp: pfp,
+              ),
               content: Column(
                   children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
         });

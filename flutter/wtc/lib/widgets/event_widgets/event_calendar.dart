@@ -239,6 +239,8 @@ class _EventCalendar extends State<EventCalendar> {
           attendingCount: doc['attendingCount'] as int,
           maybeCount: doc['maybeCount'] as int,
           isMyPost: false,
+          pfp: doc['pfp'] as String,
+          username: doc['username'] as String,
         );
 
         events.add(event);

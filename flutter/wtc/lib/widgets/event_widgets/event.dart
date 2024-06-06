@@ -29,6 +29,8 @@ class Event extends Post {
     required this.attendingCount,
     required this.maybeCount,
     required super.isMyPost,
+    required super.username,
+    required super.pfp
   });
 
   final DateTime date;
