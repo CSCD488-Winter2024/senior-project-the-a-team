@@ -43,7 +43,7 @@ class Event extends Post {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
         (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
-        isMyPost) {
+        (isMyPost && currentUserTier != "Viewer")) {
       return InkWell(
         onTap: () {
           showEventDialog(context, postId);

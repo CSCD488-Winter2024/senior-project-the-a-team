@@ -41,7 +41,7 @@ class Post extends StatelessWidget {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
         (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
-        isMyPost) {
+        (isMyPost && currentUserTier != "Viewer")) {
       return InkWell(
         onTap: () {
           showPostDialog(context);

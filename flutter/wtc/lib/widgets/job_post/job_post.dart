@@ -41,7 +41,7 @@ class JobPost extends Post {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
         (currentUserTier == "Poster" && currentUser?.email == userEmail ||
-            isMyPost)) {
+        (isMyPost && currentUserTier != "Viewer"))) {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
         PostTitleBox(title: title),
