@@ -41,7 +41,7 @@ class Post extends StatelessWidget {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
         (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
-        isMyPost) {
+        (isMyPost && currentUserTier != "Viewer")) {
       return InkWell(
         onTap: () {
           showPostDialog(context);
@@ -53,9 +53,15 @@ class Post extends StatelessWidget {
             SizedBox(
                 width: 600,
                 child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  "Posted on: ${created.toString().split(" ")[0]}",
                   textAlign: TextAlign.left,
                 )),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted by: $userEmail\n",
+                  textAlign: TextAlign.left,
+                )),    
             PostBodyBox(body: header),
             Row(
                mainAxisAlignment: MainAxisAlignment.end,
