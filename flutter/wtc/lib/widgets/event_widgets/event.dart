@@ -48,20 +48,19 @@ class Event extends Post {
         isMyPost) {
       return InkWell(
         onTap: () {
-          showEventDialog(context, postId);
+          showPostDialog(context);
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             PostBodyBox(body: header),
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+            PostTagBox(tags: tags),
             PostDeleteEditBox(post: this),
           ],
         ),
@@ -69,20 +68,19 @@ class Event extends Post {
     } else {
       return InkWell(
         onTap: () {
-          showEventDialog(context, postId);
+          showPostDialog(context);
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             PostBodyBox(body: header),
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+            PostTagBox(tags: tags),
           ],
         ),
       );
@@ -95,7 +93,12 @@ class Event extends Post {
         builder: (BuildContext context) {
           return AlertDialog(
             scrollable: true,
-            title: PostTitleBox(title: title),
+            title: PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

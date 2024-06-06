@@ -46,7 +46,12 @@ class JobPost extends Post {
             isMyPost)) {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
-        PostTitleBox(title: title),
+        PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
         PostTagBox(tags: tags),
         PostBodyBox(body: body),
         Padding(
@@ -78,7 +83,12 @@ class JobPost extends Post {
     } else {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
-        PostTitleBox(title: title),
+        PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
         PostTagBox(tags: tags),
         PostBodyBox(body: body),
         Padding(

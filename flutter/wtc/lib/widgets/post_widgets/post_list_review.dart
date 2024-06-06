@@ -140,6 +140,8 @@ class PostListReview extends StatelessWidget {
                   title: document?['title'] as String,
                   tags: postTags,
                   body: document?['body'] as String,
+                  username: document?['username'] as String,
+                  pfp: document?['pfp'] as String
                 );
               }
             },

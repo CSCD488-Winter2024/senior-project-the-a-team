@@ -16,6 +16,8 @@ class PostReview extends Post_Review_Widget {
     required String userEmail,
     required int interestCount,
     required DateTime created,
+    required String username,
+    required String pfp
   }) : super(
           key: key,
           postId: postId,
@@ -26,6 +28,8 @@ class PostReview extends Post_Review_Widget {
           userEmail: userEmail,
           interestCount: interestCount,
           created: created,
+          username: username,
+          pfp: pfp
         );
 
   void deletePost(BuildContext context) {
