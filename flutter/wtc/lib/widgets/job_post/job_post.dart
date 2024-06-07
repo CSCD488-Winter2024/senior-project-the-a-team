@@ -52,15 +52,6 @@ class JobPost extends Post {
               created: created,
               pfp: pfp,
             ),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "posted on: $month-$day-$year",
-              textAlign: TextAlign.left,
-            )),
-        JobWageBox(wageType: wageType, wage: wage),
         Row(
            mainAxisAlignment: MainAxisAlignment.end,
            children: [
@@ -68,6 +59,9 @@ class JobPost extends Post {
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
         ]),
+        PostBodyBox(body: body),
+        JobWageBox(wageType: wageType, wage: wage),
+        PostTagBox(tags: tags),
         PostDeleteEditBox(post: this)
       ];
 
@@ -89,22 +83,16 @@ class JobPost extends Post {
               created: created,
               pfp: pfp,
             ),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "posted on: $month-$day-$year",
-              textAlign: TextAlign.left,
-            )),
-        JobWageBox(wageType: wageType, wage: wage),
         Row(
            mainAxisAlignment: MainAxisAlignment.end,
            children: [
               SavePost(
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
-           ])
+        ]),
+        PostBodyBox(body: body),
+        JobWageBox(wageType: wageType, wage: wage),
+        PostTagBox(tags: tags),
       ];
 
       // Return the Column with all children

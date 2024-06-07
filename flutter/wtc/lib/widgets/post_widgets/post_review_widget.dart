@@ -84,14 +84,8 @@ class Post_Review_Widget extends StatelessWidget {
                       created: created,
                       pfp: pfp,
                     ),
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                     PostTagBox(tags: tags),
-                    SizedBox(
-                        width: 600,
-                        child: Text(
-                          "Posted on: ${created.toString().split(" ")[0]}\n",
-                          textAlign: TextAlign.left,
-                        )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
                   ],
                 ),
               );

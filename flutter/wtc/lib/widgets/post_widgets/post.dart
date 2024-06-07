@@ -57,7 +57,6 @@ class Post extends StatelessWidget {
               created: created,
               pfp: pfp,
             ),
-            PostBodyBox(body: header),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -67,6 +66,7 @@ class Post extends StatelessWidget {
                 ),
               ],
             ),
+            PostBodyBox(body: header),
             PostTagBox(tags: tags),
             PostDeleteEditBox(post: this),
           ],
@@ -85,7 +85,6 @@ class Post extends StatelessWidget {
               created: created,
               pfp: pfp,
             ),
-            PostBodyBox(body: header),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -95,8 +94,8 @@ class Post extends StatelessWidget {
                 ),
               ],
             ),
+            PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            PostDeleteEditBox(post: this),
           ],
         ),
       );
