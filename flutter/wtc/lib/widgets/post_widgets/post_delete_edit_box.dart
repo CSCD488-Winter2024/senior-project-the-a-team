@@ -8,9 +8,10 @@ import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class PostDeleteEditBox extends StatelessWidget {
-  const PostDeleteEditBox({super.key, required this.post});
+  const PostDeleteEditBox({super.key, required this.post, required this.isViewer});
 
   final Post post;
+  final bool isViewer;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,8 @@ class PostDeleteEditBox extends StatelessWidget {
           child: const Text("Delete",
               style: TextStyle(fontSize: 24, color: Colors.red))),
       const SizedBox(width: 60),
-      TextButton(
+      if (!isViewer)
+        TextButton(
           onPressed: () {
             if (post is Event) {
               Navigator.push(

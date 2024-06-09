@@ -60,7 +60,7 @@ class _MyPostsListState extends State<MyPostsList> {
             var document = snapshot.data?.docs[index];
             String type = document?['type'] as String;
             String dateCreated = document?['createdAt'] as String;
-            print("current email: $curUserEmail");
+            //print("current email: $curUserEmail");
             // Use if-else block to return the correct type of Post for the proper formatting
             if (type == "Event") {
               var tempTags = document?['tags'] as List<dynamic>;

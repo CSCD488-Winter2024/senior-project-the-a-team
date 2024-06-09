@@ -13,11 +13,11 @@ class _JobsPage extends State<JobsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
+    return Container(
+      color: Colors.white,
       child: SizedBox.expand(
-          child: JobPostList())
-          );
+        child: JobPostList(),
+      ),
+    );
   }
 }

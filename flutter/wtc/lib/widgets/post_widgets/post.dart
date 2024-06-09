@@ -64,7 +64,10 @@ class Post extends StatelessWidget {
                      postId: postId,
                      currentUserId: currentUser?.uid.toString())
             ]),
-            PostDeleteEditBox(post: this)
+            if(currentUserTier != 'Viewer')
+            PostDeleteEditBox(post: this, isViewer: false,)
+            else
+            PostDeleteEditBox(post: this, isViewer: true,)
           ],
         ),
       );
@@ -90,7 +93,7 @@ class Post extends StatelessWidget {
                  SavePost(
                      postId: postId,
                      currentUserId: currentUser?.uid.toString())
-               ])
+               ]),
           ],
         ),
       );
