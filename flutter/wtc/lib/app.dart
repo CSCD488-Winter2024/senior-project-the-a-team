@@ -210,6 +210,22 @@ class _NavBars extends State<App> {
                
               },
               disposeOnTap: false,
+              onToolTipClick: (){
+               setState(() {
+                  title = "Jobs";
+                  prevTitle = "Jobs";
+                  showJobsPage = true;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showSavedPosts = false;
+                  showMyPosts = false;
+                });
+                ShowCaseWidget.of(context).startShowCase([key6]);  
+              } ,
               onTargetClick: () {
               setState(() {
                   title = "Jobs";
@@ -251,6 +267,22 @@ class _NavBars extends State<App> {
             description: "Are you in need of a job? You can check out job postings by Cheney organizations here in the Jobs page.\n\n(Press and hold the icon to skip the tour)",
             child: const Icon(Icons.work),
             disposeOnTap: false,
+            onToolTipClick: () {
+               setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key7]);
+            },
             onTargetClick: () {
               setState(() {
                 title = "Volunteer";
@@ -314,6 +346,22 @@ class _NavBars extends State<App> {
              
             },
             disposeOnTap: false,
+            onToolTipClick: () {
+              setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key8]);
+            },
             onTargetClick: () {
               setState(() {
                 title = "Volunteer";
@@ -373,6 +421,22 @@ class _NavBars extends State<App> {
            
             },
             disposeOnTap: false,
+            onToolTipClick: () {
+               setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = true;
+              });    
+              ShowCaseWidget.of(context).startShowCase([key9]);  
+            },
             onTargetClick: () {
             setState(() {
                 title = "My Posts";
@@ -433,6 +497,23 @@ class _NavBars extends State<App> {
              
               },
               disposeOnTap: false,
+              onToolTipClick: () {
+                setState(() {
+                    title = "Saved Posts";
+                    prevTitle = "Saved Posts";
+                    showSavedPosts = true;
+                    showJobsPage = false;
+                    showVolunteerPage = false;
+                    showNotification = false;
+                    showApprovePostsPage = false;
+                    showAboutUsPage = false;
+                    showSearchUsers = false;
+                    showAccountUpgradePage = false;
+                    showMyPosts = false;                      
+                  
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key10]);
+              },
               onTargetClick: () {
                   setState(() {
                     title = "Saved Posts";
@@ -452,8 +533,7 @@ class _NavBars extends State<App> {
               },
               onBarrierClick: () {
                   setState(() {
-                    
-                  
+              
                   title = "Saved Posts";
                   prevTitle = "Saved Posts";
 
@@ -504,6 +584,22 @@ class _NavBars extends State<App> {
                     
                   },
                   disposeOnTap: false,
+                  onToolTipClick: () {
+                    setState(() {
+                      title = "About Us";
+                      prevTitle = "About Us";
+                      showAboutUsPage = true;
+                      showJobsPage = false;
+                      showNotification = false;
+                      showVolunteerPage = false;
+                      showApprovePostsPage = false;
+                      showSearchUsers = false;
+                      showAccountUpgradePage = false;
+                      showSavedPosts = false;
+                      showMyPosts = false;
+                    });
+                    ShowCaseWidget.of(context).startShowCase([key11]);
+                  },
                   onTargetClick: () {
                     setState(() {
                       title = "About Us";
@@ -617,6 +713,22 @@ class _NavBars extends State<App> {
             onTargetLongPress: () {
               skipTour();
               
+            },
+            onToolTipClick: () {
+              setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
+                ShowCaseWidget.of(context).startShowCase([key12]); 
             },
     
             onTargetClick: () {
@@ -769,6 +881,12 @@ class _NavBars extends State<App> {
                   skipTour();
                 },  
               disposeOnTap: true,
+              onToolTipClick: () {
+                 setState(() {
+                  scaffoldKey.currentState?.openDrawer();
+                },);
+                ShowCaseWidget.of(context).startShowCase([key5]);                 
+              },
               onTargetClick: () {
                 setState(() {
                   scaffoldKey.currentState?.openDrawer();
@@ -791,6 +909,12 @@ class _NavBars extends State<App> {
               disposeOnTap: false,
               onTargetLongPress: () {
                   skipTour();
+              },
+              onToolTipClick: () {
+                setState(() {
+                  currentPageIndex = 3;
+                },);
+                ShowCaseWidget.of(context).startShowCase([key3]); 
               },
               onTargetClick: () {
                 setState(() {
@@ -816,6 +940,12 @@ class _NavBars extends State<App> {
                 onTargetLongPress: () {
                   skipTour();
                 }, 
+                onToolTipClick: () {
+                   setState(() {
+                  currentPageIndex = 1;
+                });
+                ShowCaseWidget.of(context).startShowCase([key2]);
+                },
                 onTargetClick: () {
                   setState(() {
                   currentPageIndex = 1;
@@ -838,8 +968,14 @@ class _NavBars extends State<App> {
                 onTargetLongPress: () {
                   skipTour();
                 }, 
+                onToolTipClick: () {
+                  setState(() {
+                    currentPageIndex = 0;
+                  });               
+                  ShowCaseWidget.of(context).startShowCase([key4]);   
+                },
                 onTargetClick: () {
-                    setState(() {
+                  setState(() {
                     currentPageIndex = 0;
                   });               
                   ShowCaseWidget.of(context).startShowCase([key4]);    
@@ -855,6 +991,14 @@ class _NavBars extends State<App> {
               label: "Account",
               selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it for the tour.\n\nEnjoy staying in the know, and Welcome to Cheney!", child: const Icon(Icons.manage_accounts),
               disposeOnTap: true,
+              onToolTipClick: () {
+                skipTour();
+                setState(() {
+                  currentPageIndex = 2;
+                  title="Welcome To Cheney";
+                  prevTitle="Welcome To Cheney";
+                });
+              },
               onTargetClick: () {
                 
                 skipTour();
