@@ -9,6 +9,7 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
 import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
 import 'package:wtc/widgets/going_maybe_count_buttons.dart';
 
@@ -61,14 +62,6 @@ class Event extends Post {
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
-            RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
             if(currentUserTier != 'Viewer')
             PostDeleteEditBox(post: this, isViewer: false,)
             else
@@ -104,7 +97,7 @@ class Event extends Post {
         builder: (BuildContext context) {
           return AlertDialog(
             scrollable: true,
-            title: PostTitleBox(
+            title: PostTitleBoxExpanded(
               title: title,
               username: username,
               created: created,

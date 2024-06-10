@@ -7,8 +7,9 @@ class PostTagBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String tagList = "Tags: ";
+    String tagList = "";
     for (int i = 0; i < tags.length; i++) {
+      tagList += "#";
       if (i == (tags.length - 1)) {
         tagList += tags[i];
       } else {
@@ -20,6 +21,7 @@ class PostTagBox extends StatelessWidget {
         child: Text(
           tagList,
           textAlign: TextAlign.left,
+          style: TextStyle(color: Color(0xFF469AB8))
         ));
   }
 }

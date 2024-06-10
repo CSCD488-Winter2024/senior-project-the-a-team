@@ -59,8 +59,8 @@ class JobPost extends Post {
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
         ]),
-        PostBodyBox(body: body),
         JobWageBox(wageType: wageType, wage: wage),
+        PostBodyBox(body: body),
         PostTagBox(tags: tags),
         if(currentUserTier != 'Viewer')
         PostDeleteEditBox(post: this, isViewer: false,)
@@ -93,8 +93,8 @@ class JobPost extends Post {
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
         ]),
-        PostBodyBox(body: body),
         JobWageBox(wageType: wageType, wage: wage),
+        PostBodyBox(body: body),
         PostTagBox(tags: tags),
       ];
 

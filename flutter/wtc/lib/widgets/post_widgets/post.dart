@@ -8,6 +8,7 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
 import 'package:wtc/widgets/save_post.dart';
 
 class Post extends StatelessWidget {
@@ -68,20 +69,6 @@ class Post extends StatelessWidget {
             ),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
-            Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-            ]),
             if(currentUserTier != 'Viewer')
             PostDeleteEditBox(post: this, isViewer: false,)
             else
@@ -113,20 +100,6 @@ class Post extends StatelessWidget {
             ),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
-            Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-               ]),
           ],
         ),
       );
@@ -139,7 +112,7 @@ class Post extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
               scrollable: true,
-              title: PostTitleBox(
+              title: PostTitleBoxExpanded(
                 title: title,
                 username: username,
                 created: created,

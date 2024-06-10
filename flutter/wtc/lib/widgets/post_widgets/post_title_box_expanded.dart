@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class PostTitleBox extends StatelessWidget {
-  const PostTitleBox({
+class PostTitleBoxExpanded extends StatelessWidget {
+  const PostTitleBoxExpanded({
     Key? key,
     required this.title,
     required this.username,
@@ -27,24 +27,6 @@ class PostTitleBox extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: CachedNetworkImage(
-              imageUrl: pfp,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Image(
-                image: AssetImage('images/profile.jpg'),
-                width: 40,
-                height: 40,
-              ),
-              memCacheHeight: 40,
-              memCacheWidth: 40,
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 8), // Spacing between image and text
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,13 +34,12 @@ class PostTitleBox extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 15,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis, // Ellipsis for overflow
-                  softWrap: false, // Prevent text wrapping
+                  maxLines: 2,
+                  softWrap: true, // Prevent text wrapping
                 ),
                 const SizedBox(height: 4), // Small spacing between title and username
                 Row(
