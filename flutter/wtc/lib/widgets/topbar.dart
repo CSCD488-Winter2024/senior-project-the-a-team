@@ -25,17 +25,17 @@ class _TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF469AB8),
+      backgroundColor: const Color(0xFFBD9F4C),
       iconTheme: const IconThemeData(color: Colors.white),
       centerTitle: true,
       title:  Text(widget.title, style: const TextStyle(color: Colors.white)),
       actions: [
-        IconButton(
-          icon: widget.showNotifications
-              ? const Icon(Icons.refresh_outlined)
-              : const Icon(Icons.refresh_outlined),
-          onPressed: () {},
-        ),
+        // IconButton(
+        //   icon: widget.showNotifications
+        //       ? const Icon(Icons.refresh_outlined)
+        //       : const Icon(Icons.refresh_outlined),
+        //   onPressed: () {},
+        // ),
       ],
       //Drawer handles the rest
     );

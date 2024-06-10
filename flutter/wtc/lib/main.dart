@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/User/global_user_info.dart';
 import 'package:wtc/auth/auth.dart';
 import 'package:wtc/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,7 +41,13 @@ class WTCApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(useMaterial3: true),
+        theme: ThemeData(
+          //useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFBD9F4C),
+
+          ),
+        ),
         home: const AuthPage() //App entry point
 
         );
