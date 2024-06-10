@@ -352,6 +352,7 @@ class _IntroPageState extends State<IntroPage> {
                                   await createAccountDoc(tags, profilePic);
                                 } else {
                                   await setAccountInfo(tags, profilePic);
+                                  currentUser!.updatePhotoURL(profilePic);
                                 }
 
                                 await setTags(tags);

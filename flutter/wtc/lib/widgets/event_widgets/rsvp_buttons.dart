@@ -175,37 +175,31 @@ class _RSVPButtons extends State<RSVPButtons> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              child: Row(
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      changeIsAttending();
-                    },
-                    label: const Text("Attend"),
-                    icon: isAttending
-                        ? const Icon(color: Colors.green, Icons.check_box)
-                        : const Icon(
-                            color: Colors.green, Icons.check_box_outlined),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      changeIsMaybeAttending();
-                    },
-                    label: const Text("Interested"),
-                    icon: isMaybeAttending
-                        ? const Icon(
-                            color: Color.fromARGB(255, 160, 146, 21),
-                            Icons.star_rounded)
-                        : const Icon(
-                            color: Color.fromARGB(255, 160, 146, 21),
-                            Icons.star_outline_rounded),
-                  ),
-                  const SizedBox(width: 20),
-                  SavePost(postId: widget.postID, currentUserId: widget.uid)
-                ],
-              ),
-            )
+            TextButton.icon(
+              onPressed: () {
+                changeIsAttending();
+              },
+              label: const Text("Attend"),
+              icon: isAttending
+                  ? const Icon(color: Colors.green, Icons.check_box)
+                  : const Icon(
+                      color: Colors.green, Icons.check_box_outlined),
+            ),
+            TextButton.icon(
+              onPressed: () {
+                changeIsMaybeAttending();
+              },
+              label: const Text("Interested"),
+              icon: isMaybeAttending
+                  ? const Icon(
+                      color: Color.fromARGB(255, 160, 146, 21),
+                      Icons.star_rounded)
+                  : const Icon(
+                      color: Color.fromARGB(255, 160, 146, 21),
+                      Icons.star_outline_rounded),
+            ),
+            const Spacer(),
+            SavePost(postId: widget.postID, currentUserId: widget.uid)
           ],
         );
       },
