@@ -76,6 +76,7 @@ class _SavedPostsListState extends State<SavedPostsList> {
           return LiquidPullToRefresh(
               color: const Color (0xFFBD9F4C),
               backgroundColor: const Color(0xFFF0E8D6),
+              showChildOpacityTransition: false,
               onRefresh: fetchPostIDs,
               child: ListView.separated(
                 padding: const EdgeInsets.all(8),
