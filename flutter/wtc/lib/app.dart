@@ -204,7 +204,7 @@ class _NavBars extends State<App> {
             ),
             child: Showcase(
               key: key5, 
-              description: 'press the button in the upperleft corner to view the hamburger menu.\n\n(Press and hold the icon to skip the tour)',  
+              description: 'Press the button in the upperleft corner to view the hamburger menu.\n\n(Press and hold the icon to skip the tour)',  
               onTargetLongPress: () {
                 skipTour();
                
@@ -367,7 +367,7 @@ class _NavBars extends State<App> {
             },
           ),
           ListTile(
-            leading: Showcase(key: key8, description: "Any posts created by you can be displayed here under the 'My Posts' page. If you are a poster, you can edit or delete posts; however, regular viewers can only delete posts as posts by a viewer need approval by an admin first.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.comment), 
+            leading: Showcase(key: key8, description: "Any posts created by you can be displayed and managed here under 'My Posts'.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.comment), 
             onTargetLongPress: () {
               skipTour();
            
@@ -763,7 +763,7 @@ class _NavBars extends State<App> {
               label: "Alerts",
               selectedIcon:  Showcase(
               key: key4, 
-              description: 'View all alert posts in the alert page.\n\n(Press and hold the icon to skip the tour)', 
+              description: 'Alert posts will be sent to you via push notification - however, you can view any Alert post here under the Alert page.\n\n(Press and hold the icon to skip the tour)', 
               child: const Icon(Icons.crisis_alert),
               onTargetLongPress: () {
                   skipTour();
