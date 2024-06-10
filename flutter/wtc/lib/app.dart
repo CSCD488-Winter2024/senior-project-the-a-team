@@ -91,7 +91,7 @@ class _NavBars extends State<App> {
   await isTouring(); // wait for isTouring to complete
   print("we're touring: $tour");
   if (!tour){
-        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11]));
+        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12]));
   }
 }
 
@@ -502,6 +502,7 @@ class _NavBars extends State<App> {
                 scaffoldKey.currentState?.closeDrawer();
                 currentPageIndex = 4;
                 });
+
             },
             onBarrierClick: () {
               setState(() {
@@ -690,9 +691,11 @@ class _NavBars extends State<App> {
               selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it, we hope you find our app useful!", child: const Icon(Icons.manage_accounts),
            
               onBarrierClick: () {
+                skipTour();
                 setState(() {
                   currentPageIndex = 2;
                 });
+                
               },
               ) ,
               icon: const Icon(Icons.manage_accounts_outlined))
@@ -735,7 +738,7 @@ class _NavBars extends State<App> {
       case 3:
         return const CalendarPage();
       case 4:
-        return ShowCaseWidget(builder: (context) =>  AccountPage(currentPageIndex: currentPageIndex,)); 
+        return const AccountPage(); 
 
       default:
         return Container(); // Default empty container

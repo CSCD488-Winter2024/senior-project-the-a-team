@@ -9,10 +9,11 @@ import 'package:wtc/accountPages/edit_settings.dart';
 import 'package:wtc/auth/auth.dart';
 
 // ignore: must_be_immutable
-class AccountPage extends StatefulWidget {
-  int currentPageIndex;
 
-   AccountPage({super.key,  required this.currentPageIndex});
+class AccountPage extends StatefulWidget {
+
+
+  const AccountPage({super.key});
 
   @override
   State<AccountPage> createState() => _AccountPage();
@@ -24,12 +25,12 @@ class _AccountPage extends State<AccountPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final provider = FirebaseAuth.instance.currentUser!.providerData.first;
   
-  final GlobalKey key1 = GlobalKey();
-  final GlobalKey key2 = GlobalKey();
+  final GlobalKey key222 = GlobalKey();
+  final GlobalKey key223= GlobalKey();
   @override
   void initState() {
     super.initState();
-    _fetchTourStatus();
+
 
   }
 
@@ -41,37 +42,7 @@ class _AccountPage extends State<AccountPage> {
     }
   }
 
-  Future<void> _fetchTourStatus() async {
-  await isTouring(); // wait for isTouring to complete
-  if (!tour){
-        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2]));
-  }
-  }
-  void skipTour() {
-    ShowCaseWidget.of(context).dismiss();
-    setTourStatus(true);
-
-  }
-
-  Future<void> isTouring() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    var userInfo =
-        await _firestore.collection("users").doc(currentUser?.uid).get();
-    
-    setState(() {
-      tour = userInfo.data()?['sawTour'];
-    });
-    
-  }
-
-  Future<void> setTourStatus(bool status) async {
-  User? currentUser = FirebaseAuth.instance.currentUser;
   
-  await _firestore.collection("users").doc(currentUser?.uid).update({
-    'sawTour': status
-  });
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -165,54 +136,7 @@ class _AccountPage extends State<AccountPage> {
                     const SizedBox(height: 20),
 
                     // Edit Settings
-                    Showcase(key: key1, 
-                    targetShapeBorder: const CircleBorder() ,
-                    disposeOnTap: true,
-                    onTargetClick: () {
-                        Navigator.push(context, CupertinoPageRoute(
-                            builder: 
-                              (context) => EditSettings(
-                                tier: tier, 
-                                email: email, 
-                                tags: tags, 
-                                isBusiness: isBusiness, 
-                                username: username, 
-                                name: name, 
-                                profilePic: profilePic,
-                                uid: currentUser!.uid,
-                                isPending: isPending
-                              )
-                          )
-                        );
-                        setState(() {
-                          widget.currentPageIndex = 2;
-                        });
-                    },
-                    onTargetLongPress: () {
-                      skipTour();
-                    },
-                    onBarrierClick: () {
-                      Navigator.push(context, CupertinoPageRoute(
-                            builder: 
-                              (context) => ShowCaseWidget(builder: (context) => EditSettings(
-                                tier: tier, 
-                                email: email, 
-                                tags: tags, 
-                                isBusiness: isBusiness, 
-                                username: username, 
-                                name: name, 
-                                profilePic: profilePic,
-                                uid: currentUser!.uid,
-                                isPending: isPending
-                              )) 
-                          )
-                        );
-                        setState(() {
-                          widget.currentPageIndex = 2;
-                        });
-                    },
-                    description: "In the Account Settings page, you can view your account information and edit them by tapping the 'settings' button.\n\n(Press and Hold the Settings Button to Skip the Tour) ", 
-                    child: OutlinedButton(
+                     OutlinedButton(
                         onPressed: (){
                         Navigator.push(
                           context,
@@ -241,7 +165,7 @@ class _AccountPage extends State<AccountPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),  
-                    )),
+                    ),
 
                     const SizedBox(height: 20),
 
@@ -331,8 +255,8 @@ class _AccountPage extends State<AccountPage> {
                   ],
                 ),
               ),
-            )
-          );
+            ))
+          ;
           } else {
             signout();
             return const AuthPage();
