@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -136,13 +135,7 @@ class _NavBars extends State<App> {
                 CrossAxisAlignment.center, // Center content horizontally
             children: <Widget>[
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF584C33),
-                ),
-                child: const Text(
-                  "Normal Post",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text("Normal Post"),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -153,13 +146,7 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF584C33),
-                ),
-                child: const Text(
-                  "Alert Post",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text("Alert Post"),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -170,13 +157,7 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF584C33),
-                ),
-                child: const Text(
-                  "Event Post",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text("Event Post"),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -187,13 +168,7 @@ class _NavBars extends State<App> {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF584C33),
-                ),
-                child: const Text(
-                  "Job Post",
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text("Job Post"),
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                   Navigator.push(
@@ -218,15 +193,12 @@ class _NavBars extends State<App> {
 
   Drawer getDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            child: Text('', style: TextStyle(color: Colors.white)),
-            decoration: BoxDecoration(
-              color: Color(0xFFBD9F4C),
-
+           DrawerHeader(
+            decoration:  const BoxDecoration(
+              color: Color(0xFF469AB8),
               image: DecorationImage(
                   image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
@@ -881,7 +853,7 @@ class _NavBars extends State<App> {
           )),
           NavigationDestination(
               label: "Account",
-              selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it for the tour.\n\nEnjoy staying in the know, and welcome to Cheney!", child: const Icon(Icons.manage_accounts),
+              selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it for the tour.\n\nEnjoy staying in the know, and Welcome to Cheney!", child: const Icon(Icons.manage_accounts),
               disposeOnTap: true,
               onTargetClick: () {
                 

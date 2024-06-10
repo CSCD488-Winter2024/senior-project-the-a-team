@@ -13,7 +13,7 @@ import 'package:wtc/components/settings_button.dart';
 
 class EditSettings extends StatefulWidget {
   const EditSettings({
-    super.key,
+    Key? key,
     required this.tier,
     required this.email,
     required this.tags,
@@ -23,7 +23,7 @@ class EditSettings extends StatefulWidget {
     required this.profilePic,
     required this.uid,
     required this.isPending,
-  });
+  }) : super(key: key);
 
   final String tier;
   final String email;
@@ -42,7 +42,8 @@ class EditSettings extends StatefulWidget {
 class _EditSettingsState extends State<EditSettings> {
   final TextEditingController passwordController = TextEditingController();
 
-  final provider = FirebaseAuth.instance.currentUser?.providerData.first;
+  final provider =
+      FirebaseAuth.instance.currentUser?.providerData.first;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool tour = true;
@@ -50,7 +51,6 @@ class _EditSettingsState extends State<EditSettings> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -59,20 +59,13 @@ class _EditSettingsState extends State<EditSettings> {
     super.dispose();
   }
 
-
-
-
-
-
   String errorPassword = "";
 
   @override
   Widget build(BuildContext context) {
-    List<String> origTags = [];
-    origTags.addAll(widget.tags);
+    List<String> origTags = List.from(widget.tags);
 
     return Scaffold(
-      //backgroundColor: const Color(0xFFF0E8D6),
       appBar: AppBar(
         title: const Text(
           "Settings",
@@ -93,58 +86,49 @@ class _EditSettingsState extends State<EditSettings> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // edit profile
-                   EditButton(
-                      route: EditProfile(
-                        uid: widget.uid,
-                        name: widget.name,
-                        username: widget.username,
-                        profilePic: widget.profilePic,
-                      ),
-                      icon: const Icon(Icons.person),
-                      text: "Edit Profile",
-                    ),
-                const SizedBox(height: 20,),
-                // edit tags
-                 EditButton(
-                      route: EditTags(
-                        tags: widget.tags,
-                        origTags: origTags,
-                      ),
-                      icon: const Icon(Icons.miscellaneous_services),
-                      text: "Edit Tags",
-                    ),
-
-                const SizedBox(height: 20,),
-
-                // link accounts
-
-                const SizedBox(height: 20,),
-
-                // acount is business
+                EditButton(
+                  route: EditProfile(
+                    uid: widget.uid,
+                    name: widget.name,
+                    username: widget.username,
+                    profilePic: widget.profilePic,
+                  ),
+                  icon: const Icon(Icons.person),
+                  text: "Edit Profile",
+                ),
+                const SizedBox(height: 20),
+                EditButton(
+                  route: EditTags(
+                    tags: widget.tags,
+                    origTags: origTags,
+                  ),
+                  icon: const Icon(Icons.miscellaneous_services),
+                  text: "Edit Tags",
+                ),
+                const SizedBox(height: 20),
                 if (widget.isBusiness)
-                  const EditButton(
+                  EditButton(
                     route: EditBusinessInfo(),
                     icon: Icon(Icons.business_center),
-                    text: "Edit Business Informaton",
+                    text: "Edit Business Information",
                   ),
-
-                // acount is not business or a poster
-                if (!widget.isBusiness && widget.tier == "Viewer" && !widget.isPending)
+                if (!widget.isBusiness &&
+                    widget.tier == "Viewer" &&
+                    !widget.isPending)
                   EditButton(
-                        route: AccountUpgradePage(
-                          tier: widget.tier,
-                          name: widget.name,
-                          email: widget.email,
-                          uid: widget.uid,
-                          pfp: widget.profilePic?.imageUrl ?? "",
-                        ),
-                        icon: const Icon(Icons.pending_actions),
-                        text: "Apply to become a poster",
-                      ),
-
-                // account is a poster but not a business
-                if (widget.tier == "Poster" && !widget.isBusiness && !widget.isPending)
+                    route: AccountUpgradePage(
+                      tier: widget.tier,
+                      name: widget.name,
+                      email: widget.email,
+                      uid: widget.uid,
+                      pfp: widget.profilePic?.imageUrl ?? "",
+                    ),
+                    icon: const Icon(Icons.pending_actions),
+                    text: "Apply to become a poster",
+                  ),
+                if (widget.tier == "Poster" &&
+                    !widget.isBusiness &&
+                    !widget.isPending)
                   EditButton(
                     route: AccountUpgradePage(
                       tier: widget.tier,
@@ -156,48 +140,46 @@ class _EditSettingsState extends State<EditSettings> {
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a Business",
                   ),
-
                 if (widget.isBusiness && widget.isPending)
-                  const SizedBox(height: 20,),
-
+                  const SizedBox(height: 20),
                 if (widget.isPending)
                   GestureDetector(
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                        content: Text("Your application is pending"),
-                      ));
+                        const SnackBar(
+                          content: Text("Your application is pending"),
+                        ),
+                      );
                     },
                     child: Container(
-                     decoration: BoxDecoration(
-                      color: const Color(0xFFBD9F4C),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    height: 80,
-                    child: const Center(
-                      child:  ListTile(
-                        leading: Icon(Icons.pending_actions),
-                        title: Text(
-                          "Application Pending",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFBD9F4C),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      height: 80,
+                      child: const Center(
+                        child: ListTile(
+                          leading: Icon(Icons.pending_actions),
+                          title: Text(
+                            "Application Pending",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-
                 if (widget.tier == "Poster" || widget.tier == "Viewer")
-                  const SizedBox(height: 20,),
-
-                // delete account
+                  const SizedBox(height: 20),
                 DeleteAccount(
-                        email: widget.email,
-                        tags: widget.tags,
-                        uid: widget.uid,
-                        provider: provider,
-                        passwordController: passwordController),
+                  email: widget.email,
+                  tags: widget.tags,
+                  uid: widget.uid,
+                  provider: provider,
+                  passwordController: passwordController,
+                ),
               ],
             ),
           ),
