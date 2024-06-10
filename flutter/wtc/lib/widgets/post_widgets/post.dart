@@ -68,7 +68,24 @@ class Post extends StatelessWidget {
             ),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            PostDeleteEditBox(post: this),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  textAlign: TextAlign.left,
+                )),
+            PostBodyBox(body: header),
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
+            ]),
+            if(currentUserTier != 'Viewer')
+            PostDeleteEditBox(post: this, isViewer: false,)
+            else
+            PostDeleteEditBox(post: this, isViewer: true,)
           ],
         ),
       );
@@ -96,6 +113,20 @@ class Post extends StatelessWidget {
             ),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  textAlign: TextAlign.left,
+                )),
+            PostBodyBox(body: header),
+            Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 SavePost(
+                     postId: postId,
+                     currentUserId: currentUser?.uid.toString())
+               ]),
           ],
         ),
       );

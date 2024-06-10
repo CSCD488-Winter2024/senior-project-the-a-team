@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wtc/User/global_user_info.dart';
 import 'package:wtc/app.dart';
 import 'package:wtc/auth/welcome_page.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeSetupPage extends StatelessWidget {
   const HomeSetupPage({super.key});
@@ -26,7 +27,7 @@ class HomeSetupPage extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return const App();
+          return ShowCaseWidget(builder: (context) => const App());
         }
 
         return const Center(child: CircularProgressIndicator());

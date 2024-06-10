@@ -61,7 +61,18 @@ class Event extends Post {
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            PostDeleteEditBox(post: this),
+            SizedBox(
+                width: 600,
+                child: Text(
+                  "Posted on: ${created.toString().split(" ")[0]}\n",
+                  textAlign: TextAlign.left,
+                )),
+            PostBodyBox(body: header),
+            RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+            if(currentUserTier != 'Viewer')
+            PostDeleteEditBox(post: this, isViewer: false,)
+            else
+            PostDeleteEditBox(post: this, isViewer: true,)
           ],
         ),
       );

@@ -6,10 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:wtc/accountPages/edit_settings.dart';
 import 'package:wtc/auth/auth.dart';
 
+// ignore: must_be_immutable
+
 class AccountPage extends StatefulWidget {
+
+
   const AccountPage({super.key});
 
   @override
@@ -18,11 +23,20 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
-
+  bool tour = false;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
   final provider = FirebaseAuth.instance.currentUser!.providerData.first;
+  
+  final GlobalKey key222 = GlobalKey();
+  final GlobalKey key223= GlobalKey();
+  @override
+  void initState() {
+    super.initState();
 
+
+  }
+
+ 
   void signout(){
     FirebaseAuth.instance.signOut();
     if(GoogleAuthProvider().providerId == provider.providerId){
@@ -30,7 +44,7 @@ class _AccountPage extends State<AccountPage> {
     }
   }
 
-
+  
   @override
   Widget build(BuildContext context) {
 
@@ -122,6 +136,7 @@ class _AccountPage extends State<AccountPage> {
 
                     const SizedBox(height: 20),
 
+
                     // Bio
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,6 +152,7 @@ class _AccountPage extends State<AccountPage> {
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.white,                        
                        ),
+
                         onPressed: (){
                         Navigator.push(
                           context,
@@ -164,7 +180,7 @@ class _AccountPage extends State<AccountPage> {
                           color: Colors.black,
                         ),
                         textAlign: TextAlign.center,
-                      ),
+                      ),  
                     ),
                       ],
                     ),
@@ -279,9 +295,9 @@ class _AccountPage extends State<AccountPage> {
                     ),
                   ],
                 ),
-              ),
-            
+              ),          
           );
+
           } else {
             signout();
             return const AuthPage();

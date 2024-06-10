@@ -62,7 +62,10 @@ class JobPost extends Post {
         PostBodyBox(body: body),
         JobWageBox(wageType: wageType, wage: wage),
         PostTagBox(tags: tags),
-        PostDeleteEditBox(post: this)
+        if(currentUserTier != 'Viewer')
+        PostDeleteEditBox(post: this, isViewer: false,)
+        else
+        PostDeleteEditBox(post: this, isViewer: true)
       ];
 
       // Return the Column with all children
