@@ -18,13 +18,13 @@ class _SavedPostsListState extends State<SavedPostsList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<dynamic> savedPosts = [];
   late DocumentSnapshot user;
+  Future<List<DocumentSnapshot>>? futurePosts;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchPostIDs();
-    });
+    fetchPostIDs();
+
   }
 
   Future<void> fetchPostIDs() async {
@@ -35,23 +35,83 @@ class _SavedPostsListState extends State<SavedPostsList> {
 
       if (data.containsKey('saved_posts') && data['saved_posts'] is List) {
         List<dynamic> savedPostIDs = data['saved_posts'];
+        //deleteNonexistingPostIDs(savedPostIDs);
         setState(() {
           savedPosts = savedPostIDs;
+          futurePosts = getPosts(savedPosts);
         });
+        
+
       }
+      print("this is the saved posts");
+      print(savedPosts.toString());
+      
     } catch (e) {
       print("error: $e");
     }
   }
 
+Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
+  List<DocumentSnapshot> posts = [];
+  List<dynamic> missingPostIds = [];
+
+  // Fetch all posts
+  for (String postId in postIds) {
+    DocumentSnapshot documentSnapshot = await _firestore.collection('_posts').doc(postId).get();
+
+    if (documentSnapshot.exists) {
+      posts.add(documentSnapshot);
+    } else {
+      missingPostIds.add(postId);
+    }
+  }
+
+  // Process missing posts and update user's saved posts list
+  if (missingPostIds.isNotEmpty) {
+    try {
+      DocumentReference userRef = _firestore.collection('users').doc(widget.uid);
+      DocumentSnapshot userDoc = await userRef.get();
+      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+
+      if (userDoc.exists) {
+        List<dynamic> savedPostIDs = (data['saved_posts'] as List<dynamic>?) ?? [];
+
+        savedPostIDs.removeWhere((postId) => missingPostIds.contains(postId));
+        await userRef.update({'saved_posts': savedPostIDs});
+      }
+    } catch (e) {
+      print("Error updating user's saved posts list: $e");
+    }
+  }
+
+  return posts;
+}
+
+  
+  
+  Future<void> _refreshPosts() async {
+    await Future.delayed(const Duration(seconds: 2));
+    fetchPostIDs();
+  }
+
+  Future<void> updatePostIDs(List<dynamic> newSavedList) async {
+      await _firestore
+      .collection("users")
+      .doc(widget.uid)
+      .update({"saved_posts":newSavedList})
+      .catchError((error) {
+        print("Error updating doc: $error");
+      });
+
+
+  }
+        
+  
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: _firestore
-            .collection('_posts')
-            .orderBy('timestamp', descending: true)
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    return FutureBuilder<List<DocumentSnapshot>>(
+        future: futurePosts,
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -59,44 +119,26 @@ class _SavedPostsListState extends State<SavedPostsList> {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No posts found"));
-          }
-
-          // Filter documents to only those in savedPosts
-          List<DocumentSnapshot> filteredDocs =
-              snapshot.data!.docs.where((doc) {
-            return savedPosts.contains(doc.id);
-          }).toList();
-
-          if (filteredDocs.isEmpty) {
-            return const Center(child: Text("No saved posts found"));
-          }
-
           return LiquidPullToRefresh(
               color: const Color (0xFFBD9F4C),
               backgroundColor: const Color(0xFFF0E8D6),
               showChildOpacityTransition: false,
-              onRefresh: fetchPostIDs,
+              onRefresh: _refreshPosts,
               child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: savedPosts.length,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: snapshot.data?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  DocumentSnapshot document = filteredDocs[index];
-                  Map<String, dynamic> postData =
-                      document.data() as Map<String, dynamic>;
-                  String type = postData['type'] as String;
-                  String dateCreated = postData['createdAt'] as String;
+                  var document = snapshot.data?[index];
+                  String type = document?['type'] as String;
+                  String dateCreated = document?['createdAt'] as String;
 
+                  // Use if-else block to return the correct type of Post for the proper formatting
                   if (type == "Event") {
-                    var tempTags = document['tags'] as List<dynamic>;
-                    List<String> postTags = [];
+                    var tempTags = document?['tags'] as List<dynamic>;
+                    List<String> postTags = tempTags.cast<String>();
 
-                    for (int i = 0; i < tempTags.length; i++) {
-                      postTags.add(tempTags[i]);
-                    }
-                    String dateOfEvent = document['eventDate'] as String;
-                    String timeOfEvent = document['eventTime'] as String;
+                    String dateOfEvent = document?['eventDate'] as String;
+                    String timeOfEvent = document?['eventTime'] as String;
                     var time = timeOfEvent.split(' ');
                     int hour = 0;
                     if (time[1] == "PM") {
@@ -109,85 +151,80 @@ class _SavedPostsListState extends State<SavedPostsList> {
                       hour = int.parse(time[0].split(":")[0]);
                     }
                     int minute = int.parse(time[0].split(":")[1]);
-
                     return Event(
-                      title: document['title'] as String,
-                      body: document['body'] as String,
+                      title: document?['title'] as String,
+                      body: document?['body'] as String,
                       tags: postTags,
-                      header: document['header'] as String,
-                      interestCount: document['interestCount'] as int,
+                      header: document?['header'] as String,
+                      interestCount: document?['interestCount'] as int,
                       created: DateTime(
                           int.parse(dateCreated.split("-")[0]),
                           int.parse(dateCreated.split("-")[1]),
                           int.parse(dateCreated.split("-")[2])),
-                      postId: Guid(document['postID'] as String),
-                      userEmail: document['user'] as String,
+                      postId: Guid(document?['postID'] as String),
+                      userEmail: document?['user'] as String,
                       date: DateTime(
                           int.parse(dateOfEvent.split("-")[0]),
                           int.parse(dateOfEvent.split("-")[1]),
                           int.parse(dateOfEvent.split("-")[2])),
                       time: TimeOfDay(hour: hour, minute: minute),
-                      location: document['address'] as String,
-                      attendingCount: document['attendingCount'] as int,
-                      maybeCount: document['maybeCount'] as int,
+                      location: document?['address'] as String,
+                      attendingCount: document?['attendingCount'] as int,
+                      maybeCount: document?['maybeCount'] as int,
                       isMyPost: false,
                     );
                   } else if (type == "Job") {
-                    var wage = document['wage'];
+                    var wage = document?['wage'];
                     if (wage is int) {
                       wage = wage.toDouble();
                     }
                     return JobPost(
-                      title: document['title'] as String,
-                      body: document['body'] as String,
+                      title: document?['title'] as String,
+                      body: document?['body'] as String,
                       tags: const ["Job"],
-                      header: document['header'] as String,
-                      userEmail: document['user'] as String,
-                      interestCount: document['interestCount'] as int,
+                      header: document?['header'] as String,
+                      userEmail: document?['user'] as String,
+                      interestCount: document?['interestCount'] as int,
                       created: DateTime(
                           int.parse(dateCreated.split("-")[0]),
                           int.parse(dateCreated.split("-")[1]),
                           int.parse(dateCreated.split("-")[2])),
-                      postId: Guid(document['postID'] as String),
+                      postId: Guid(document?['postID'] as String),
                       wage: wage,
-                      wageType: document['wageType'] as String,
+                      wageType: document?['wageType'] as String,
                       isMyPost: false,
                     );
                   } else if (type == "Volunteer") {
                     return JobPost(
-                      title: document['title'] as String,
-                      body: document['body'] as String,
+                      title: document?['title'] as String,
+                      body: document?['body'] as String,
                       tags: const ["Volunteer"],
-                      header: document['header'] as String,
-                      userEmail: document['user'] as String,
-                      interestCount: document['interestCount'] as int,
+                      header: document?['header'] as String,
+                      userEmail: document?['user'] as String,
+                      interestCount: document?['interestCount'] as int,
                       created: DateTime(
                           int.parse(dateCreated.split("-")[0]),
                           int.parse(dateCreated.split("-")[1]),
                           int.parse(dateCreated.split("-")[2])),
-                      postId: Guid(document['postID'] as String),
+                      postId: Guid(document?['postID'] as String),
                       volunteer: true,
                       isMyPost: false,
                     );
                   } else {
-                    var tempTags = document['tags'] as List<dynamic>;
-                    List<String> postTags = [];
-
-                    for (int i = 0; i < tempTags.length; i++) {
-                      postTags.add(tempTags[i]);
-                    }
+                    var tempTags = document?['tags'] as List<dynamic>;
+                    List<String> postTags = tempTags.cast<String>();
                     return Post(
-                      postId: Guid(document['postID'] as String),
-                      header: document['header'] as String,
-                      userEmail: document['user'] as String,
-                      interestCount: document['interestCount'] as int,
+                      postId: Guid(document?['postID'] as String),
+                      header: document?['header'] as String,
+                      userEmail: document?['user'] as String,
+                      interestCount: document?['interestCount'] as int,
                       created: DateTime(
                           int.parse(dateCreated.split("-")[0]),
                           int.parse(dateCreated.split("-")[1]),
                           int.parse(dateCreated.split("-")[2])),
-                      title: document['title'] as String,
+                      title: document?['title'] as String,
                       tags: postTags,
-                      body: document['body'] as String,
+                      body: document?['body'] as String,
                       isMyPost: false,
                     );
                   }
