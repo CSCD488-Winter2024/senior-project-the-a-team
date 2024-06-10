@@ -119,9 +119,6 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
 
-
-
-
           return LiquidPullToRefresh(
               color: const Color (0xFFBD9F4C),
               backgroundColor: const Color(0xFFF0E8D6),
