@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
@@ -72,7 +73,10 @@ class _SavedPostsListState extends State<SavedPostsList> {
             return const Center(child: Text("No saved posts found"));
           }
 
-          return RefreshIndicator(
+          return LiquidPullToRefresh(
+              color: const Color (0xFFBD9F4C),
+              backgroundColor: const Color(0xFFF0E8D6),
+              showChildOpacityTransition: false,
               onRefresh: fetchPostIDs,
               child: ListView.separated(
                 padding: const EdgeInsets.all(8),

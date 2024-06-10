@@ -60,7 +60,10 @@ class Event extends Post {
                 )),
             PostBodyBox(body: header),
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
-            PostDeleteEditBox(post: this),
+            if(currentUserTier != 'Viewer')
+            PostDeleteEditBox(post: this, isViewer: false,)
+            else
+            PostDeleteEditBox(post: this, isViewer: true,)
           ],
         ),
       );

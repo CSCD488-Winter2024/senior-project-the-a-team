@@ -61,7 +61,10 @@ class JobPost extends Post {
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
         ]),
-        PostDeleteEditBox(post: this)
+        if(currentUserTier != 'Viewer')
+        PostDeleteEditBox(post: this, isViewer: false,)
+        else
+        PostDeleteEditBox(post: this, isViewer: true)
       ];
 
       // Return the Column with all children
