@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:wtc/components/hour_input.dart';
@@ -112,7 +113,7 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
             color: Colors.white
           ),
         ),
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         centerTitle: true,
         iconTheme: const IconThemeData(
           color: Colors.white
@@ -312,6 +313,9 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                       const SizedBox(height: 20.0),
 
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF584C33),
+                        ),
                         onPressed: () async {
 
                           if(_addressController.text.isEmpty || _bioController.text.isEmpty || _phoneController.text.length < 12){
@@ -425,7 +429,12 @@ class _EditBusinessInfoState extends State<EditBusinessInfo> {
                             Navigator.pop(context);
                           }                         
                         },
-                        child: const Text("Save Changes"),
+                        child: const Text(
+                          "Save Changes",
+                          style: TextStyle(
+                            color: Color(0xFFF0E8D6),
+                          ),
+                        ),
                       ),
 
                     ],

@@ -60,6 +60,7 @@ dependencies:
   web: ^0.5.1
   google_nav_bar: ^5.0.6
   showcaseview: ^3.0.0
+  lottie: ^3.1.2
 
 
 dev_dependencies:
@@ -92,6 +93,8 @@ flutter:
     - images/google.png
     - images/apple.png
     - images/email.png
+    - images/crops.json
+    - images/book.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -15,12 +15,8 @@ class _SavedPostsState extends State<SavedPosts> {
   
   @override
   Widget build(BuildContext context) {
-    return  Card(
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
-      child: SizedBox.expand(
-        child: SavedPostsList(uid: currentUser?.uid),
-      ),
+    return  SizedBox.expand(
+      child: SavedPostsList(uid: currentUser?.uid),
     );
   }
 }

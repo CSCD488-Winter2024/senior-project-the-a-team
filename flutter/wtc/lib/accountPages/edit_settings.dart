@@ -72,6 +72,7 @@ class _EditSettingsState extends State<EditSettings> {
     origTags.addAll(widget.tags);
 
     return Scaffold(
+      //backgroundColor: const Color(0xFFF0E8D6),
       appBar: AppBar(
         title: const Text(
           "Settings",
@@ -80,7 +81,7 @@ class _EditSettingsState extends State<EditSettings> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
@@ -168,19 +169,18 @@ class _EditSettingsState extends State<EditSettings> {
                       ));
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      height: 80,
-                      child: const Center(
-                        child: ListTile(
-                          leading: Icon(Icons.pending_actions),
-                          title: Text(
-                            "Application Pending",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                     decoration: BoxDecoration(
+                      color: const Color(0xFFBD9F4C),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    height: 80,
+                    child: const Center(
+                      child:  ListTile(
+                        leading: Icon(Icons.pending_actions),
+                        title: Text(
+                          "Application Pending",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),

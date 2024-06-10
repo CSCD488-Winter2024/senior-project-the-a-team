@@ -15,26 +15,27 @@ class _AboutUsPageState extends State<AboutUsPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Changed alignment to start
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30),
               Center(
-                // Center widget used to center only the title
-                child: Text(
-                  'Welcome to Cheney Team',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Welcome to Cheney Team',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 18),
               Text(
-                  'Founded by Maria Fell, Welcome to Cheney is a non-profit dedicated to fostering community through reliable information sharing.'),
+                  'Welcome to Cheney is a non-profit dedicated to fostering community through reliable information sharing. Our mission is to build a vibrant and thriving community through strategic & intentional communication, bridging connections, and facilitating action.'),
               SizedBox(height: 16),
               Text(
-                  'Our team is led by developers Nolan Posey, Matt Matriciano, Tanner Stephenson, Daniel Palmer, and Tim Nelson. Together, we strive to deliver an app that stands out as the primary source of news and events for Cheney residents.'),
+                  'This app was created in partnership with Eastern Washington University. Our team is led by developers Nolan Posey, Matt Matriciano, Tanner Stephenson, Daniel Palmer, and Tim Nelson. Together, we strive to deliver an app that stands out as the primary source of news and events for Cheney residents.'),
               SizedBox(height: 16),
               Text(
                   'With previous attempts overshadowed in noisy social platforms, our app focuses on delivering timely, accurate, and useful content directly to our community.'),
