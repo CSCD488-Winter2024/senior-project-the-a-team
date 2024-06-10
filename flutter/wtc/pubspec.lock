@@ -696,6 +696,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  lottie:
+    dependency: "direct main"
+    description:
+      name: lottie
+      sha256: "6a24ade5d3d918c306bb1c21a6b9a04aab0489d51a2582522eea820b4093b62b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   matcher:
     dependency: transitive
     description:
@@ -848,6 +856,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      sha256: f236c1f44b286e1ba888f8701adca067af92c33e29ea937d0fe9b4a29d4cd41e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sign_in_with_apple:
     dependency: "direct main"
     description:

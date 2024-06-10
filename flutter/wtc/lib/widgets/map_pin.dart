@@ -53,6 +53,7 @@ class MapPin extends StatelessWidget {
           return AlertDialog(
               title: Text(name),
               contentPadding: const EdgeInsets.all(12),
+
               content: SingleChildScrollView(
                 child: Column(
                     mainAxisSize: MainAxisSize.min,
