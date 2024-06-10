@@ -145,6 +145,7 @@ class _NavBars extends State<App> {
                   );
                 },
               ),
+              if (userTier == 'Alerter' || userTier == 'Admin') 
               ElevatedButton(
                 child: const Text("Alert Post"),
                 onPressed: () {
@@ -648,7 +649,7 @@ class _NavBars extends State<App> {
                   showMyPosts = false;
                 });
               }),
-          (userTier == "Admin" || userTier == "Poster")
+          (userTier == "Admin" || userTier == "Poster" || userTier == "Alerter")
               ? ListTile(
                   leading: const Icon(Icons.create),
                   title: const Text('Create Post'),
