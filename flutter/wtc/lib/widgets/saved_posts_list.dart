@@ -84,9 +84,6 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
     }
   }
 
-  print("getting posts");
-  print(posts.toString());
-  print("got posts");
   return posts;
 }
 
