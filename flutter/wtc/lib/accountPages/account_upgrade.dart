@@ -1,7 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 import "package:intl_phone_number_input/intl_phone_number_input.dart";
 import "package:wtc/components/hour_input.dart";
 
@@ -13,14 +12,12 @@ class AccountUpgradePage extends StatefulWidget {
     required this.name, 
     required this.email,
     required this.uid,
-    required this.pfp,
   });
 
   final String tier;
   final String name;
   final String email;
   final String uid;
-  final String pfp;
 
   @override
   State<AccountUpgradePage> createState() => _AccountUpgradePageState();
@@ -105,7 +102,6 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
         "address": "$address, Cheney, WA",
         "businessHours": businessHours,
         "email": email,
-        "pfp": widget.pfp,
       }
     );
 
@@ -129,7 +125,6 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
     }
     
     return Scaffold(
-      //backgroundColor: const Color(0xFFF0E8D6),
       appBar: AppBar(
         title: const Text(
           "Upgrade Account Application",
@@ -137,7 +132,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
             color: Colors.white
           ),
         ),
-        backgroundColor: const Color(0xFFBD9F4C),
+        backgroundColor: const Color(0xFF469AB8),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -159,7 +154,7 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   textAlign: TextAlign.start,
                 ),
                 Switch(
-                  // activeColor: Color(0xFF),
+                  activeColor: Colors.grey[600],
                   value: isBusiness,
                   onChanged: (value) {
                     setState(() {
@@ -341,9 +336,6 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
 
             // Upgrade Button
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF584C33),
-              ),
               onPressed: () async{
                 if(_bioController.text.isEmpty || _nameController.text.isEmpty || _phoneController.text.isEmpty){
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -360,16 +352,6 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   );
                 }
                 else{
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return const AlertDialog(
-                        title: Text('Submitting Application...'),
-                        content: LinearProgressIndicator(),
-                      );
-                    }
-                  );
                   await submitApplication(widget.email, isBusiness);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -378,15 +360,9 @@ class _AccountUpgradePageState extends State<AccountUpgradePage> {
                   );
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  Navigator.pop(context);
                 }
               },
-              child: const Text(
-                "Submit",
-                style: TextStyle(
-                  color: Color(0xFFF0E8D6)
-                ),
-              ),
+              child: const Text("Submit"),
             ),
           ]
         ),

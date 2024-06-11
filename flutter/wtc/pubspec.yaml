@@ -44,7 +44,6 @@ dependencies:
   cloud_functions: ^4.6.8
   firebase_storage: ^11.6.9
   image_picker: ^1.0.8
-  liquid_pull_to_refresh: ^3.0.1
 
   flutter_map: ^6.1.0
   latlong2: ^0.9.1
@@ -52,15 +51,12 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   intl_phone_number_input: ^0.7.4
   geocoding: ^3.0.0
-  firebase_messaging: ^14.9.2
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^6.1.0
   crypto: ^3.0.3
   flutter_launcher_icons: ^0.13.1
   web: ^0.5.1
-  google_nav_bar: ^5.0.6
-  showcaseview: ^3.0.0
-  lottie: ^3.1.2
+  firebase_messaging: ^14.9.2
 
 
 dev_dependencies:
@@ -93,8 +89,6 @@ flutter:
     - images/google.png
     - images/apple.png
     - images/email.png
-    - images/crops.json
-    - images/book.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

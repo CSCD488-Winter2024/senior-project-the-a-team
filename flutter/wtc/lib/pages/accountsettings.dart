@@ -3,18 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:wtc/accountPages/edit_settings.dart';
 import 'package:wtc/auth/auth.dart';
 
-// ignore: must_be_immutable
-
 class AccountPage extends StatefulWidget {
-
-
   const AccountPage({super.key});
 
   @override
@@ -23,20 +16,11 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
-  bool tour = false;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final provider = FirebaseAuth.instance.currentUser!.providerData.first;
   
-  final GlobalKey key222 = GlobalKey();
-  final GlobalKey key223= GlobalKey();
-  @override
-  void initState() {
-    super.initState();
+  final provider = FirebaseAuth.instance.currentUser!.providerData.first;
 
-
-  }
-
- 
   void signout(){
     FirebaseAuth.instance.signOut();
     if(GoogleAuthProvider().providerId == provider.providerId){
@@ -44,12 +28,12 @@ class _AccountPage extends State<AccountPage> {
     }
   }
 
-  
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      //backgroundColor: const Color(0xFFF0E8D6),
+      backgroundColor: Colors.grey[100],
       body: StreamBuilder(
         stream: _firestore
           .collection('users')
@@ -74,6 +58,7 @@ class _AccountPage extends State<AccountPage> {
             List<String> tags = [];
             bool isBusiness = user['isBusiness'];
             bool isPending = user['isPending'];
+            String uid = user['uid'];
 
             for(int i = 0; i < tempTags.length; i++){
               tags.add(tempTags[i]);
@@ -98,6 +83,7 @@ class _AccountPage extends State<AccountPage> {
             );
 
             return Center(
+                child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
@@ -121,38 +107,23 @@ class _AccountPage extends State<AccountPage> {
                     // Display name
                     Container(
                       decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 69, 45, 40),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                          color: Color(0xFF469AB8),
+                          borderRadius: BorderRadius.all(Radius.circular(250))),
                       child: SizedBox(
                         width: 9999,
                         child: Text('Hello $username!',
                             style: const TextStyle(
-                              fontSize: 22,
+                              fontSize: 24,
                               color: Colors.white
                             ),
-                            textAlign: TextAlign.center,),
+                            textAlign: TextAlign.center),
                       ),
                     ),
 
                     const SizedBox(height: 20),
 
-
-                    // Bio
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          '\tAccount Details',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-
-                        OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,                        
-                       ),
-
+                    // Edit Settings
+                    OutlinedButton(
                         onPressed: (){
                         Navigator.push(
                           context,
@@ -173,112 +144,88 @@ class _AccountPage extends State<AccountPage> {
                         );
                       },
                       child: const Text(
-                        "Edit Settings",
+                        "Settings",
                         style: TextStyle(
-                          //fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Colors.black,
+                          color: Colors.black
                         ),
                         textAlign: TextAlign.center,
-                      ),  
-                    ),
-                      ],
+                      ),
                     ),
 
-                    const Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                    ),
+                    const SizedBox(height: 20),
 
-                    const SizedBox(height: 10),
+                    // Bio
+                    Container(
+                      width: 9999,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.black)
+                        ),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Full Name:',
+                            style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
+                          ),
 
-                    // name
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,                     
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '\tName: $name',
+                          Text(
+                            name,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 20,
                             ),
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                      ],
-                    ),
 
-                    const SizedBox(height: 10),
+                          const Text(
+                            'Email:',
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
 
-                    // email
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '\tEmail: $email',
+                          Text(
+                            email,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 20,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
 
-                    const SizedBox(height: 10),
-
-                    // tier
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          '\tTier: $tier',
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+             
+                    const SizedBox(
+                      height: 25,
                     ),
-
-                    const Spacer(),
 
                     //logout
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF584C33),
-                      ),
                       onPressed: (){
                         showDialog(
                           context: context, 
                           builder: (context){
                             return AlertDialog(
-                              title: const Text(
-                                "Are you sure you want to Logout?",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
+                              title: const Text("Are you sure you want to Logout?"),
                               actions:[
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text(
-                                    "No",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                                  child: const Text("No"),
                                 ),
                                 TextButton(
                                   onPressed: (){
                                     Navigator.of(context).pop();
                                     signout();
                                   },
-                                  child: const Text(
-                                    "Yes",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                                  child: const Text("Yes"),
                                 ),
                               ]
                             );
@@ -289,15 +236,14 @@ class _AccountPage extends State<AccountPage> {
                         "Logout",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFF0E8D6),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),          
+              ),
+            )
           );
-
           } else {
             signout();
             return const AuthPage();

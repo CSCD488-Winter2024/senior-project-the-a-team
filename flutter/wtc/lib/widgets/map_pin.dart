@@ -53,39 +53,36 @@ class MapPin extends StatelessWidget {
           return AlertDialog(
               title: Text(name),
               contentPadding: const EdgeInsets.all(12),
-
-              content: SingleChildScrollView(
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(8), child: Text(address)),
-                      Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Text("About: $description")),
-                      Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                              "Business Hours:\n\n ${(formatBusinessHours(businessHours))}")),
-                      Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            OrganizationPostPage(
-                                                userEmail: userEmail,
-                                                username: name)));
-                              },
-                              child: const Text("Tap here to view posts.",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color.fromARGB(255, 0, 53, 114)))))
-                    ]),
-              ));
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(8), child: Text(address)),
+                    Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text("About: $description")),
+                    Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                            "Business Hours:\n\n ${(formatBusinessHours(businessHours))}")),
+                    Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) =>
+                                          OrganizationPostPage(
+                                              userEmail: userEmail,
+                                              username: name)));
+                            },
+                            child: const Text("Tap here to view posts.",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Color.fromARGB(255, 0, 53, 114)))))
+                  ]));
         });
   }
 }

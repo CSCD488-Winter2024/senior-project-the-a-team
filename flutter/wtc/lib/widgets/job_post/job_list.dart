@@ -51,7 +51,6 @@ class JobPostList extends StatelessWidget {
                 postId: Guid(document?['postID'] as String),
                 wage: wage,
                 wageType: document?['wageType'] as String,
-                isMyPost: false,
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

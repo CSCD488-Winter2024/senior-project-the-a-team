@@ -106,11 +106,9 @@ class _RSVPButtons extends State<RSVPButtons> {
           List<dynamic> attendingList = data['attending'];
 
           if (attendingList.contains(uid)) {
-            if (mounted) {
-              setState(() {
-                isAttending = true;
-              });
-            }
+            setState(() {
+              isAttending = true;
+            });
             return;
           }
         }
@@ -118,11 +116,9 @@ class _RSVPButtons extends State<RSVPButtons> {
     } catch (e) {
       print('Error checking user attendance: $e');
     }
-    if (mounted) {
-      setState(() {
-        isAttending = false;
-      });
-    }
+    setState(() {
+      isAttending = false;
+    });
   }
 
   Future<void> checkIfMaybeAttending(String postID, String uid) async {
@@ -138,12 +134,9 @@ class _RSVPButtons extends State<RSVPButtons> {
           List<dynamic> maybeList = data['maybe'];
 
           if (maybeList.contains(uid)) {
-            if (mounted) {
-              // Check if the widget is still in the tree
-              setState(() {
-                isMaybeAttending = true;
-              });
-            }
+            setState(() {
+              isMaybeAttending = true;
+            });
             return;
           }
         }
@@ -151,12 +144,9 @@ class _RSVPButtons extends State<RSVPButtons> {
     } catch (e) {
       print('Error checking user maybe attendance: $e');
     }
-    if (mounted) {
-      // Check again before setting the state
-      setState(() {
-        isMaybeAttending = false;
-      });
-    }
+    setState(() {
+      isMaybeAttending = false;
+    });
   }
 
   @override
@@ -201,7 +191,7 @@ class _RSVPButtons extends State<RSVPButtons> {
                             color: Color.fromARGB(255, 160, 146, 21),
                             Icons.star_outline_rounded),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 40),
                   SavePost(postId: widget.postID, currentUserId: widget.uid)
                 ],
               ),

@@ -85,7 +85,7 @@ class DeleteAccount extends StatelessWidget {
                             content: const Text(
                               "This will delete your account permanently.",
                               style: TextStyle(
-                                color: Color(0xFFC94F0A),
+                                color: Colors.red,
                                 fontWeight: FontWeight.bold
                               )
                             ),
@@ -171,12 +171,7 @@ class DeleteAccount extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
+                    child: const Text("Cancel"),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -270,7 +265,6 @@ class DeleteAccount extends StatelessWidget {
             context: context, 
             builder: (context){
               return AlertDialog(
-                backgroundColor: Colors.white,
                 title: const Text("Reauthenticate"),
                 content: SizedBox(
                   height: 140,
@@ -305,12 +299,7 @@ class DeleteAccount extends StatelessWidget {
                       passwordController.clear();
                       Navigator.pop(context);
                     },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Colors.black,
-                      )
-                    ),
+                    child: const Text("Cancel"),
                   ),
                   TextButton(
                     onPressed: () async{
@@ -365,7 +354,7 @@ class DeleteAccount extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFD4BC93),
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(12),
         ),
         height: 80,

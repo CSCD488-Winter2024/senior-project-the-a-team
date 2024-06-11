@@ -12,11 +12,11 @@ class _AlertsPage extends State<AlertsPage> {
   @override
   Widget build(BuildContext context) {
     //final ThemeData theme = Theme.of(context);
-    return Container(
-      color: Colors.white,
+    return Card(
+      shadowColor: Colors.transparent,
+      margin: const EdgeInsets.all(8.0),
       child: SizedBox.expand(
-        child: AlertsList(),
-      ),
+          child: AlertsList()),
     );
   }
 }

@@ -18,7 +18,7 @@ class MapPage extends StatefulWidget {
 void updateCoordinates(double latitude, double longitude) {}
 
 class _MapPage extends State<MapPage> {
-  LatLng center = const LatLng(47.50595337523408, -117.56739882687351);
+  LatLng center = LatLng(47.50595337523408, -117.56739882687351);
   double zoom = 12.0;
   List<MapCard> organizations = List<MapCard>.empty(growable: true);
 
@@ -35,7 +35,7 @@ class _MapPage extends State<MapPage> {
       Stack(
         children: [
           Text("size of orgs: ${organizations.length}"),
-          SizedBox(
+          Container(
               width: 500,
               height: 400,
               child: FlutterMap(
@@ -148,9 +148,12 @@ class _MapPage extends State<MapPage> {
 
   Future<void> fetchOrganizations() async {
     CollectionReference organizations =
-        FirebaseFirestore.instance.collection('businesses');
+        FirebaseFirestore.instance.collection('users');
 
-    QuerySnapshot querySnapshot = await organizations.get();
+    Query query = organizations
+        .where('tier', isEqualTo: "Poster")
+        .where('isBusiness', isEqualTo: true);
+    QuerySnapshot querySnapshot = await query.get();
     final filteredData = querySnapshot.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
         .toList();

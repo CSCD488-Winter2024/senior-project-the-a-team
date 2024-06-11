@@ -134,9 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'uid': userCredential.user!.uid,
         'isPending': false,
         'saved_posts': newSavedPostList,
-        'notificationToken': token,
-        'sawTour': false
-
+        'notificationToken': token
       });
     }
   }

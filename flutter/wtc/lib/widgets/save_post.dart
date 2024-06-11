@@ -24,21 +24,21 @@ class _SavePostState extends State<SavePost> {
     checkIfSaved(widget.postId.toString(), widget.currentUserId ?? '');
   }
 
-  Future<void> addArrayFieldToCollection(
-      String collectionName, String fieldName, List<dynamic> fieldValue) async {
-    final CollectionReference collectionRef =
-        FirebaseFirestore.instance.collection(collectionName);
+Future<void> addArrayFieldToCollection(String collectionName, String fieldName, List<dynamic> fieldValue) async {
+  final CollectionReference collectionRef = FirebaseFirestore.instance.collection(collectionName);
 
-    final QuerySnapshot snapshot = await collectionRef.get();
-    WriteBatch batch = FirebaseFirestore.instance.batch();
+  final QuerySnapshot snapshot = await collectionRef.get();
+  WriteBatch batch = FirebaseFirestore.instance.batch();
 
-    for (QueryDocumentSnapshot doc in snapshot.docs) {
-      DocumentReference docRef = collectionRef.doc(doc.id);
-      batch.update(docRef, {fieldName: fieldValue});
-    }
-
-    await batch.commit();
+  for (QueryDocumentSnapshot doc in snapshot.docs) {
+    DocumentReference docRef = collectionRef.doc(doc.id);
+    batch.update(docRef, {fieldName: fieldValue});
   }
+
+  await batch.commit();
+  print("Added array field '$fieldName' with value '$fieldValue' to all documents in the '$collectionName' collection.");
+}
+
 
   Future<void> changeSavedPosts() async {
     if (!isSaved) {
@@ -73,38 +73,36 @@ class _SavePostState extends State<SavePost> {
     try {
       DocumentSnapshot documentSnapshot =
           await _firestore.collection('users').doc(userId).get();
-
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
 
-        bool currentlySaved = data['saved_posts']?.contains(postId) ?? false;
+        if (data.containsKey('saved_posts') && data['saved_posts'] is List) {
+          List<dynamic> savedPostsList = data['saved_posts'];
 
-        if (mounted) {
-          setState(() {
-            isSaved = currentlySaved;
-            print(isSaved.toString());
-          });
+          if (savedPostsList.contains(postId)) {
+            setState(() {
+              isSaved = true;
+              print(isSaved.toString());
+            });
+            return;
+          }
         }
       }
     } catch (e) {
-      print('Error checking user saved posts: $e');
-      if (mounted) {
-        setState(() {
-          isSaved = false;
-          print(isSaved.toString());
-        });
-      }
+      print('Error checking user attendance: $e');
     }
+    setState(() {
+      isSaved = false;
+      print(isSaved.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      label: const Text("Save"),
-      icon: isSaved
-          ? const Icon(color: Colors.blueGrey, Icons.bookmark)
-          : const Icon(color: Colors.blueGrey, Icons.bookmark_border_outlined),
+      label:const Text("Save"),
+      icon: isSaved ? const Icon(color: Colors.blueGrey, Icons.bookmark) : const Icon(color: Colors.blueGrey, Icons.bookmark_border_outlined),
       onPressed: () {
         setState(() {
           changeSavedPosts();

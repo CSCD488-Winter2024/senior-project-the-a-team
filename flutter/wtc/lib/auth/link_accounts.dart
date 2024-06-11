@@ -288,7 +288,7 @@ class _LinkAccountsState extends State<LinkAccounts> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFD4BC93),
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(12),
         ),
         height: 80,

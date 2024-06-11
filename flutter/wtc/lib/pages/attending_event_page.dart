@@ -24,21 +24,22 @@ class _AttendingEventPage extends State<AttendingEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: const Icon(color: Colors.white, Icons.arrow_back),
           ),
-          backgroundColor: const Color(0xFFBD9F4C),
+          backgroundColor: const Color(0xFF469AB8),
           surfaceTintColor: Colors.transparent,
           scrolledUnderElevation: 0,
-          title: Text(
+          title: Align(
+            widthFactor: 2.5,
+            child: Text(
               widget.attending,
               style: const TextStyle(color: Colors.white),
             ),
-          ),
+          )),
       body: SafeArea(
           child: AttendingList(
               postID: widget.postID, attendanceMap: widget.attendanceMap)),

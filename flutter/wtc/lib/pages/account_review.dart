@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wtc/widgets/user_widgets/user_review.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:geocoding/geocoding.dart';
 
 class AccountReviewPage extends StatefulWidget {
@@ -108,28 +110,23 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
 
     // Update the user's details
     Map<String, dynamic> updateData = {
+      'email': userReview.email,
       'isBusiness': userReview.isBusiness,
+      'name': userReview.name,
+      'about': userReview.about,
       'tier': 'Poster',
       'isPending': false,
+      'phone': userReview.phone,
+      'coordinates': coordinates,
     };
-    await userDoc.update(updateData);
-
 
     if (userReview.isBusiness) {
-      Map<String, dynamic> businessData = {
-        'about': userReview.about,
+      updateData.addAll({
         'address': userReview.address,
         'businessHours': userReview.businessHours,
-        'phone': userReview.phone,
-        'coordinates': coordinates,
-        'email': userReview.email,
-        'name': userReview.name,
-        'pfp' : userReview.pfp,
-      };
-      userDoc = firestore.collection('businesses').doc(userReview.uid);
-      await userDoc.set(businessData);
+      });
     }
-
+    return userDoc.update(updateData);
   }
 
   Future<void> deleteUserFromReviewAccount(String reviewId) async {
