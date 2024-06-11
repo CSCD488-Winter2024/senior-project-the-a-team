@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:showcaseview/showcaseview.dart';
+import 'package:wtc/pages/my_posts.dart';
 import 'package:wtc/pages/saved_posts_page.dart';
 import 'package:wtc/pages/search_user.dart';
 import 'package:wtc/pages/account_review.dart';
-import 'package:wtc/widgets/saved_posts_list.dart';
-import 'widgets/navbutton.dart';
-import 'User/user_service.dart';
+
+import 'package:wtc/user/user_service.dart';
+import 'package:wtc/widgets/navbutton.dart';
 import 'pages/home.dart';
 import 'pages/accountsettings.dart';
 import 'pages/alerts.dart';
@@ -21,7 +26,6 @@ import 'widgets/notifications_window.dart';
 import 'pages/specific_fillable_form.dart';
 import 'pages/admin_review.dart';
 import 'pages/about_us.dart';
-import 'pages/geocode_testing_page.dart';
 
 //-- Please read all comments before proceeding!
 //****This NavBar should never be touched unless something about it specifically is being addressed**
@@ -42,6 +46,20 @@ class _NavBars extends State<App> {
     we want the user to be routed to page 2 [index 2] which is 
     the current location of the home page
   */
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey key1 = GlobalKey();
+  final GlobalKey key2 = GlobalKey();
+  final GlobalKey key3 = GlobalKey();
+  final GlobalKey key4 = GlobalKey();
+  final GlobalKey key5 = GlobalKey();
+  final GlobalKey key6 = GlobalKey();
+  final GlobalKey key7 = GlobalKey();
+  final GlobalKey key8 = GlobalKey();
+  final GlobalKey key9 = GlobalKey();
+  final GlobalKey key10 = GlobalKey();
+  final GlobalKey key11 = GlobalKey();
+  final GlobalKey key12 = GlobalKey();
+  
   int currentPageIndex = 2;
   bool showNotification = false;
   bool showJobsPage = false;
@@ -51,6 +69,10 @@ class _NavBars extends State<App> {
   bool showSearchUsers = false;
   bool showAccountUpgradePage = false;
   bool showSavedPosts = false;
+  bool showMyPosts = false;
+  bool tour = false;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   String title = "Welcome To Cheney";
   String prevTitle = "";
   String userTier = "";
@@ -59,12 +81,45 @@ class _NavBars extends State<App> {
   void initState() {
     super.initState();
     _initUserTier();
+    _fetchTourStatus();
+    //print("we're touring: $tour");
+
+    
+  }
+
+  Future<void> _fetchTourStatus() async {
+  await isTouring(); // wait for isTouring to complete
+  print("we're touring: $tour");
+  if (!tour){
+        WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12]));
+  }
+}
+
+  Future<void> isTouring() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var userInfo =
+        await _firestore.collection("users").doc(currentUser?.uid).get();
+    
+    setState(() {
+      tour = userInfo.data()?['sawTour'];
+    });
+    
+  }
+
+  Future<void> setTourStatus(bool status) async {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  
+  await _firestore.collection("users").doc(currentUser?.uid).update({
+    'sawTour': status
+  });
   }
 
   void _initUserTier() async {
     String tier = await UserService().fetchUserTier(); // Await the Future
     setState(() {
-      userTier = tier; // Assign the result within setState to trigger a rebuild
+      userTier = tier;
+      
+ // Assign the result within setState to trigger a rebuild
     });
   }
 
@@ -90,6 +145,7 @@ class _NavBars extends State<App> {
                   );
                 },
               ),
+              if (userTier == 'Alerter' || userTier == 'Admin') 
               ElevatedButton(
                 child: const Text("Alert Post"),
                 onPressed: () {
@@ -141,61 +197,162 @@ class _NavBars extends State<App> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            child: Text('', style: TextStyle(color: Colors.white)),
-            decoration: BoxDecoration(
+           DrawerHeader(
+            decoration:  const BoxDecoration(
               color: Color(0xFF469AB8),
               image: DecorationImage(
                   image: AssetImage('images/WTC_BLANK.png'), fit: BoxFit.cover),
             ),
+            child: Showcase(
+              key: key5, 
+              description: 'Press the button in the upperleft corner to view the hamburger menu.\n\n(Press and hold the icon to skip the tour)',  
+              onTargetLongPress: () {
+                skipTour();
+               
+              },
+              disposeOnTap: false,
+              onTargetDoubleTap: () {
+                setState(() {
+                  title = "Jobs";
+                  prevTitle = "Jobs";
+                  showJobsPage = true;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showSavedPosts = false;
+                  showMyPosts = false;
+                });
+                ShowCaseWidget.of(context).startShowCase([key6]);
+              },
+              onToolTipClick: (){
+               setState(() {
+                  title = "Jobs";
+                  prevTitle = "Jobs";
+                  showJobsPage = true;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showSavedPosts = false;
+                  showMyPosts = false;
+                });
+                ShowCaseWidget.of(context).startShowCase([key6]);  
+              } ,
+              onTargetClick: () {
+              setState(() {
+                  title = "Jobs";
+                  prevTitle = "Jobs";
+                  showJobsPage = true;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showSavedPosts = false;
+                  showMyPosts = false;
+                });
+                ShowCaseWidget.of(context).startShowCase([key6]);                   
+              },
+              onBarrierClick: () {
+                setState(() {
+                  title = "Jobs";
+                  prevTitle = "Jobs";
+                  showJobsPage = true;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showSavedPosts = false;
+                  showMyPosts = false;
+                });
+                ShowCaseWidget.of(context).startShowCase([key6]);   
+              },
+              child: const Text('', style: TextStyle(color: Colors.white)),
+              
+              ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
+            leading: Showcase(key: key6, 
+            description: "Are you in need of a job? You can check out job postings by Cheney organizations here in the Jobs page.\n\n(Press and hold the icon to skip the tour)",
+            child: const Icon(Icons.work),
+            disposeOnTap: false,
+            onTargetDoubleTap: () {
               setState(() {
-                title = "Welcome to Cheney";
-                prevTitle = "Welcome to Cheney";
-                currentPageIndex = 2;
+                title = "Volunteer";
+                prevTitle = "Volunteer";
                 showJobsPage = false;
-                showVolunteerPage = false;
                 showNotification = false;
+                showVolunteerPage = true;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
+              ShowCaseWidget.of(context).startShowCase([key7]);
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.warning),
-            title: const Text('Alerts'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Alerts";
-                prevTitle = "Alerts";
-                currentPageIndex = 0;
+            onToolTipClick: () {
+               setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
                 showJobsPage = false;
-                showVolunteerPage = false;
                 showNotification = false;
+                showVolunteerPage = true;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
+              ShowCaseWidget.of(context).startShowCase([key7]);
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.work),
+            onTargetClick: () {
+              setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key7]);
+            },
+            onBarrierClick: () {
+              setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key7]);
+            },
+            ),
+          
             title: const Text('Jobs'),
             onTap: () {
               Navigator.pop(context);
-              /*Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const JobsPage()));*/
               setState(() {
                 title = "Jobs";
                 prevTitle = "Jobs";
@@ -207,11 +364,85 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
+              
             },
           ),
           ListTile(
-            leading: const Icon(Icons.volunteer_activism),
+            leading: Showcase(
+            key: key7, description: 'Interested in volunteering?\nVolunteer postings can be seen in the volunteer page.\n\n(Press and hold the icon to skip the tour)', 
+            child: const Icon(Icons.volunteer_activism),
+            onTargetLongPress: () {
+              skipTour();
+             
+            },
+            disposeOnTap: false,
+            onTargetDoubleTap: () {
+               setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key8]);
+            },
+            onToolTipClick: () {
+              setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key8]);
+            },
+            onTargetClick: () {
+              setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key8]);                
+            },
+            onBarrierClick: () {
+               setState(() {
+                title = "Volunteer";
+                prevTitle = "Volunteer";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = true;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+              });
+              ShowCaseWidget.of(context).startShowCase([key8]);   
+            },
+            ) ,
             title: const Text('Volunteer'),
             onTap: () {
               // Navigate to Volunteer page
@@ -227,72 +458,278 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text('Account'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Account";
-                prevTitle = "Account";
-
-                currentPageIndex = 4;
+            leading: Showcase(key: key8, description: "Any posts created by you can be displayed and managed here under 'My Posts'.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.comment), 
+            onTargetLongPress: () {
+              skipTour();
+           
+            },
+            disposeOnTap: false,
+            onTargetDoubleTap: () {
+               setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
                 showJobsPage = false;
-                showVolunteerPage = false;
                 showNotification = false;
+                showVolunteerPage = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
-              });
+                showMyPosts = true;
+              });    
+              ShowCaseWidget.of(context).startShowCase([key9]);  
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.bookmark),
-            title: const Text('Saved Posts'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              setState(() {
-                title = "Saved Posts";
-                prevTitle = "Saved Posts";
-
-                showSavedPosts = true;
+            onToolTipClick: () {
+               setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
                 showJobsPage = false;
-                showVolunteerPage = false;
                 showNotification = false;
+                showVolunteerPage = false;
                 showApprovePostsPage = false;
                 showAboutUsPage = false;
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
-                
+                showSavedPosts = false;
+                showMyPosts = true;
+              });    
+              ShowCaseWidget.of(context).startShowCase([key9]);  
+            },
+            onTargetClick: () {
+            setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = true;
+              });    
+              ShowCaseWidget.of(context).startShowCase([key9]);            
+            },
+            onBarrierClick: () {
+              setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = true;
               });
-            }
+              ShowCaseWidget.of(context).startShowCase([key9]);   
+            },
+            
+            ) ,
+            title: const Text('My Posts'),
+            onTap: () {
+              // Navigate to Volunteer page
+              Navigator.pop(context);
+              setState(() {
+                title = "My Posts";
+                prevTitle = "My Posts";
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showAboutUsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = true;
+              });
+            },
           ),
-          (userTier == "Admin" || userTier == "Poster")
+          ListTile(
+              leading: Showcase(key: key9, description: "You can save any post on the app by pressing the 'Save' button located on a post. The post then can be viewed here. To remove a post, you can tap the 'save' button again.\n\n(Press and hold the icon to skip the tour)", child: const Icon(Icons.bookmark),
+              onTargetLongPress: () {
+                skipTour();
+             
+              },
+              disposeOnTap: false,
+              onTargetDoubleTap: () {
+                 setState(() {
+                    title = "Saved Posts";
+                    prevTitle = "Saved Posts";
+                    showSavedPosts = true;
+                    showJobsPage = false;
+                    showVolunteerPage = false;
+                    showNotification = false;
+                    showApprovePostsPage = false;
+                    showAboutUsPage = false;
+                    showSearchUsers = false;
+                    showAccountUpgradePage = false;
+                    showMyPosts = false;                      
+                  
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key10]);
+              },
+              onToolTipClick: () {
+                setState(() {
+                    title = "Saved Posts";
+                    prevTitle = "Saved Posts";
+                    showSavedPosts = true;
+                    showJobsPage = false;
+                    showVolunteerPage = false;
+                    showNotification = false;
+                    showApprovePostsPage = false;
+                    showAboutUsPage = false;
+                    showSearchUsers = false;
+                    showAccountUpgradePage = false;
+                    showMyPosts = false;                      
+                  
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key10]);
+              },
+              onTargetClick: () {
+                  setState(() {
+                    title = "Saved Posts";
+                    prevTitle = "Saved Posts";
+                    showSavedPosts = true;
+                    showJobsPage = false;
+                    showVolunteerPage = false;
+                    showNotification = false;
+                    showApprovePostsPage = false;
+                    showAboutUsPage = false;
+                    showSearchUsers = false;
+                    showAccountUpgradePage = false;
+                    showMyPosts = false;                      
+                  
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key10]);   
+              },
+              onBarrierClick: () {
+                  setState(() {
+              
+                  title = "Saved Posts";
+                  prevTitle = "Saved Posts";
+
+                  showSavedPosts = true;
+                  showJobsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showMyPosts = false;
+                  ShowCaseWidget.of(context).startShowCase([key10]);   
+                  });
+              },
+              
+              ) ,
+              title: const Text('Saved Posts'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                setState(() {
+                  title = "Saved Posts";
+                  prevTitle = "Saved Posts";
+                  showSavedPosts = true;
+                  showJobsPage = false;
+                  showVolunteerPage = false;
+                  showNotification = false;
+                  showApprovePostsPage = false;
+                  showAboutUsPage = false;
+                  showSearchUsers = false;
+                  showAccountUpgradePage = false;
+                  showMyPosts = false;
+                });
+              }),
+          (userTier == "Admin" || userTier == "Poster" || userTier == "Alerter")
               ? ListTile(
                   leading: const Icon(Icons.create),
                   title: const Text('Create Post'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     showCreatePostOptions(context);
-                    setState(() {
-                      showJobsPage = false;
-                      showVolunteerPage = false;
-                      showNotification = false;
-                      showApprovePostsPage = false;
-                      showAboutUsPage = false;
-                      showSearchUsers = false;
-                      showAccountUpgradePage = false;
-                      showSavedPosts = false;
-                    });
                   },
                 )
               : ListTile(
-                  leading: const Icon(Icons.create),
+                  leading: Showcase(key: key10, description: "Have some information to dispell to the public? Fill out the form under 'Post for Admin Review'. As it reads, if approved by an admin, your form will be posted to the application.\n\n(Press and hold the icon to skip the tour)", child:  const Icon(Icons.create), 
+                  onTargetLongPress: () {
+                    skipTour();
+                    
+                  },
+                  disposeOnTap: false,
+                  onTargetDoubleTap: () {
+                     setState(() {
+                      title = "About Us";
+                      prevTitle = "About Us";
+                      showAboutUsPage = true;
+                      showJobsPage = false;
+                      showNotification = false;
+                      showVolunteerPage = false;
+                      showApprovePostsPage = false;
+                      showSearchUsers = false;
+                      showAccountUpgradePage = false;
+                      showSavedPosts = false;
+                      showMyPosts = false;
+                    });
+                    ShowCaseWidget.of(context).startShowCase([key11]);
+                  },
+                  onToolTipClick: () {
+                    setState(() {
+                      title = "About Us";
+                      prevTitle = "About Us";
+                      showAboutUsPage = true;
+                      showJobsPage = false;
+                      showNotification = false;
+                      showVolunteerPage = false;
+                      showApprovePostsPage = false;
+                      showSearchUsers = false;
+                      showAccountUpgradePage = false;
+                      showSavedPosts = false;
+                      showMyPosts = false;
+                    });
+                    ShowCaseWidget.of(context).startShowCase([key11]);
+                  },
+                  onTargetClick: () {
+                    setState(() {
+                      title = "About Us";
+                      prevTitle = "About Us";
+                      showAboutUsPage = true;
+                      showJobsPage = false;
+                      showNotification = false;
+                      showVolunteerPage = false;
+                      showApprovePostsPage = false;
+                      showSearchUsers = false;
+                      showAccountUpgradePage = false;
+                      showSavedPosts = false;
+                      showMyPosts = false;
+                    });
+                    ShowCaseWidget.of(context).startShowCase([key11]);   
+                  },
+                  onBarrierClick: () {
+                    setState(() {
+                      title = "About Us";
+                      prevTitle = "About Us";
+                      showAboutUsPage = true;
+                      showJobsPage = false;
+                      showNotification = false;
+                      showVolunteerPage = false;
+                      showApprovePostsPage = false;
+                      showSearchUsers = false;
+                      showAccountUpgradePage = false;
+                      showSavedPosts = false;
+                      showMyPosts = false;
+                    });
+                    ShowCaseWidget.of(context).startShowCase([key11]);   
+                  },
+                  ),
                   title: const Text('Post for Admin Review'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
@@ -321,6 +758,7 @@ class _NavBars extends State<App> {
                   showSearchUsers = false;
                   showAccountUpgradePage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
@@ -341,6 +779,7 @@ class _NavBars extends State<App> {
                   showSearchUsers = true;
                   showAccountUpgradePage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
@@ -360,11 +799,86 @@ class _NavBars extends State<App> {
                   showJobsPage = false;
                   showAboutUsPage = false;
                   showSavedPosts = false;
+                  showMyPosts = false;
                 });
               },
             ),
           ListTile(
-            leading: const Icon(Icons.person),
+            leading: Showcase(key: key11, description: "You can see a little bit about the founders and creator of the app, here in the About Us page.\n\n(Press and hold the icon to skip the tour)",
+            child: const Icon(Icons.person),
+            disposeOnTap: false,
+            onTargetLongPress: () {
+              skipTour();
+              
+            },
+            onTargetDoubleTap: () {
+              setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
+                ShowCaseWidget.of(context).startShowCase([key12]);
+            },
+            onToolTipClick: () {
+              setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
+                ShowCaseWidget.of(context).startShowCase([key12]); 
+            },
+    
+            onTargetClick: () {
+                setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
+                ShowCaseWidget.of(context).startShowCase([key12]);   
+
+            },
+            onBarrierClick: () {
+              setState(() {
+                showAboutUsPage = false;
+                showJobsPage = false;
+                showNotification = false;
+                showVolunteerPage = false;
+                showApprovePostsPage = false;
+                showSearchUsers = false;
+                showAccountUpgradePage = false;
+                showSavedPosts = false;
+                showMyPosts = false;
+                scaffoldKey.currentState?.closeDrawer();
+                currentPageIndex = 4;
+                });
+                ShowCaseWidget.of(context).startShowCase([key12]);   
+            },
+            
+            ) ,
             title: const Text('About Us'),
             onTap: () {
               // Navigate to Volunteer page
@@ -380,6 +894,7 @@ class _NavBars extends State<App> {
                 showSearchUsers = false;
                 showAccountUpgradePage = false;
                 showSavedPosts = false;
+                showMyPosts = false;
               });
             },
           ),
@@ -388,12 +903,19 @@ class _NavBars extends State<App> {
     );
   }
 
+  void skipTour() {
+    ShowCaseWidget.of(context).dismiss();
+    setTourStatus(true);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: TopBar(
         title: title,
-        preferredHeight: 70.0,
+        preferredHeight: 56,
         onNotificationsPressed: () {
           setState(() => showNotification = !showNotification);
           setState(() {
@@ -409,18 +931,22 @@ class _NavBars extends State<App> {
         },
         showNotifications: showNotification,
       ),
-      drawer: getDrawer(context),
+      drawer: getDrawer(context) ,
       body: Stack(
         children: [
           // Main content of your app
           getPageContent(currentPageIndex),
           // Notification window (conditional rendering)
-          if (showNotification || showJobsPage 
-          || showVolunteerPage || showApprovePostsPage 
-          || showAboutUsPage || showSearchUsers 
-          || showAccountUpgradePage || showSavedPosts)
-            const Opacity(
-                opacity: 1, child: ModalBarrier(color: Colors.white)),
+          if (showNotification ||
+              showJobsPage ||
+              showVolunteerPage ||
+              showApprovePostsPage ||
+              showAboutUsPage ||
+              showSearchUsers ||
+              showAccountUpgradePage ||
+              showSavedPosts ||
+              showMyPosts)
+            const Opacity(opacity: 1, child: ModalBarrier(color: Colors.white)),
 
           if (showNotification) const NotificationsWindow(),
           if (showJobsPage) const JobsPage(),
@@ -429,7 +955,9 @@ class _NavBars extends State<App> {
           if (showAboutUsPage) const AboutUsPage(),
           if (showSearchUsers) const SearchUserPage(),
           if (showAccountUpgradePage) const AccountReviewPage(),
-          if (showSavedPosts) const SavedPosts()
+          if (showSavedPosts) const SavedPosts(),
+          if (showMyPosts) const MyPostsPage(),
+
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -448,29 +976,192 @@ class _NavBars extends State<App> {
             showAboutUsPage = false;
             showSearchUsers = false;
             showAccountUpgradePage = false;
+            showMyPosts = false;
             showSavedPosts = false;
           });
         },
         indicatorColor: Colors.white,
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavButton(
+        destinations: <Widget>[
+           NavigationDestination(
               label: "Alerts",
-              icon: Icons.crisis_alert,
-              outlinedIcon: Icons.crisis_alert_outlined),
-          NavButton(
-              label: "Maps", icon: Icons.map, outlinedIcon: Icons.map_outlined),
-          NavButton(
-              label: "Home", icon: Icons.home, outlinedIcon: Icons.home_filled),
-          NavButton(
+              selectedIcon:  Showcase(
+              key: key4, 
+              description: 'Alert posts will be sent to you via push notification - however, you can view any Alert post here under the Alert page.\n\n(Press and hold the icon to skip the tour)', 
+              child: const Icon(Icons.crisis_alert),
+              onTargetLongPress: () {
+                  skipTour();
+                },  
+              disposeOnTap: true,
+              onTargetDoubleTap: () {
+                 setState(() {
+                  scaffoldKey.currentState?.openDrawer();
+                },);
+                ShowCaseWidget.of(context).startShowCase([key5]);                      
+              },
+              onToolTipClick: () {
+                 setState(() {
+                  scaffoldKey.currentState?.openDrawer();
+                },);
+                ShowCaseWidget.of(context).startShowCase([key5]);                 
+              },
+              onTargetClick: () {
+                setState(() {
+                  scaffoldKey.currentState?.openDrawer();
+                },);
+                ShowCaseWidget.of(context).startShowCase([key5]);   
+              },
+              onBarrierClick: () {
+                scaffoldKey.currentState?.openDrawer();
+                ShowCaseWidget.of(context).startShowCase([key5]);   
+              }),
+              icon: const Icon(Icons.crisis_alert_outlined, color: Colors.white),
+              ),
+            
+          NavigationDestination(
+              label: "Maps", selectedIcon: Showcase(
+              key: key2, 
+              description: "Do you want to know about the businesses in Cheney?\n\nWithin the map page, you can browse all of the app registered organizations. You can see where they're located and what they're all about!\n\n(Press and hold the icon to skip the tour)", 
+              targetShapeBorder: const CircleBorder(), 
+              child: const Icon(Icons.map),
+              disposeOnTap: false,
+              onTargetLongPress: () {
+                  skipTour();
+              },
+              onTargetDoubleTap: () {
+                setState(() {
+                  currentPageIndex = 3;
+                },);
+                ShowCaseWidget.of(context).startShowCase([key3]);
+              },
+              onToolTipClick: () {
+                setState(() {
+                  currentPageIndex = 3;
+                },);
+                ShowCaseWidget.of(context).startShowCase([key3]); 
+              },
+              onTargetClick: () {
+                setState(() {
+                  currentPageIndex = 3;
+                },);
+                ShowCaseWidget.of(context).startShowCase([key3]);  
+              }, 
+              onBarrierClick: () {
+                setState(() {
+                  currentPageIndex = 3;
+                },);
+                ShowCaseWidget.of(context).startShowCase([key3]);  
+              },), 
+              icon: const Icon(Icons.map_outlined, color: Colors.white)  ),
+          NavigationDestination(
+              label: "Home", icon:  const Icon(Icons.home_outlined, color: Colors.white), 
+              selectedIcon: Showcase(
+                key: key1, 
+                targetShapeBorder: const CircleBorder(), 
+                description: 'Hello there!\n\nPlease tap on the screen to learn about using the Welcome to Cheney notification app. We will start at the home page as this will be center of the app!\n\nThis is the homepage, here you can find all posts relevant to your selected tags.\n\n(Press and hold the icon to skip the tour)', 
+                child: const Icon(Icons.home),
+                disposeOnTap: true,
+                onTargetLongPress: () {
+                  skipTour();
+                }, 
+                onTargetDoubleTap: () {
+                  setState(() {
+                  currentPageIndex = 1;
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key2]);
+                },
+                onToolTipClick: () {
+                  setState(() {
+                  currentPageIndex = 1;
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key2]);
+                },
+                onTargetClick: () {
+                  setState(() {
+                  currentPageIndex = 1;
+                });
+                ShowCaseWidget.of(context).startShowCase([key2]);                
+                },
+                onBarrierClick: () {
+                setState(() {
+                  currentPageIndex = 1;
+                });
+                ShowCaseWidget.of(context).startShowCase([key2]);   
+              },)),
+          NavigationDestination(
               label: "Calendar",
-              icon: Icons.calendar_month,
-              outlinedIcon: Icons.calendar_month_outlined),
-          NavButton(
+              icon: const Icon(Icons.calendar_month_outlined, color: Colors.white),
+              selectedIcon:  Showcase(
+                key: key3, description: "Welcome to Cheney is about keeping you up to date on what's happening in the city. You can view events relevant to your selected tags in the Calendar page.\n\n(Press and hold the icon to skip the tour)", 
+                child: const Icon(Icons.calendar_month),
+                disposeOnTap: true,
+                onTargetLongPress: () {
+                  skipTour();
+                }, 
+                onTargetDoubleTap: () {
+                  setState(() {
+                    currentPageIndex = 0;
+                  });               
+                  ShowCaseWidget.of(context).startShowCase([key4]);
+                },
+                onToolTipClick: () {
+                  setState(() {
+                    currentPageIndex = 0;
+                  });               
+                  ShowCaseWidget.of(context).startShowCase([key4]);   
+                },
+                onTargetClick: () {
+                  setState(() {
+                    currentPageIndex = 0;
+                  });               
+                  ShowCaseWidget.of(context).startShowCase([key4]);    
+                },
+                onBarrierClick: () {
+                  setState(() {
+                    currentPageIndex = 0;
+                  });
+                  ShowCaseWidget.of(context).startShowCase([key4]);   
+                },
+          )),
+          NavigationDestination(
               label: "Account",
-              icon: Icons.manage_accounts,
-              outlinedIcon: Icons.manage_accounts_outlined)
+              selectedIcon: Showcase(key: key12, description: "Last but not least, we have the account page!\n\nHere, you can view and edit all of your account information. In the setting button, you can edit your profile, edit your personal tags, link outside accounts to your WTC account, apply to be a poster, or delete your account. To log out, press the logout button.\n\n That's about it for the tour.\n\nEnjoy staying in the know, and Welcome to Cheney!", child: const Icon(Icons.manage_accounts),
+              disposeOnTap: true,
+              onTargetDoubleTap: () {
+                skipTour();
+                setState(() {
+                  currentPageIndex = 2;
+                  title="Welcome To Cheney";
+                  prevTitle="Welcome To Cheney";
+                });
+              },
+              onToolTipClick: () {
+                skipTour();
+                setState(() {
+                  currentPageIndex = 2;
+                  title="Welcome To Cheney";
+                  prevTitle="Welcome To Cheney";
+                });
+              },
+              onTargetClick: () {
+                
+                skipTour();
+                setState(() {
+                  currentPageIndex = 2;
+                  title="Welcome To Cheney";
+                  prevTitle="Welcome To Cheney";
+                });               
+              },
+              onBarrierClick: () {
+                skipTour();
+                setState(() {
+                  currentPageIndex = 2;
+                });
+                
+              },
+              ) ,
+              icon: const Icon(Icons.manage_accounts_outlined, color: Colors.white))
         ],
       ),
     );
@@ -510,7 +1201,7 @@ class _NavBars extends State<App> {
       case 3:
         return const CalendarPage();
       case 4:
-        return const AccountPage();
+        return const AccountPage(); 
 
       default:
         return Container(); // Default empty container

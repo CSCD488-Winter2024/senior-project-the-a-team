@@ -9,22 +9,19 @@ import 'package:wtc/auth/delete_account.dart';
 import 'package:wtc/auth/link_accounts.dart';
 import 'package:wtc/components/settings_button.dart';
 
-
 class EditSettings extends StatefulWidget {
-  const EditSettings(
-    {
-      super.key, 
-      required this.tier, 
-      required this.email, 
-      required this.tags, 
-      required this.isBusiness,
-      required this.username,
-      required this.name,
-      required this.profilePic,
-      required this.uid,
-      required this.isPending
-    }
-  );
+  const EditSettings({
+    super.key,
+    required this.tier,
+    required this.email,
+    required this.tags,
+    required this.isBusiness,
+    required this.username,
+    required this.name,
+    required this.profilePic,
+    required this.uid,
+    required this.isPending,
+  });
 
   final String tier;
   final String email;
@@ -41,23 +38,29 @@ class EditSettings extends StatefulWidget {
 }
 
 class _EditSettingsState extends State<EditSettings> {
-
   final TextEditingController passwordController = TextEditingController();
 
-  final provider = FirebaseAuth.instance.currentUser?.providerData.first;
+  final provider =
+      FirebaseAuth.instance.currentUser?.providerData.first;
+
+  bool tour = true;
 
   @override
-  void dispose(){
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
     passwordController.dispose();
     super.dispose();
   }
 
-  String errorPassword = ""; 
+  String errorPassword = "";
+
   @override
   Widget build(BuildContext context) {
-
-    List<String> origTags = [];
-    origTags.addAll(widget.tags);
+    List<String> origTags = List.from(widget.tags);
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +71,7 @@ class _EditSettingsState extends State<EditSettings> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF469AB8),
+        backgroundColor: const Color(0xFFBD9F4C),
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
@@ -80,116 +83,101 @@ class _EditSettingsState extends State<EditSettings> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-        
-                // edit profile
                 EditButton(
                   route: EditProfile(
-                    uid: widget.uid, 
+                    uid: widget.uid,
                     name: widget.name,
                     username: widget.username,
                     profilePic: widget.profilePic,
-                  ), 
-                  icon: const Icon(Icons.person), 
+                  ),
+                  icon: const Icon(Icons.person),
                   text: "Edit Profile",
                 ),
-        
-                const SizedBox(height: 20,),
-        
-                // edit tags
+                const SizedBox(height: 20),
                 EditButton(
                   route: EditTags(
                     tags: widget.tags,
                     origTags: origTags,
-                  ), 
-                  icon: const Icon(Icons.miscellaneous_services), 
+                  ),
+                  icon: const Icon(Icons.miscellaneous_services),
                   text: "Edit Tags",
                 ),
-        
-                const SizedBox(height: 20,),
-        
-                // link accounts
+                const SizedBox(height: 20),
                 const LinkAccounts(),
-        
-                const SizedBox(height: 20,),
-        
-                // acount is business
-                if(widget.isBusiness)
+                const SizedBox(height: 20),
+                if (widget.isBusiness)
                   const EditButton(
-                    route: EditBusinessInfo(), 
-                    icon: Icon(Icons.business_center), 
-                    text: "Edit Business Informaton",
+                    route: EditBusinessInfo(),
+                    icon: Icon(Icons.business_center),
+                    text: "Edit Business Information",
                   ),
-        
-                  // acount is not business or a poster
-                if(!widget.isBusiness && widget.tier == "Viewer"  && !widget.isPending)
+                if (!widget.isBusiness &&
+                    widget.tier == "Viewer" &&
+                    !widget.isPending)
                   EditButton(
                     route: AccountUpgradePage(
-                      tier: widget.tier, 
-                      name: widget.name, 
-                      email: widget.email, 
-                      uid: widget.uid
+                      tier: widget.tier,
+                      name: widget.name,
+                      email: widget.email,
+                      uid: widget.uid,
+                      pfp: widget.profilePic?.imageUrl ?? "",
                     ),
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a poster",
                   ),
-        
-                  // account is a poster but not a business
-                if(widget.tier == "Poster" && !widget.isBusiness && !widget.isPending)
-                   EditButton(
+                if (widget.tier == "Poster" &&
+                    !widget.isBusiness &&
+                    !widget.isPending)
+                  EditButton(
                     route: AccountUpgradePage(
-                      tier: widget.tier, 
-                      name: widget.name, 
-                      email: widget.email, 
-                      uid: widget.uid
+                      tier: widget.tier,
+                      name: widget.name,
+                      email: widget.email,
+                      uid: widget.uid,
+                      pfp: widget.profilePic?.imageUrl ?? "",
                     ),
                     icon: const Icon(Icons.pending_actions),
                     text: "Apply to become a Business",
                   ),
-        
-                if(widget.isBusiness && widget.isPending)
-                const SizedBox(height: 20,),
-        
-                if(widget.isPending)
-                GestureDetector(
-                    onTap: (){
+                if (widget.isBusiness && widget.isPending)
+                  const SizedBox(height: 20),
+                if (widget.isPending)
+                  GestureDetector(
+                    onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Your application is pending"),
-                        )
+                        ),
                       );
                     },
                     child: Container(
-                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    height: 80,
-                    child: const Center(
-                      child:  ListTile(
-                        leading: Icon(Icons.pending_actions),
-                        title: Text(
-                          "Application Pending",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFBD9F4C),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      height: 80,
+                      child: const Center(
+                        child: ListTile(
+                          leading: Icon(Icons.pending_actions),
+                          title: Text(
+                            "Application Pending",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                          trailing: Icon(Icons.arrow_forward_ios),
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                ),
-        
-        
-                if(widget.tier == "Poster" || widget.tier == "Viewer")
-                const SizedBox(height: 20,),
-        
-                // delete account
+                if (widget.tier == "Poster" || widget.tier == "Viewer")
+                  const SizedBox(height: 20),
                 DeleteAccount(
-                  email: widget.email, 
-                  tags: widget.tags, 
-                  uid: widget.uid, 
-                  provider: provider, 
-                  passwordController: passwordController
+                  email: widget.email,
+                  tags: widget.tags,
+                  uid: widget.uid,
+                  provider: provider,
+                  passwordController: passwordController,
                 ),
               ],
             ),

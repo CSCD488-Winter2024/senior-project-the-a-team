@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -35,7 +36,7 @@ class _EventCalendar extends State<EventCalendar> {
     today = DateTime.now();
     _focusedDay = DateTime.utc(today!.year, today!.month, today!.day);
     _selectedDay = _focusedDay;
-    print(_userTags);
+    //print(_userTags);
     _initializeEvents();
   }
 
@@ -74,39 +75,50 @@ class _EventCalendar extends State<EventCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          TableCalendar(
-            focusedDay: _focusedDay!,
-            firstDay: DateTime.utc(2024, 1, 1),
-            lastDay: DateTime.utc(2024, 12, 31),
-            eventLoader: _getEventsForDay,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-                _selectedEvents = _getEventsForDay(_selectedDay!);
-              });
-            },
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+    return Column(
+      children: [
+        TableCalendar(
+          calendarStyle: const CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color: Color(0xfff0e8d6),
+              shape: BoxShape.circle,
+            ),
+            todayTextStyle: TextStyle(
+              color: Colors.black,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: Color(0xffd4bc93),
+              shape: BoxShape.circle,
+            ),
           ),
-          Expanded(
-            child: _buildEventButtonList(),
-          )
-        ],
-      ),
+          focusedDay: _focusedDay!,
+          firstDay: DateTime.utc(2024, 1, 1),
+          lastDay: DateTime.utc(2024, 12, 31),
+          eventLoader: _getEventsForDay,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+              _selectedEvents = _getEventsForDay(_selectedDay!);
+            });
+          },
+          calendarFormat: _calendarFormat,
+          onFormatChanged: (format) {
+            setState(() {
+              _calendarFormat = format;
+            });
+          },
+          onPageChanged: (focusedDay) {
+            _focusedDay = focusedDay;
+          },
+        ),
+        Expanded(
+          child: _buildEventButtonList(),
+        )
+      ],
     );
   }
 
@@ -127,11 +139,14 @@ class _EventCalendar extends State<EventCalendar> {
                           scrollable: true,
                           title: Container(
                             decoration: const BoxDecoration(
-                                color: Color(0xFF469AB8),
+                                color: Color(0xFF45302A),
                                 borderRadius: BorderRadius.all(
                                     Radius.elliptical(20, 15))),
                             child: Text(
                               _selectedEvents[index].title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -162,6 +177,9 @@ class _EventCalendar extends State<EventCalendar> {
               },
               child: Text(
                 _selectedEvents[index].title,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               )),
         );
       },
@@ -220,6 +238,7 @@ class _EventCalendar extends State<EventCalendar> {
           location: doc['address'] as String,
           attendingCount: doc['attendingCount'] as int,
           maybeCount: doc['maybeCount'] as int,
+          isMyPost: false,
         );
 
         events.add(event);

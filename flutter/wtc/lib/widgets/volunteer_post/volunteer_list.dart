@@ -11,7 +11,6 @@ class VolunteerPostList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
         stream: _firestore
             .collection('_posts')
@@ -32,24 +31,25 @@ class VolunteerPostList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             itemCount: snapshot.data?.docs.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
-            var document = snapshot.data?.docs[index];
+              var document = snapshot.data?.docs[index];
 
-            String dateCreated = document?['createdAt'] as String;
+              String dateCreated = document?['createdAt'] as String;
 
-            return JobPost(
-                  title: document?['title'] as String,
-                  body: document?['body'] as String,
-                  tags: const ["Volunteer"],
-                  header: document?['header'] as String,
-                  userEmail: document?['user'] as String,
-                  interestCount: document?['interestCount'] as int,
-                  created: DateTime(
-                      int.parse(dateCreated.split("-")[0]),
-                      int.parse(dateCreated.split("-")[1]),
-                      int.parse(dateCreated.split("-")[2])),
-                  postId: Guid(document?['postID'] as String),
-                  volunteer: true,
-                );
+              return JobPost(
+                title: document?['title'] as String,
+                body: document?['body'] as String,
+                tags: const ["Volunteer"],
+                header: document?['header'] as String,
+                userEmail: document?['user'] as String,
+                interestCount: document?['interestCount'] as int,
+                created: DateTime(
+                    int.parse(dateCreated.split("-")[0]),
+                    int.parse(dateCreated.split("-")[1]),
+                    int.parse(dateCreated.split("-")[2])),
+                postId: Guid(document?['postID'] as String),
+                volunteer: true,
+                isMyPost: false,
+              );
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),

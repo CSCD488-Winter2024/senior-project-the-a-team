@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -6,124 +7,72 @@ import 'package:wtc/widgets/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
-class SavedPostsList extends StatefulWidget {
-  final String? uid;
-  const SavedPostsList({super.key, required this.uid});
+class MyPostsList extends StatefulWidget {
+  const MyPostsList({super.key});
 
   @override
-  _SavedPostsListState createState() => _SavedPostsListState();
+  // ignore: library_private_types_in_public_api
+  _MyPostsListState createState() => _MyPostsListState();
 }
 
-class _SavedPostsListState extends State<SavedPostsList> {
+class _MyPostsListState extends State<MyPostsList> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<dynamic> savedPosts = [];
-  late DocumentSnapshot user;
-  Future<List<DocumentSnapshot>>? futurePosts;
+  late Future<List<QueryDocumentSnapshot>> _postsFuture;
+  String? curUserEmail;
 
+  Future<void> _getUserEmail() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? email = currentUser?.email;
+    setState(() {
+      curUserEmail = email;
+      _postsFuture = _fetchPosts();
+    });
+  }
+
+  Future<List<QueryDocumentSnapshot>> _fetchPosts() async {
+    var querySnapshot = await _firestore
+    .collection('_posts')
+    .where('user', isEqualTo: curUserEmail)
+    .orderBy('timestamp', descending: true)
+    .get();
+
+    return querySnapshot.docs;
+  }
+
+   Future<void> _refreshPosts() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _postsFuture = _fetchPosts();
+    });
+  }
   @override
   void initState() {
     super.initState();
-    fetchPostIDs();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserEmail();
 
+    });
   }
 
-  Future<void> fetchPostIDs() async {
-    try {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(widget.uid).get();
-      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
-
-      if (data.containsKey('saved_posts') && data['saved_posts'] is List) {
-        List<dynamic> savedPostIDs = data['saved_posts'];
-        //deleteNonexistingPostIDs(savedPostIDs);
-        setState(() {
-          savedPosts = savedPostIDs;
-          futurePosts = getPosts(savedPosts);
-        });
-        
-
-      }
-      print("this is the saved posts");
-      print(savedPosts.toString());
-      
-    } catch (e) {
-      print("error: $e");
-    }
-  }
-
-Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
-  List<DocumentSnapshot> posts = [];
-  List<dynamic> missingPostIds = [];
-
-  // Fetch all posts
-  for (String postId in postIds) {
-    DocumentSnapshot documentSnapshot = await _firestore.collection('_posts').doc(postId).get();
-
-    if (documentSnapshot.exists) {
-      posts.add(documentSnapshot);
-    } else {
-      missingPostIds.add(postId);
-    }
-  }
-
-  // Process missing posts and update user's saved posts list
-  if (missingPostIds.isNotEmpty) {
-    try {
-      DocumentReference userRef = _firestore.collection('users').doc(widget.uid);
-      DocumentSnapshot userDoc = await userRef.get();
-      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
-
-      if (userDoc.exists) {
-        List<dynamic> savedPostIDs = (data['saved_posts'] as List<dynamic>?) ?? [];
-
-        savedPostIDs.removeWhere((postId) => missingPostIds.contains(postId));
-        await userRef.update({'saved_posts': savedPostIDs});
-      }
-    } catch (e) {
-      print("Error updating user's saved posts list: $e");
-    }
-  }
-
-  return posts;
-}
-
-  
-  
-  Future<void> _refreshPosts() async {
-    await Future.delayed(const Duration(seconds: 2));
-    fetchPostIDs();
-  }
-
-  Future<void> updatePostIDs(List<dynamic> newSavedList) async {
-      await _firestore
-      .collection("users")
-      .doc(widget.uid)
-      .update({"saved_posts":newSavedList})
-      .catchError((error) {
-        print("Error updating doc: $error");
-      });
-
-
-  }
-        
-  
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DocumentSnapshot>>(
-        future: futurePosts,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          }
+    return FutureBuilder(
+      future: _postsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        }
 
-          return LiquidPullToRefresh(
-              color: const Color (0xFFBD9F4C),
-              backgroundColor: const Color(0xFFF0E8D6),
-              showChildOpacityTransition: false,
+        return LiquidPullToRefresh(
+           color: const Color(0xFFBD9F4C),
+              backgroundColor: const Color(0xfff0e8d6),
               onRefresh: _refreshPosts,
+              showChildOpacityTransition: false,
               child: ListView.separated(
                 padding: const EdgeInsets.all(8.0),
                 itemCount: snapshot.data?.length ?? 0,
@@ -232,6 +181,7 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
               ));
-        });
+      },
+    );
   }
 }
