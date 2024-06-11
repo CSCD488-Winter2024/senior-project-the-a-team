@@ -119,8 +119,8 @@ class Event extends Post {
                       "Where: $location\n",
                       textAlign: TextAlign.left,
                     )),
+                PostTagBox(tags: tags),
                 GoingMaybeCountButtons(postID: postID),
-                PostTagBox(tags: tags)
               ],
             ),
           );
