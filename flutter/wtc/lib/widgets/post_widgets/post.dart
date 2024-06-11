@@ -40,7 +40,7 @@ class Post extends StatelessWidget {
     String currentUserTier = GlobalUserInfo.getData('tier');
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
-        (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
+        currentUser?.email == userEmail ||
         isMyPost) {
       return InkWell(
         onTap: () {
