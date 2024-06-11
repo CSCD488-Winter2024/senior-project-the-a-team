@@ -304,6 +304,7 @@ class _EditProfile extends State<EditProfile>{
                           String newPfp = await ref.getDownloadURL();
           
                           setPfp(newPfp);
+                          currentUser!.updatePhotoURL(newPfp);
                         }
           
                         if(usernameController.text.isEmpty){
@@ -313,6 +314,9 @@ class _EditProfile extends State<EditProfile>{
                           nameController.text = widget.name;
                         }
                           await updateAccount(usernameController, nameController);
+                        if(usernameController.text != widget.username){
+                          await currentUser?.updateDisplayName(usernameController.text);
+                        }
           
                         if(passwordController.text.isNotEmpty && passwordController.text == confirmPasswordController.text){
                           await currentUser?.updatePassword(passwordController.text);
