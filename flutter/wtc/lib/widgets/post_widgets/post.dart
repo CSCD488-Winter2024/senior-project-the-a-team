@@ -119,7 +119,7 @@ class Post extends StatelessWidget {
                 pfp: pfp,
               ),
               content: Column(
-                  children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
+                  children: [PostBodyBox(body: body), PostTagBox(tags: tags)]));
         });
   }
 
