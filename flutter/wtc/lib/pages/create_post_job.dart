@@ -86,8 +86,34 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      QuerySnapshot querySnapshot = await users.where('email', isEqualTo: GlobalUserInfo.getData('email')).get();
+      DocumentSnapshot userDoc = querySnapshot.docs.first;
+      String businessName = userDoc['name'] as String;
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'title': _titleController.text,
+        'type': _isVolunteer ? 'Volunteer' : 'Job',
+        'wage': _isVolunteer ? 0 : double.parse(_wageController.text),
+        'wageType': _isVolunteer ? 'N/A' : _wageType,
+        'isVolunteer': _isVolunteer,
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser!.email,
+        'tags': ['Job'],
+        'username': businessName  ,
+        'pfp': GlobalUserInfo.getData('pfp') 
+      });
+    }
+    else{
+      await FirebaseFirestore.instance
         .collection('_posts')
         .doc(newGuid.toString())
         .set({
@@ -107,6 +133,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       'username': GlobalUserInfo.getData('username')  ,
       'pfp': GlobalUserInfo.getData('pfp') 
     });
+    }
     // Clear the fields
     _titleController.clear();
     _headerController.clear();

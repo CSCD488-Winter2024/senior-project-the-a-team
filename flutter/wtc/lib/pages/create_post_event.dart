@@ -167,8 +167,12 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
     convertedTags.add('Event');
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      QuerySnapshot querySnapshot = await users.where('email', isEqualTo: GlobalUserInfo.getData('email')).get();
+      DocumentSnapshot userDoc = querySnapshot.docs.first;
+      String businessName = userDoc['name'] as String;
+      await FirebaseFirestore.instance
         .collection('_posts')
         .doc(newGuid.toString())
         .set({
@@ -189,9 +193,36 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       'user': currentUser!.email,
       'attending': {},
       'maybe': {},
-      'username': GlobalUserInfo.getData('username')  ,
+      'username': businessName ,
       'pfp': GlobalUserInfo.getData('pfp') 
     });
+    }
+    else{
+      await FirebaseFirestore.instance
+        .collection('_posts')
+        .doc(newGuid.toString())
+        .set({
+      'body': _descriptionController.text,
+      'header': _headerController.text,
+      'tags': convertedTags,
+      'title': _titleController.text,
+      'type': 'Event',
+      'address': _addressController.text,
+      'eventDate': _dateController.text,
+      'eventTime': _timeController.text,
+      'createdAt': formattedDate,
+      'timestamp': FieldValue.serverTimestamp(),
+      'attendingCount': 0,
+      'maybeCount': 0,
+      'interestCount': 0,
+      'postID': newGuid.toString(),
+      'user': currentUser!.email,
+      'attending': {},
+      'maybe': {},
+      'username': GlobalUserInfo.getData('username') ,
+      'pfp': GlobalUserInfo.getData('pfp')
+      });
+    }
 
     // Clear the fields
     _titleController.clear();

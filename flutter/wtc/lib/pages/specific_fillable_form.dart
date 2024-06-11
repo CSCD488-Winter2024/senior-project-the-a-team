@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
+import 'package:wtc/User/global_user_info.dart';
 
 class SpecificFillableFormPage extends StatefulWidget {
   const SpecificFillableFormPage({super.key});
@@ -120,22 +121,49 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
     User? currentUser = FirebaseAuth.instance.currentUser;
     String newGuidString = newGuid.toString();
 
-    await FirebaseFirestore.instance
-        .collection('_review_posts')
-        .doc(newGuidString)
-        .set({
-      'body': _descriptionController.text,
-      'header': _headerController.text,
-      'tags': convertedTags,
-      'title': _titleController.text,
-      'type': 'Post',
-      'createdAt': formattedDate,
-      'timestamp': FieldValue.serverTimestamp(),
-      'interestCount': 0,
-      'postID': newGuidString,
-      'user': currentUser!.email,
-    });
-
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      QuerySnapshot querySnapshot = await users.where('email', isEqualTo: GlobalUserInfo.getData('email')).get();
+      DocumentSnapshot userDoc = querySnapshot.docs.first;
+      String businessName = userDoc['name'] as String;
+          
+      await FirebaseFirestore.instance
+          .collection('_review_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Post',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser!.email,
+        'username': businessName  ,
+        'pfp': GlobalUserInfo.getData('pfp')  
+      });
+    }
+    else{
+      await FirebaseFirestore.instance
+          .collection('_review_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Post',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser!.email,
+        'username': GlobalUserInfo.getData('username')  ,
+        'pfp': GlobalUserInfo.getData('pfp')  
+      });
+    }
     // Clear the fields
     _titleController.clear();
     _descriptionController.clear();
