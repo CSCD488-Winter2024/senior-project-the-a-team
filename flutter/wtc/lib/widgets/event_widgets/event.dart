@@ -45,11 +45,11 @@ class Event extends Post {
     String currentUserTier = GlobalUserInfo.getData('tier');
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
-        (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
+        currentUser?.email == userEmail ||
         isMyPost) {
       return InkWell(
         onTap: () {
-          showPostDialog(context);
+          showEventDialog(context, postId);
         },
         child: Column(
           children: [
@@ -72,7 +72,7 @@ class Event extends Post {
     } else {
       return InkWell(
         onTap: () {
-          showPostDialog(context);
+          showEventDialog(context, postId);
         },
         child: Column(
           children: [
@@ -106,7 +106,6 @@ class Event extends Post {
             content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PostTagBox(tags: tags),
                 PostBodyBox(body: "$body\n"),
                 SizedBox(
                     width: 600,
@@ -120,7 +119,8 @@ class Event extends Post {
                       "Where: $location\n",
                       textAlign: TextAlign.left,
                     )),
-                GoingMaybeCountButtons(postID: postID)
+                PostTagBox(tags: tags),
+                GoingMaybeCountButtons(postID: postID),
               ],
             ),
           );

@@ -38,8 +38,6 @@ class _SavePostState extends State<SavePost> {
     }
 
     await batch.commit();
-    print(
-        "Added array field '$fieldName' with value '$fieldValue' to all documents in the '$collectionName' collection.");
   }
 
   Future<void> changeSavedPosts() async {

@@ -23,6 +23,8 @@ class _ChangeTierRadioButtonState extends State<ChangeTierRadioButton> {
       _selectedValue = "Poster";
     } else if (widget.currentTier == "Admin") {
       _selectedValue = "Admin";
+    } else if (widget.currentTier == "Alerter") {
+      _selectedValue = "Alerter";
     }
   }
 
@@ -57,6 +59,13 @@ class _ChangeTierRadioButtonState extends State<ChangeTierRadioButton> {
             groupValue: _selectedValue,
             onChanged: _handleValueChange,
           )),
+      ListTile(
+          title: const Text('Alerter'),
+          leading: Radio<String>(
+            value: "Alerter",
+            groupValue: _selectedValue,
+            onChanged: _handleValueChange,
+          )),      
     ]);
   }
 }
