@@ -1,5 +1,4 @@
-// ignore_for_file: must_be_immutable, unnecessary_this
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
 import 'package:wtc/widgets/save_post.dart';
 
 class Post extends StatelessWidget {
@@ -22,7 +22,9 @@ class Post extends StatelessWidget {
       required this.interestCount,
       required this.created,
       required this.postId,
-      required this.isMyPost})
+      required this.isMyPost,
+      required this.username,
+      required this.pfp})
       : super(key: key);
 
   Guid postId;
@@ -34,36 +36,39 @@ class Post extends StatelessWidget {
   final int interestCount;
   final DateTime created;
   final bool isMyPost;
+  final String username;
+  final String pfp;
 
   @override
   Widget build(BuildContext context) {
     String currentUserTier = GlobalUserInfo.getData('tier');
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
-        currentUser?.email == userEmail ||
-        isMyPost) {
+        (currentUserTier == "Poster" && currentUser?.email == userEmail) ||
+        (isMyPost && currentUserTier != "Viewer")) {
       return InkWell(
         onTap: () {
           showPostDialog(context);
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-            ]),
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SavePost(
+                  postId: postId,
+                  currentUserId: currentUser?.uid.toString(),
+                ),
+              ],
+            ),
+            PostBodyBox(body: header),
+            PostTagBox(tags: tags),
             if(currentUserTier != 'Viewer')
             PostDeleteEditBox(post: this, isViewer: false,)
             else
@@ -78,22 +83,23 @@ class Post extends StatelessWidget {
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 SavePost(
-                     postId: postId,
-                     currentUserId: currentUser?.uid.toString())
-               ]),
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SavePost(
+                  postId: postId,
+                  currentUserId: currentUser?.uid.toString(),
+                ),
+              ],
+            ),
+            PostBodyBox(body: header),
+            PostTagBox(tags: tags),
           ],
         ),
       );
@@ -106,7 +112,12 @@ class Post extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
               scrollable: true,
-              title: PostTitleBox(title: title),
+              title: PostTitleBoxExpanded(
+                title: title,
+                username: username,
+                created: created,
+                pfp: pfp,
+              ),
               content: Column(
                   children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
         });

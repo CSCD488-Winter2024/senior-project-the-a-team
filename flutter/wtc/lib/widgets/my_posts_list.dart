@@ -85,7 +85,6 @@ class _MyPostsListState extends State<MyPostsList> {
                   if (type == "Event") {
                     var tempTags = document?['tags'] as List<dynamic>;
                     List<String> postTags = tempTags.cast<String>();
-
                     String dateOfEvent = document?['eventDate'] as String;
                     String timeOfEvent = document?['eventTime'] as String;
                     var time = timeOfEvent.split(' ');
@@ -121,6 +120,8 @@ class _MyPostsListState extends State<MyPostsList> {
                       attendingCount: document?['attendingCount'] as int,
                       maybeCount: document?['maybeCount'] as int,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Job") {
                     var wage = document?['wage'];
@@ -142,6 +143,8 @@ class _MyPostsListState extends State<MyPostsList> {
                       wage: wage,
                       wageType: document?['wageType'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Volunteer") {
                     return JobPost(
@@ -158,6 +161,8 @@ class _MyPostsListState extends State<MyPostsList> {
                       postId: Guid(document?['postID'] as String),
                       volunteer: true,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else {
                     var tempTags = document?['tags'] as List<dynamic>;
@@ -175,6 +180,8 @@ class _MyPostsListState extends State<MyPostsList> {
                       tags: postTags,
                       body: document?['body'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   }
                 },

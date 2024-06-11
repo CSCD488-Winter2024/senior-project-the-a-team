@@ -29,6 +29,8 @@ class JobPost extends Post {
     this.wage = 0.0,
     required super.userEmail,
     required super.isMyPost,
+    required super.username,
+    required super.pfp
   });
 
   @override
@@ -44,16 +46,12 @@ class JobPost extends Post {
         isMyPost) {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
-        PostTitleBox(title: title),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "posted on: $month-$day-$year",
-              textAlign: TextAlign.left,
-            )),
-        JobWageBox(wageType: wageType, wage: wage),
+        PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
         Row(
            mainAxisAlignment: MainAxisAlignment.end,
            children: [
@@ -61,6 +59,9 @@ class JobPost extends Post {
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
         ]),
+        JobWageBox(wageType: wageType, wage: wage),
+        PostBodyBox(body: body),
+        PostTagBox(tags: tags),
         if(currentUserTier != 'Viewer')
         PostDeleteEditBox(post: this, isViewer: false,)
         else
@@ -79,23 +80,22 @@ class JobPost extends Post {
     } else {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
-        PostTitleBox(title: title),
-        PostTagBox(tags: tags),
-        PostBodyBox(body: body),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "posted on: $month-$day-$year",
-              textAlign: TextAlign.left,
-            )),
-        JobWageBox(wageType: wageType, wage: wage),
+        PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
         Row(
            mainAxisAlignment: MainAxisAlignment.end,
            children: [
               SavePost(
                   postId: postId,
                   currentUserId: currentUser?.uid.toString())
-           ])
+        ]),
+        JobWageBox(wageType: wageType, wage: wage),
+        PostBodyBox(body: body),
+        PostTagBox(tags: tags),
       ];
 
       // Return the Column with all children

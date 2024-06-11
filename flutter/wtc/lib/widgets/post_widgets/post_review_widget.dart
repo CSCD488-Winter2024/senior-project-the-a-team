@@ -18,7 +18,9 @@ class Post_Review_Widget extends StatelessWidget {
       required this.userEmail,
       required this.interestCount,
       required this.created,
-      required this.postId})
+      required this.postId,
+      required this.username,
+      required this.pfp})
       : super(key: key);
 
   Guid postId;
@@ -29,6 +31,8 @@ class Post_Review_Widget extends StatelessWidget {
   final String userEmail;
   final int interestCount;
   final DateTime created;
+  final String username;
+  final String pfp;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,12 @@ class Post_Review_Widget extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    PostTitleBox(title: title),
+                    PostTitleBox(
+                      title: title,
+                      username: username,
+                      created: created,
+                      pfp: pfp,
+                    ),
                     PostTagBox(tags: tags),
                     SizedBox(
                         width: 600,
@@ -69,15 +78,14 @@ class Post_Review_Widget extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    PostTitleBox(title: title),
+                    PostTitleBox(
+                      title: title,
+                      username: username,
+                      created: created,
+                      pfp: pfp,
+                    ),
+                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0]),
                     PostTagBox(tags: tags),
-                    SizedBox(
-                        width: 600,
-                        child: Text(
-                          "Posted on: ${created.toString().split(" ")[0]}\n",
-                          textAlign: TextAlign.left,
-                        )),
-                    PostBodyBox(body: body.multiSplit([".", "!", "?"])[0])
                   ],
                 ),
               );
@@ -102,7 +110,12 @@ class Post_Review_Widget extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
               scrollable: true,
-              title: PostTitleBox(title: title),
+              title: PostTitleBox(
+                      title: title,
+                      username: username,
+                      created: created,
+                      pfp: pfp,
+                    ),
               content: Column(
                   children: [PostTagBox(tags: tags), PostBodyBox(body: body)]));
         });

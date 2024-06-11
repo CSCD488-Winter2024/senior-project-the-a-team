@@ -49,6 +49,8 @@ class VolunteerPostList extends StatelessWidget {
                 postId: Guid(document?['postID'] as String),
                 volunteer: true,
                 isMyPost: false,
+                pfp: document?['pfp'] as String,
+                username: document?['username'] as String,
               );
             },
             separatorBuilder: (BuildContext context, int index) =>

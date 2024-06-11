@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:wtc/User/global_user_info.dart';
 
 class CreatePostEventPage extends StatefulWidget {
   const CreatePostEventPage({super.key});
@@ -187,7 +188,9 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       'postID': newGuid.toString(),
       'user': currentUser!.email,
       'attending': {},
-      'maybe': {}
+      'maybe': {},
+      'username': GlobalUserInfo.getData('username')  ,
+      'pfp': GlobalUserInfo.getData('pfp') 
     });
 
     // Clear the fields

@@ -9,6 +9,7 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
+import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
 import 'package:wtc/widgets/event_widgets/rsvp_buttons.dart';
 import 'package:wtc/widgets/going_maybe_count_buttons.dart';
 
@@ -29,6 +30,8 @@ class Event extends Post {
     required this.attendingCount,
     required this.maybeCount,
     required super.isMyPost,
+    required super.username,
+    required super.pfp
   });
 
   final DateTime date;
@@ -46,20 +49,19 @@ class Event extends Post {
         isMyPost) {
       return InkWell(
         onTap: () {
-          showEventDialog(context, postId);
+          showPostDialog(context);
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+            PostBodyBox(body: header),
+            PostTagBox(tags: tags),
             if(currentUserTier != 'Viewer')
             PostDeleteEditBox(post: this, isViewer: false,)
             else
@@ -70,20 +72,19 @@ class Event extends Post {
     } else {
       return InkWell(
         onTap: () {
-          showEventDialog(context, postId);
+          showPostDialog(context);
         },
         child: Column(
           children: [
-            PostTitleBox(title: title),
-            PostTagBox(tags: tags),
-            SizedBox(
-                width: 600,
-                child: Text(
-                  "Posted on: ${created.toString().split(" ")[0]}\n",
-                  textAlign: TextAlign.left,
-                )),
-            PostBodyBox(body: header),
+            PostTitleBox(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             RSVPButtons(postID: postId, uid: currentUser?.uid.toString()),
+            PostBodyBox(body: header),
+            PostTagBox(tags: tags),
           ],
         ),
       );
@@ -96,7 +97,12 @@ class Event extends Post {
         builder: (BuildContext context) {
           return AlertDialog(
             scrollable: true,
-            title: PostTitleBox(title: title),
+            title: PostTitleBoxExpanded(
+              title: title,
+              username: username,
+              created: created,
+              pfp: pfp,
+            ),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

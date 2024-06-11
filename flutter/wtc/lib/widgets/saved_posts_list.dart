@@ -172,6 +172,8 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
                       attendingCount: document?['attendingCount'] as int,
                       maybeCount: document?['maybeCount'] as int,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Job") {
                     var wage = document?['wage'];
@@ -193,6 +195,8 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
                       wage: wage,
                       wageType: document?['wageType'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else if (type == "Volunteer") {
                     return JobPost(
@@ -209,6 +213,8 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
                       postId: Guid(document?['postID'] as String),
                       volunteer: true,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   } else {
                     var tempTags = document?['tags'] as List<dynamic>;
@@ -226,6 +232,8 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
                       tags: postTags,
                       body: document?['body'] as String,
                       isMyPost: false,
+                      pfp: document?['pfp'] as String,
+                      username: document?['username'] as String,
                     );
                   }
                 },

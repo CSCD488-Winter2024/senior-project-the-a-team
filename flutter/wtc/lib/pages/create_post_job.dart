@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
+import 'package:wtc/User/global_user_info.dart';
 
 class CreatePostJobPage extends StatefulWidget {
   const CreatePostJobPage({super.key});
@@ -103,6 +104,8 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       'postID': newGuid.toString(),
       'user': currentUser!.email,
       'tags': ['Job'],
+      'username': GlobalUserInfo.getData('username')  ,
+      'pfp': GlobalUserInfo.getData('pfp') 
     });
     // Clear the fields
     _titleController.clear();
