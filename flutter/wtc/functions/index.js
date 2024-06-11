@@ -53,8 +53,8 @@ exports.sendPostNotification = functions.firestore.document('_posts/{PostID}').o
         }
 
         const postData = doc.data();
-        const header = postData.header;
-        let body = postData.body;
+        const header = postData.title;
+        let body = postData.header;
         if (body.length > 20) body = body.substring(0, 20) + '...';
         const type = postData.type;
         const tags = postData.tags;
