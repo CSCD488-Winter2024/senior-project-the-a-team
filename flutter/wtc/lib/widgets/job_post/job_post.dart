@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/User/global_user_info.dart';
+import 'package:wtc/widgets/user_widgets/global_user_info.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
-import 'package:wtc/widgets/save_post.dart';
+import 'package:wtc/widgets/post_widgets/save_post.dart';
 import '../post_widgets/post.dart';
 import '../post_widgets/post_body_box.dart';
 import '../post_widgets/post_tag_box.dart';
@@ -15,27 +15,25 @@ class JobPost extends Post {
   bool volunteer;
   String wageType;
 
-  JobPost({
-    super.key,
-    required super.title,
-    required super.body,
-    required super.tags,
-    required super.header,
-    required super.interestCount,
-    required super.created,
-    required super.postId,
-    this.volunteer = false,
-    this.wageType = "",
-    this.wage = 0.0,
-    required super.userEmail,
-    required super.isMyPost,
-    required super.username,
-    required super.pfp
-  });
+  JobPost(
+      {super.key,
+      required super.title,
+      required super.body,
+      required super.tags,
+      required super.header,
+      required super.interestCount,
+      required super.created,
+      required super.postId,
+      this.volunteer = false,
+      this.wageType = "",
+      this.wage = 0.0,
+      required super.userEmail,
+      required super.isMyPost,
+      required super.username,
+      required super.pfp});
 
   @override
   Widget build(BuildContext context) {
-
     String currentUserTier = GlobalUserInfo.getData('tier');
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUserTier == "Admin" ||
@@ -44,25 +42,24 @@ class JobPost extends Post {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
         PostTitleBox(
-              title: title,
-              username: username,
-              created: created,
-              pfp: pfp,
-            ),
-        Row(
-           mainAxisAlignment: MainAxisAlignment.end,
-           children: [
-              SavePost(
-                  postId: postId,
-                  currentUserId: currentUser?.uid.toString())
+          title: title,
+          username: username,
+          created: created,
+          pfp: pfp,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
         ]),
         JobWageBox(wageType: wageType, wage: wage),
         PostBodyBox(body: body),
         PostTagBox(tags: tags),
-        if(currentUserTier != 'Viewer')
-        PostDeleteEditBox(post: this, isViewer: false,)
+        if (currentUserTier != 'Viewer')
+          PostDeleteEditBox(
+            post: this,
+            isViewer: false,
+          )
         else
-        PostDeleteEditBox(post: this, isViewer: true)
+          PostDeleteEditBox(post: this, isViewer: true)
       ];
 
       // Return the Column with all children
@@ -78,17 +75,13 @@ class JobPost extends Post {
       // Create a list to hold the children of the Column
       List<Widget> columnChildren = [
         PostTitleBox(
-              title: title,
-              username: username,
-              created: created,
-              pfp: pfp,
-            ),
-        Row(
-           mainAxisAlignment: MainAxisAlignment.end,
-           children: [
-              SavePost(
-                  postId: postId,
-                  currentUserId: currentUser?.uid.toString())
+          title: title,
+          username: username,
+          created: created,
+          pfp: pfp,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          SavePost(postId: postId, currentUserId: currentUser?.uid.toString())
         ]),
         JobWageBox(wageType: wageType, wage: wage),
         PostBodyBox(body: body),

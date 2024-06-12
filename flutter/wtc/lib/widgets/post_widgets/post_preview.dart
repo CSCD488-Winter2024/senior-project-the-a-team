@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/User/user.dart';
+import 'package:wtc/widgets/user_widgets/user.dart';
 
 class PostPreview extends StatelessWidget {
   final String title;

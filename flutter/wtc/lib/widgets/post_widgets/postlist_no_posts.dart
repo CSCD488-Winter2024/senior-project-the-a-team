@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/accountPages/edit_tags.dart';
+import 'package:wtc/pages/nav_bar/account_pages/edit_tags.dart';
 
 class PostListNoPosts extends StatelessWidget {
   const PostListNoPosts(

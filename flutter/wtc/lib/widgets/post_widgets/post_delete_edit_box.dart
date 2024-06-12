@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wtc/pages/edit_event.dart';
-import 'package:wtc/pages/edit_job.dart';
-import 'package:wtc/pages/edit_post.dart';
-import 'package:wtc/widgets/event_widgets/event.dart';
+import 'package:wtc/pages/edit_pages/edit_event.dart';
+import 'package:wtc/pages/edit_pages/edit_job.dart';
+import 'package:wtc/pages/edit_pages/edit_post.dart';
+import 'package:wtc/widgets/nav_bar/event_widgets/event.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class PostDeleteEditBox extends StatelessWidget {
-  const PostDeleteEditBox({super.key, required this.post, required this.isViewer});
+  const PostDeleteEditBox(
+      {super.key, required this.post, required this.isViewer});
 
   final Post post;
   final bool isViewer;
@@ -25,31 +26,31 @@ class PostDeleteEditBox extends StatelessWidget {
       const SizedBox(width: 60),
       if (!isViewer)
         TextButton(
-          onPressed: () {
-            if (post is Event) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EditPostEventPage(post: post as Event)),
-              );
-            } else if (post is JobPost) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EditPostJobPage(post: post as JobPost)),
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EditPostPage(post: post)),
-              );
-            }
-          },
-          child: const Text("Edit",
-              style: TextStyle(fontSize: 24, color: Color(0xFF469AB8)))),
+            onPressed: () {
+              if (post is Event) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          EditPostEventPage(post: post as Event)),
+                );
+              } else if (post is JobPost) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          EditPostJobPage(post: post as JobPost)),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditPostPage(post: post)),
+                );
+              }
+            },
+            child: const Text("Edit",
+                style: TextStyle(fontSize: 24, color: Color(0xFF469AB8)))),
     ]);
   }
 
