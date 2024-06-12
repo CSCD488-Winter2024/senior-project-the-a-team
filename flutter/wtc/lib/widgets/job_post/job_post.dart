@@ -35,9 +35,6 @@ class JobPost extends Post {
 
   @override
   Widget build(BuildContext context) {
-    int month = created.month;
-    int day = created.day;
-    int year = created.year;
 
     String currentUserTier = GlobalUserInfo.getData('tier');
     User? currentUser = FirebaseAuth.instance.currentUser;

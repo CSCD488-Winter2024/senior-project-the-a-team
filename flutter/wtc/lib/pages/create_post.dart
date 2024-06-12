@@ -137,24 +137,48 @@ class _CreatePostPageState extends State<CreatePostPage> {
     }
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
-        .collection('_posts')
-        .doc(newGuid.toString())
-        .set({
-      'body': _descriptionController.text,
-      'header': _headerController.text,
-      'tags': convertedTags,
-      'title': _titleController.text,
-      'type': 'Post',
-      'createdAt': formattedDate,
-      'timestamp': FieldValue.serverTimestamp(),
-      'interestCount': 0,
-      'postID': newGuid.toString(),
-      'user': currentUser!.email,
-      'username': GlobalUserInfo.getData('username')  ,
-      'pfp': GlobalUserInfo.getData('pfp')  
-    });
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      DocumentSnapshot userDoc = await users.doc(currentUser!.uid).get();
+      String businessName = userDoc['name'] as String;
+          
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Post',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser.email,
+        'username': businessName  ,
+        'pfp': GlobalUserInfo.getData('pfp')  
+      });
+    }
+    else{
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Post',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser!.email,
+        'username': GlobalUserInfo.getData('username')  ,
+        'pfp': GlobalUserInfo.getData('pfp')  
+      });
+    }
 
     // Clear the fields
     _titleController.clear();

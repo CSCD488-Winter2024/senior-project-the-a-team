@@ -124,16 +124,6 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       return; // Exit the function if validation fails
     }
 
-    // Validate date format using a try-catch to catch any parsing errors
-    try {
-      final date = DateFormat('yyyy-MM-dd').parseStrict(_dateController.text);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid date format')),
-      );
-      return; // Exit if the date format is incorrect
-    }
-
     // Validate time format
     final timeParts = _timeController.text.split(':');
     if (timeParts.length != 2 ||
@@ -167,8 +157,37 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
     convertedTags.add('Event');
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      DocumentSnapshot userDoc = await users.doc(currentUser!.uid).get();
+      String businessName = userDoc['name'] as String;
+      await FirebaseFirestore.instance
+        .collection('_posts')
+        .doc(newGuid.toString())
+        .set({
+      'body': _descriptionController.text,
+      'header': _headerController.text,
+      'tags': convertedTags,
+      'title': _titleController.text,
+      'type': 'Event',
+      'address': _addressController.text,
+      'eventDate': _dateController.text,
+      'eventTime': _timeController.text,
+      'createdAt': formattedDate,
+      'timestamp': FieldValue.serverTimestamp(),
+      'attendingCount': 0,
+      'maybeCount': 0,
+      'interestCount': 0,
+      'postID': newGuid.toString(),
+      'user': currentUser.email,
+      'attending': {},
+      'maybe': {},
+      'username': businessName ,
+      'pfp': GlobalUserInfo.getData('pfp') 
+    });
+    }
+    else{
+      await FirebaseFirestore.instance
         .collection('_posts')
         .doc(newGuid.toString())
         .set({
@@ -189,9 +208,10 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       'user': currentUser!.email,
       'attending': {},
       'maybe': {},
-      'username': GlobalUserInfo.getData('username')  ,
-      'pfp': GlobalUserInfo.getData('pfp') 
-    });
+      'username': GlobalUserInfo.getData('username') ,
+      'pfp': GlobalUserInfo.getData('pfp')
+      });
+    }
 
     // Clear the fields
     _titleController.clear();
@@ -261,7 +281,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   FocusScope.of(context).requestFocus(
-                      new FocusNode()); // to prevent keyboard from appearing
+                      FocusNode()); // to prevent keyboard from appearing
                   DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -284,7 +304,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   FocusScope.of(context).requestFocus(
-                      new FocusNode()); // to prevent keyboard from appearing
+                      FocusNode()); // to prevent keyboard from appearing
                   TimeOfDay? picked = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),

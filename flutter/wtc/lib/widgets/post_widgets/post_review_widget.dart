@@ -8,9 +8,10 @@ import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 
+// ignore: camel_case_types
 class Post_Review_Widget extends StatelessWidget {
   Post_Review_Widget(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.body,
       required this.tags,
@@ -20,8 +21,7 @@ class Post_Review_Widget extends StatelessWidget {
       required this.created,
       required this.postId,
       required this.username,
-      required this.pfp})
-      : super(key: key);
+      required this.pfp});
 
   Guid postId;
   final String title;

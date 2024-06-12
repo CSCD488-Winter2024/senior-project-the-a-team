@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class GlobalUserInfo {
   static Map<String, dynamic> _data = {};
-  static String? _documentId;
 
   static Future<void> initialize() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -15,7 +14,7 @@ class GlobalUserInfo {
 
       _data = document.data() as Map<String, dynamic>;
     } catch (e) {
-      print('Error fetching document: $e');
+      // do nothing
     }
   }
 
@@ -35,7 +34,7 @@ class GlobalUserInfo {
           .doc(user?.uid)
           .set(_data, SetOptions(merge: true));
     } catch (e) {
-      print('Error updating document: $e');
+      // do nothing
     }
   }
 }

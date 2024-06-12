@@ -27,7 +27,7 @@ class _GeocodeTest extends State<GeocodeTest> {
           long = first.longitude;
         });
       } catch (e) {
-        print('Error: $e');
+        // do nothing
       }
     }
   

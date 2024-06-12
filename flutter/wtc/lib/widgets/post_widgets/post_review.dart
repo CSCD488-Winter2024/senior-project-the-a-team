@@ -1,36 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
 import 'package:wtc/widgets/post_widgets/post_review_widget.dart';
 
+// ignore: must_be_immutable
 class PostReview extends Post_Review_Widget {
   PostReview({
-    Key? key,
-    required Guid postId,
-    required String title,
-    required String header,
-    required List<String> tags,
-    required String body,
+    super.key,
+    required super.postId,
+    required super.title,
+    required super.header,
+    required super.tags,
+    required super.body,
     User? user,
-    required String userEmail,
-    required int interestCount,
-    required DateTime created,
-    required String username,
-    required String pfp
-  }) : super(
-          key: key,
-          postId: postId,
-          title: title,
-          header: header,
-          tags: tags,
-          body: body,
-          userEmail: userEmail,
-          interestCount: interestCount,
-          created: created,
-          username: username,
-          pfp: pfp
-        );
+    required super.userEmail,
+    required super.interestCount,
+    required super.created,
+    required super.username,
+    required super.pfp
+  });
 
   void deletePost(BuildContext context) {
     FirebaseFirestore.instance

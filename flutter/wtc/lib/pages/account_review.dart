@@ -97,13 +97,13 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
     DocumentReference userDoc =
         firestore.collection('users').doc(userReview.uid);
 
-    GeoPoint coordinates = GeoPoint(0, 0);
+    GeoPoint coordinates = const GeoPoint(0, 0);
     try {
       List<Location> locations = await locationFromAddress(userReview.address);
       coordinates =
           GeoPoint(locations.first.latitude, locations.first.longitude);
     } catch (e) {
-      print('Error: $e');
+      // do nothing
     }
 
     // Update the user's details
@@ -156,9 +156,9 @@ class _AccountReviewPageState extends State<AccountReviewPage> {
               itemBuilder: (context, index) {
                 UserReview userReview = snapshot.data![index];
                 return Card(
-                  margin: EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(8.0),
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

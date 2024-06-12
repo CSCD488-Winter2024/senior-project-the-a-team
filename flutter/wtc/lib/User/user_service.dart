@@ -16,7 +16,6 @@ class UserService {
         return tier;
       } catch (e) {
         // Handle errors or log them
-        print("Error fetching user tier: $e");
         return 'viewer'; // Return default tier in case of error
       }
     } else {

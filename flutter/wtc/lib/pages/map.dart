@@ -88,29 +88,31 @@ class _MapPage extends State<MapPage> {
                   ]))
         ],
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                zoom += 1.0;
-              });
+      // for zooming in on the map for emulator
+      
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //   children: [
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         setState(() {
+      //           zoom += 1.0;
+      //         });
 
-              mapController.move(mapController.camera.center, zoom);
-            },
-            child: const Icon(Icons.zoom_in),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  zoom -= 1.0;
-                });
-                mapController.move(mapController.camera.center, zoom);
-              },
-              child: const Icon(Icons.zoom_out)),
-        ],
-      ),
+      //         mapController.move(mapController.camera.center, zoom);
+      //       },
+      //       child: const Icon(Icons.zoom_in),
+      //     ),
+      //     ElevatedButton(
+      //         onPressed: () {
+      //           setState(() {
+      //             zoom -= 1.0;
+      //           });
+      //           mapController.move(mapController.camera.center, zoom);
+      //         },
+      //         child: const Icon(Icons.zoom_out)),
+      //   ],
+      // ),
       Padding(
           padding: const EdgeInsets.all(8.0),
           child: Title(
@@ -140,7 +142,7 @@ class _MapPage extends State<MapPage> {
           ),
           contentPadding: EdgeInsets.all(12),
           content: Text(
-              "Pinch the map or press the magnification buttons to zoom in or out.\n\nTo reset default view, press the refresh button in the upper left corner.\n\nTo view an organization, search the organization list below and tap on an organization to navigate to the designated map pin.\n\nTap a map pin to view extended information of an organization."),
+              "Pinch the map to zoom in or out.\n\nTo reset default view, press the refresh button in the upper left corner.\n\nTo view an organization, search the organization list below and tap on an organization to navigate to the designated map pin.\n\nTap a map pin to view extended information of an organization."),
         );
       },
     );

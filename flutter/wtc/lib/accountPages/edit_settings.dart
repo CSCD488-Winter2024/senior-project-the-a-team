@@ -89,6 +89,7 @@ class _EditSettingsState extends State<EditSettings> {
                     name: widget.name,
                     username: widget.username,
                     profilePic: widget.profilePic,
+                    isBusiness: widget.isBusiness,
                   ),
                   icon: const Icon(Icons.person),
                   text: "Edit Profile",

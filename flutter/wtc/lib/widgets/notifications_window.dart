@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wtc/widgets/notifications_list.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:wtc/User/user.dart';
-import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_preview.dart';
 
 User user =
@@ -48,7 +47,7 @@ List<PostPreview> posts = <PostPreview>[
 ];
 
 class NotificationsWindow extends StatefulWidget {
-  const NotificationsWindow({Key? key}) : super(key: key);
+  const NotificationsWindow({super.key});
 
   @override
   State<NotificationsWindow> createState() => _NotificationsWindow();

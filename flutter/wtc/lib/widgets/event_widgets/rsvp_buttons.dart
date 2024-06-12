@@ -24,7 +24,6 @@ class _RSVPButtons extends State<RSVPButtons> {
     super.initState();
     checkIfAttending(widget.postID.toString(), widget.uid ?? '');
     checkIfMaybeAttending(widget.postID.toString(), widget.uid ?? '');
-    print("is maybe: ${isMaybeAttending.toString()}");
   }
 
   Future<void> changeIsAttending() async {
@@ -37,7 +36,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           'attending': FieldValue.arrayRemove([widget.uid])
         });
       } catch (e) {
-        print('Error updating maybe status: $e');
+        // do nothing
       }
     } else {
       try {
@@ -49,7 +48,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           'maybe': FieldValue.arrayRemove([widget.uid])
         });
       } catch (e) {
-        print('Error updating maybe status: $e');
+        // do nothing
       }
     }
     setState(() {
@@ -70,7 +69,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           'maybe': FieldValue.arrayRemove([widget.uid])
         });
       } catch (e) {
-        print('Error updating maybe status: $e');
+        // do nothing
       }
     } else {
       try {
@@ -82,7 +81,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           'attending': FieldValue.arrayRemove([widget.uid])
         });
       } catch (e) {
-        print('Error updating maybe status: $e');
+        // do nothing
       }
     }
     setState(() {
@@ -116,7 +115,7 @@ class _RSVPButtons extends State<RSVPButtons> {
         }
       }
     } catch (e) {
-      print('Error checking user attendance: $e');
+      // do nothing
     }
     if (mounted) {
       setState(() {
@@ -149,7 +148,7 @@ class _RSVPButtons extends State<RSVPButtons> {
         }
       }
     } catch (e) {
-      print('Error checking user maybe attendance: $e');
+      // do nothing
     }
     if (mounted) {
       // Check again before setting the state
@@ -166,7 +165,7 @@ class _RSVPButtons extends State<RSVPButtons> {
           _firestore.collection('_posts').doc(widget.postID.toString()).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          //return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData) {
           return const Center(child: Text('No Data'));
@@ -198,7 +197,7 @@ class _RSVPButtons extends State<RSVPButtons> {
                       color: Color.fromARGB(255, 160, 146, 21),
                       Icons.star_outline_rounded),
             ),
-            const Spacer(),
+            const SizedBox(width: 20),
             SavePost(postId: widget.postID, currentUserId: widget.uid)
           ],
         );

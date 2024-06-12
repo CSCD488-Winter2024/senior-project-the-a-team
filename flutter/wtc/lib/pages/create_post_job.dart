@@ -86,8 +86,33 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      DocumentSnapshot userDoc = await users.doc(currentUser!.uid).get();
+      String businessName = userDoc['name'] as String;
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'title': _titleController.text,
+        'type': _isVolunteer ? 'Volunteer' : 'Job',
+        'wage': _isVolunteer ? 0 : double.parse(_wageController.text),
+        'wageType': _isVolunteer ? 'N/A' : _wageType,
+        'isVolunteer': _isVolunteer,
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser.email,
+        'tags': ['Job'],
+        'username': businessName  ,
+        'pfp': GlobalUserInfo.getData('pfp') 
+      });
+    }
+    else{
+      await FirebaseFirestore.instance
         .collection('_posts')
         .doc(newGuid.toString())
         .set({
@@ -107,6 +132,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
       'username': GlobalUserInfo.getData('username')  ,
       'pfp': GlobalUserInfo.getData('pfp') 
     });
+    }
     // Clear the fields
     _titleController.clear();
     _headerController.clear();
@@ -173,7 +199,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
                     labelText: 'Wage',
                     hintText: 'Enter wage amount',
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
                 const SizedBox(height: 16.0),
                 DropdownButton<String>(

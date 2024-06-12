@@ -86,7 +86,7 @@ class PostDeleteEditBox extends StatelessWidget {
     try {
       await FirebaseFirestore.instance.collection("_posts").doc(docId).delete();
     } catch (error) {
-      print("Error deleting post: $error");
+      // do nothing
     }
   }
 }
