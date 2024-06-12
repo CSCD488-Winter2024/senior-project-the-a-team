@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:wtc/User/global_user_info.dart';
+import 'package:wtc/widgets/user_widgets/global_user_info.dart';
 import 'package:wtc/widgets/post_widgets/post_body_box.dart';
 import 'package:wtc/widgets/post_widgets/post_delete_edit_box.dart';
 import 'package:wtc/widgets/post_widgets/post_tag_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
-import 'package:wtc/widgets/save_post.dart';
+import 'package:wtc/widgets/post_widgets/save_post.dart';
 
 // ignore: must_be_immutable
 class Post extends StatelessWidget {
@@ -68,10 +68,16 @@ class Post extends StatelessWidget {
             ),
             PostBodyBox(body: header),
             PostTagBox(tags: tags),
-            if(currentUserTier != 'Viewer')
-            PostDeleteEditBox(post: this, isViewer: false,)
+            if (currentUserTier != 'Viewer')
+              PostDeleteEditBox(
+                post: this,
+                isViewer: false,
+              )
             else
-            PostDeleteEditBox(post: this, isViewer: true,)
+              PostDeleteEditBox(
+                post: this,
+                isViewer: true,
+              )
           ],
         ),
       );
