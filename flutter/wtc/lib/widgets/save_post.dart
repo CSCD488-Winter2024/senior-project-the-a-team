@@ -50,7 +50,7 @@ class _SavePostState extends State<SavePost> {
           'saved_posts': FieldValue.arrayUnion([widget.postId.toString()])
         });
       } catch (e) {
-        print('Error updating saved posts: $e');
+        // do nothing
       }
     } else {
       try {
@@ -61,7 +61,7 @@ class _SavePostState extends State<SavePost> {
           'saved_posts': FieldValue.arrayRemove([widget.postId.toString()])
         });
       } catch (e) {
-        print('Error updating saved posts: $e');
+        // do nothing
       }
     }
     setState(() {
@@ -83,16 +83,13 @@ class _SavePostState extends State<SavePost> {
         if (mounted) {
           setState(() {
             isSaved = currentlySaved;
-            print(isSaved.toString());
           });
         }
       }
     } catch (e) {
-      print('Error checking user saved posts: $e');
       if (mounted) {
         setState(() {
           isSaved = false;
-          print(isSaved.toString());
         });
       }
     }

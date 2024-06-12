@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class PostTitleBox extends StatelessWidget {
   const PostTitleBox({
-    Key? key,
+    super.key,
     required this.title,
     required this.username,
     required this.created,
     required this.pfp,
-  }) : super(key: key);
+  });
 
   final String title;
   final String username;

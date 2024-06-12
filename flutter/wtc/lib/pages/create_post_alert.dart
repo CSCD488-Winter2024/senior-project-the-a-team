@@ -5,6 +5,7 @@ import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
 import 'package:wtc/User/global_user_info.dart';
 
+
 class CreatePostAlertPage extends StatefulWidget {
   const CreatePostAlertPage({super.key});
 
@@ -17,25 +18,6 @@ class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _headerController = TextEditingController();
-  final TextEditingController _tagsController = TextEditingController();
-  Map<String, bool> tags = {
-    'News': false,
-    'Weather': false,
-    'Business': false,
-    'Shopping': false,
-    'Eastern': false,
-    'Entertainment': false,
-    'Food': false,
-    'Government': false,
-    'Pets': false,
-    'Public Resources': false,
-    'Schools': false,
-    'Sports': false,
-    'Adult Sports': false,
-    'Youth Sports': false,
-    'Traffic': false,
-    'Construction': false,
-  };
 
   @override
   void dispose() {
@@ -46,44 +28,6 @@ class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
     super.dispose();
   }
 
-  void showTags() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Tags'),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: tags.keys.map((String tag) {
-                    return CheckboxListTile(
-                      title: Text(tag),
-                      value: tags[tag],
-                      onChanged: (bool? value) {
-                        setState(() {
-                          tags[tag] = value!;
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Done'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> _submitPost() async {
     // Check if the title or description fields are empty
@@ -117,50 +61,59 @@ class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
       return; // Exit the function if validation fails
     }
 
-    bool anyTagSelected = tags.values.any((val) => val);
-    if (!anyTagSelected) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('At least one tag must be selected')),
-      );
-      return; // Exit the function if no tags are selected
-    }
-
     Guid newGuid = Guid.newGuid;
     DateTime date = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
     var convertedTags = [];
-    for (String key in tags.keys) {
-      if (tags[key] == true) {
-        convertedTags.add(key);
-      }
-    }
 
     User? currentUser = FirebaseAuth.instance.currentUser;
-
-    await FirebaseFirestore.instance
-        .collection('_posts')
-        .doc(newGuid.toString())
-        .set({
-      'body': _descriptionController.text,
-      'header': _headerController.text,
-      'tags': convertedTags,
-      'title': _titleController.text,
-      'type': 'Alert',
-      'createdAt': formattedDate,
-      'timestamp': FieldValue.serverTimestamp(),
-      'interestCount': 0,
-      'postID': newGuid.toString(),
-      'user': currentUser!.email,
-      'username': GlobalUserInfo.getData('username')  ,
-      'pfp': GlobalUserInfo.getData('pfp') 
-    });
+    if(GlobalUserInfo.getData('isBusiness')){
+      CollectionReference users = FirebaseFirestore.instance.collection('businesses');
+      DocumentSnapshot userDoc = await users.doc(currentUser!.uid).get();
+      String businessName = userDoc['name'] as String;
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Alert',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser.email,
+        'username': businessName  ,
+        'pfp': GlobalUserInfo.getData('pfp') 
+      });
+    }
+    else{
+      await FirebaseFirestore.instance
+          .collection('_posts')
+          .doc(newGuid.toString())
+          .set({
+        'body': _descriptionController.text,
+        'header': _headerController.text,
+        'tags': convertedTags,
+        'title': _titleController.text,
+        'type': 'Alert',
+        'createdAt': formattedDate,
+        'timestamp': FieldValue.serverTimestamp(),
+        'interestCount': 0,
+        'postID': newGuid.toString(),
+        'user': currentUser!.email,
+        'username': GlobalUserInfo.getData('username')  ,
+        'pfp': GlobalUserInfo.getData('pfp') 
+      });
+    }
 
     // Clear the fields
     _titleController.clear();
     _descriptionController.clear();
     _headerController.clear();
-    _tagsController.clear();
 
     // Show a snackbar as feedback
     ScaffoldMessenger.of(context).showSnackBar(
@@ -206,10 +159,6 @@ class _CreatePostAlertPageState extends State<CreatePostAlertPage> {
                 maxLines: 5,
               ),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: showTags,
-                child: const Text('Select Tags'),
-              ),
               //Submit button
               const SizedBox(height: 16.0),
               ElevatedButton(

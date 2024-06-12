@@ -9,12 +9,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:wtc/components/textfield.dart';
 
 class EditProfile extends StatefulWidget{
-  const EditProfile({super.key, required this.uid, required this.name, required this.profilePic, required this.username});
+  const EditProfile({
+    super.key, 
+    required this.uid, 
+    required this.name, 
+    required this.profilePic, 
+    required this.username,
+    required this.isBusiness,
+  });
 
    final String uid;
    final String name;
    final String username;
    final CachedNetworkImage? profilePic;
+    final bool isBusiness;
 
   @override
   State<EditProfile> createState() => _EditProfile();
@@ -304,7 +312,11 @@ class _EditProfile extends State<EditProfile>{
                           String newPfp = await ref.getDownloadURL();
           
                           setPfp(newPfp);
-                          currentUser!.updatePhotoURL(newPfp);
+                          if(widget.isBusiness){
+                            await _firestore.collection("businesses").doc(widget.uid).update({
+                              'pfp': newPfp
+                            });
+                          }
                         }
           
                         if(usernameController.text.isEmpty){
@@ -314,9 +326,6 @@ class _EditProfile extends State<EditProfile>{
                           nameController.text = widget.name;
                         }
                           await updateAccount(usernameController, nameController);
-                        if(usernameController.text != widget.username){
-                          await currentUser?.updateDisplayName(usernameController.text);
-                        }
           
                         if(passwordController.text.isNotEmpty && passwordController.text == confirmPasswordController.text){
                           await currentUser?.updatePassword(passwordController.text);

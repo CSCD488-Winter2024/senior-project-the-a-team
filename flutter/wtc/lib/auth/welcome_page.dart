@@ -87,14 +87,6 @@ class _IntroPageState extends State<IntroPage> {
     }).whenComplete(() async => await GlobalUserInfo.initialize());
   }
 
-  Future<void> setTags(var tags) async {
-    for (int i = 0; i < tags.length; i++) {
-      FirebaseFirestore.instance.collection('tags').doc(tags[i]).update({
-        'users': FieldValue.arrayUnion([currentUser!.email])
-      });
-    }
-  }
-
   List<String> tags = [];
 
   final provider = FirebaseAuth.instance.currentUser?.providerData.first;
@@ -352,10 +344,7 @@ class _IntroPageState extends State<IntroPage> {
                                   await createAccountDoc(tags, profilePic);
                                 } else {
                                   await setAccountInfo(tags, profilePic);
-                                  currentUser!.updatePhotoURL(profilePic);
                                 }
-
-                                await setTags(tags);
 
                                 tags.clear();
 

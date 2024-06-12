@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import 'package:intl/intl.dart';
 import 'package:wtc/widgets/job_post/job_post.dart';
 
 class EditPostJobPage extends StatefulWidget {
@@ -169,7 +166,7 @@ class _EditPostJobPageState extends State<EditPostJobPage> {
                     labelText: 'Wage',
                     hintText: 'Enter wage amount',
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
                 const SizedBox(height: 16.0),
                 DropdownButton<String>(

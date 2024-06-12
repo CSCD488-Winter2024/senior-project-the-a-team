@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -246,7 +245,7 @@ class _EventCalendar extends State<EventCalendar> {
         events.add(event);
       }
     } catch (e) {
-      print("Error fetching data: $e");
+      // do nothing
     }
     return events;
   }

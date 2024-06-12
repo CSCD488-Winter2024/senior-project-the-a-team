@@ -3,10 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:wtc/accountPages/edit_settings.dart';
 import 'package:wtc/auth/auth.dart';
 
@@ -37,7 +34,10 @@ class _AccountPage extends State<AccountPage> {
   }
 
  
-  void signout(){
+  Future<void> signout()async{
+    await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).update({
+      'notificationToken': "none",
+    });
     FirebaseAuth.instance.signOut();
     if(GoogleAuthProvider().providerId == provider.providerId){
       GoogleSignIn().disconnect();
@@ -92,8 +92,8 @@ class _AccountPage extends State<AccountPage> {
               imageUrl: pfp,
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Image(image: AssetImage('images/profile.jpg')),
-              memCacheHeight: 120,
-              memCacheWidth: 120,
+              memCacheHeight: 500,
+              memCacheWidth: 500,
               fit: BoxFit.cover,
             );
 
@@ -112,7 +112,7 @@ class _AccountPage extends State<AccountPage> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(200),
-                        child: profilePic
+                        child: profilePic,
                       ),
                     ),
 

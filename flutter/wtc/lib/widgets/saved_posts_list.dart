@@ -11,6 +11,7 @@ class SavedPostsList extends StatefulWidget {
   const SavedPostsList({super.key, required this.uid});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SavedPostsListState createState() => _SavedPostsListState();
 }
 
@@ -43,11 +44,9 @@ class _SavedPostsListState extends State<SavedPostsList> {
         
 
       }
-      print("this is the saved posts");
-      print(savedPosts.toString());
       
     } catch (e) {
-      print("error: $e");
+      // do nothing
     }
   }
 
@@ -80,7 +79,7 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
         await userRef.update({'saved_posts': savedPostIDs});
       }
     } catch (e) {
-      print("Error updating user's saved posts list: $e");
+      // do nothing
     }
   }
 
@@ -100,7 +99,7 @@ Future<List<DocumentSnapshot>> getPosts(List<dynamic> postIds) async {
       .doc(widget.uid)
       .update({"saved_posts":newSavedList})
       .catchError((error) {
-        print("Error updating doc: $error");
+        // do nothing
       });
 
 

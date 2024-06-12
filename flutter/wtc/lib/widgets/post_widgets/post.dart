@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +10,10 @@ import 'package:wtc/widgets/post_widgets/post_title_box.dart';
 import 'package:wtc/widgets/post_widgets/post_title_box_expanded.dart';
 import 'package:wtc/widgets/save_post.dart';
 
+// ignore: must_be_immutable
 class Post extends StatelessWidget {
   Post(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.body,
       required this.tags,
@@ -24,8 +24,7 @@ class Post extends StatelessWidget {
       required this.postId,
       required this.isMyPost,
       required this.username,
-      required this.pfp})
-      : super(key: key);
+      required this.pfp});
 
   Guid postId;
   final String title;
@@ -143,5 +142,5 @@ class Post extends StatelessWidget {
 extension UtilExtensions on String {
   List<String> multiSplit(Iterable<String> delimeters) => delimeters.isEmpty
       ? [this]
-      : this.split(RegExp(delimeters.map(RegExp.escape).join('|')));
+      : split(RegExp(delimeters.map(RegExp.escape).join('|')));
 }

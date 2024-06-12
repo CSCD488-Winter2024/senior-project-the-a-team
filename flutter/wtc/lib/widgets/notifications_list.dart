@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wtc/widgets/post_widgets/post.dart';
 import 'package:wtc/widgets/post_widgets/post_preview.dart';
 
 // ignore: must_be_immutable
 class NotificationList extends StatelessWidget {
   List<PostPreview> postList;
 
-  NotificationList({Key? key, required this.postList}) : super(key: key);
+  NotificationList({super.key, required this.postList});
 
   @override
   Widget build(BuildContext context) {
