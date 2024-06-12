@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_guid/flutter_guid.dart';
-import 'package:intl/intl.dart';
 import 'package:wtc/widgets/post_widgets/post.dart';
 
 class EditPostPage extends StatefulWidget {
@@ -38,7 +35,6 @@ class _EditPostPageState extends State<EditPostPage> {
     'Traffic': false,
     'Construction': false,
   };
-  bool _isAlert = false;
 
   @override
   void initState() {

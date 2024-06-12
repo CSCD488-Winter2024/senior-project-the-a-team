@@ -59,10 +59,10 @@ class _AttendingList extends State<AttendingList> {
               .collection('users')
               .where('uid', isEqualTo: attendingList[i])
               .get();
-          querySnapshot.docs.forEach((doc) {
+          for (var doc in querySnapshot.docs) {
             fetchedNames.add(doc['name']);
             fetchedPfps.add(doc['pfp']);
-          });
+          }
         }
 
         setState(() {
@@ -71,7 +71,7 @@ class _AttendingList extends State<AttendingList> {
         });
       }
     } catch (e) {
-      print('Error checking user attendance: $e');
+      // do nothing
     }
   }
 }

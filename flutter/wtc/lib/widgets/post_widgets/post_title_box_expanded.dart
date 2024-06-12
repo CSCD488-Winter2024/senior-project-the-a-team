@@ -1,14 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PostTitleBoxExpanded extends StatelessWidget {
   const PostTitleBoxExpanded({
-    Key? key,
+    super.key,
     required this.title,
     required this.username,
     required this.created,
     required this.pfp,
-  }) : super(key: key);
+  });
 
   final String title;
   final String username;

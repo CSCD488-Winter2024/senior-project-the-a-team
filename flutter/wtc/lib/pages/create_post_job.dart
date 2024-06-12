@@ -173,7 +173,7 @@ class _CreatePostJobPageState extends State<CreatePostJobPage> {
                     labelText: 'Wage',
                     hintText: 'Enter wage amount',
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
                 const SizedBox(height: 16.0),
                 DropdownButton<String>(

@@ -29,14 +29,6 @@ class _TopBarState extends State<TopBar> {
       iconTheme: const IconThemeData(color: Colors.white),
       centerTitle: true,
       title:  Text(widget.title, style: const TextStyle(color: Colors.white)),
-      actions: [
-        // IconButton(
-        //   icon: widget.showNotifications
-        //       ? const Icon(Icons.refresh_outlined)
-        //       : const Icon(Icons.refresh_outlined),
-        //   onPressed: () {},
-        // ),
-      ],
       //Drawer handles the rest
     );
   }

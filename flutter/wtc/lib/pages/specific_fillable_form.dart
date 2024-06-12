@@ -36,8 +36,6 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
     'Traffic': false,
     'Construction': false,
   };
-  bool _isAlert = false;
-  bool _isEvent = false;
 
   @override
   void dispose() {

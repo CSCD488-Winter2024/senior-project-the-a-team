@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:wtc/widgets/user_widgets/search_user_delete_edit.dart';
 
 class SearchUserInfo extends StatelessWidget {

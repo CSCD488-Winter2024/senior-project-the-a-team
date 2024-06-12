@@ -136,12 +136,11 @@ class _SearchUserDeleteEditState extends State<SearchUserDeleteEdit> {
       await FirebaseFirestore.instance.collection("users").doc(uid).delete();
       FirebaseFunctions functions = FirebaseFunctions.instance;
       HttpsCallable callable = functions.httpsCallable('deleteUserByEmail');
-      final response = await callable.call(<String, dynamic>{
+      await callable.call(<String, dynamic>{
         'identifier': email,
       });
-      print(response.data);
     } catch (error) {
-      print("Error deleting user: $error");
+      // do nothing
     }
   }
 

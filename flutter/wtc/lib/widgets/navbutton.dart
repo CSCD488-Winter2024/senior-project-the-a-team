@@ -6,8 +6,8 @@ class NavButton extends StatefulWidget {
   final IconData outlinedIcon;
 
   const NavButton({
-    Key? key, required this.label, required this.icon, required this.outlinedIcon,
-  }) : super(key: key);
+    super.key, required this.label, required this.icon, required this.outlinedIcon,
+  });
 
   @override
   State<NavButton> createState() => _NavButtonState();

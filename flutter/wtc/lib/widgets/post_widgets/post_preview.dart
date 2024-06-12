@@ -7,11 +7,11 @@ class PostPreview extends StatelessWidget {
   final DateTime created;
 
   const PostPreview({
-    Key? key,
+    super.key,
     required this.title,
     required this.user,
     required this.created,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

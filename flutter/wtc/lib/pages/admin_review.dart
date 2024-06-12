@@ -11,9 +11,8 @@ class AdminReviewPage extends StatefulWidget {
 class _AdminReviewPage extends State<AdminReviewPage> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
+    return  Container(
+      color: Colors.white,
       child: SizedBox.expand(
         child: PostListReview(),
       ),

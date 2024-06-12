@@ -5,7 +5,7 @@ class JobWageBox extends StatelessWidget {
   final String wageType;
   final double wage;
 
-  const JobWageBox({Key? key, required this.wageType, required this.wage}) : super(key: key);
+  const JobWageBox({super.key, required this.wageType, required this.wage});
   
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PostBodyBox extends StatelessWidget {
-  const PostBodyBox({Key? key, required this.body}) : super(key: key);
+  const PostBodyBox({super.key, required this.body});
 
   final String body;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         width: 600,
         child: Text(
           body,

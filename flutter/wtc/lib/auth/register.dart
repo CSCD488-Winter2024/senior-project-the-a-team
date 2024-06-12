@@ -136,9 +136,8 @@ class _RegisterPageState extends State<RegisterPage> {
         'saved_posts': newSavedPostList,
         'notificationToken': token,
         'sawTour': false
-      });
 
-      await userCredential.user!.updateDisplayName(nameController.text.trim());
+      });
     }
   }
 

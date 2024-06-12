@@ -124,16 +124,6 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
       return; // Exit the function if validation fails
     }
 
-    // Validate date format using a try-catch to catch any parsing errors
-    try {
-      final date = DateFormat('yyyy-MM-dd').parseStrict(_dateController.text);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid date format')),
-      );
-      return; // Exit if the date format is incorrect
-    }
-
     // Validate time format
     final timeParts = _timeController.text.split(':');
     if (timeParts.length != 2 ||
@@ -261,7 +251,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   FocusScope.of(context).requestFocus(
-                      new FocusNode()); // to prevent keyboard from appearing
+                      FocusNode()); // to prevent keyboard from appearing
                   DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -284,7 +274,7 @@ class _CreatePostEventPageState extends State<CreatePostEventPage> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   FocusScope.of(context).requestFocus(
-                      new FocusNode()); // to prevent keyboard from appearing
+                      FocusNode()); // to prevent keyboard from appearing
                   TimeOfDay? picked = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),

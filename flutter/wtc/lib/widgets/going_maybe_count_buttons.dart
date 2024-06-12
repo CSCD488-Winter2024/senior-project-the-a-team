@@ -100,7 +100,7 @@ class _GoingMaybeCountButtonsState extends State<GoingMaybeCountButtons> {
         }
       }
     } catch (e) {
-      print('Error checking user attendance: $e');
+      // do nothing
     }
   }
 }
