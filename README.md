@@ -21,6 +21,6 @@ Current functionality: Navbar and mock posts on main page.
 None currently.
 ## Additional Documentation
 * [Flutter installation](https://docs.flutter.dev/get-started/install)
-* More to come
+* [Developer Documentation](https://github.com/CSCD488-Winter2024/senior-project-the-a-team/blob/Calendar_fix/Developer_Documentation.pdf)
 ## License
 MIT license: https://choosealicense.com/licenses/mit/

@@ -93,7 +93,7 @@ class _EventCalendar extends State<EventCalendar> {
           ),
           focusedDay: _focusedDay!,
           firstDay: DateTime.utc(2024, 1, 1),
-          lastDay: DateTime.utc(2024, 12, 31),
+          lastDay: DateTime.utc(2124, 12, 31),
           eventLoader: _getEventsForDay,
           selectedDayPredicate: (day) {
             return isSameDay(_selectedDay, day);
