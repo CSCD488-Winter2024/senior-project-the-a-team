@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:intl/intl.dart';
+import 'package:wtc/User/global_user_info.dart';
 
 class SpecificFillableFormPage extends StatefulWidget {
   const SpecificFillableFormPage({super.key});
@@ -132,6 +133,8 @@ class _SpecificFillableFormPageState extends State<SpecificFillableFormPage> {
       'interestCount': 0,
       'postID': newGuidString,
       'user': currentUser!.email,
+      'pfp': GlobalUserInfo.getData("pfp"),
+      'username': GlobalUserInfo.getData("username"),
     });
 
     // Clear the fields
