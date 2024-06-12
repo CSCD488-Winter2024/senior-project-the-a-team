@@ -1013,7 +1013,7 @@ class _NavBars extends State<App> {
                 ShowCaseWidget.of(context).startShowCase([key5]);   
               }, 
               child: const Icon(Icons.notifications)),
-              icon: const Icon(Icons.crisis_alert_outlined, color: Colors.white),
+              icon: const Icon(Icons.notifications, color: Colors.white),
               ),
             
           NavigationDestination(
