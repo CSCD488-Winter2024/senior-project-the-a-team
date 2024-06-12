@@ -88,7 +88,7 @@ A mobile app to help connect the citizens of Cheney to their community.
 None currently.
 ## Additional Documentation
 * [Flutter installation](https://docs.flutter.dev/get-started/install)
-* [Developer Documentation](https://github.com/CSCD488-Winter2024/senior-project-the-a-team/blob/Calendar_fix/Developer_Documentation.pdf)
+* [Developer Documentation](https://github.com/CSCD488-Winter2024/senior-project-the-a-team/blob/main/Developer_Documentation.pdf)
 * [Comprehensive Tutorial](https://www.youtube.com/watch?v=tIm3mtmqK-s)
 ## License
 MIT license: https://choosealicense.com/licenses/mit/
