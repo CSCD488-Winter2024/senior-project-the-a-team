@@ -1,5 +1,8 @@
-# Welcome to Cheney Mobile App
+
+![WTC_Logo](https://github.com/user-attachments/assets/fd52de6d-7ef5-4bc6-912b-dce1f6729078)
+
 ## Project summary
+
 A mobile app to help connect the citizens of Cheney to their community.
 
 "Welcome to Cheney" is a non-profit organization with a vital mission: to enhance community engagement and communication within the city of Cheney. Recognizing the challenges of disseminating timely and accurate information to residents through conventional social media channels, which often result in vital updates being lost amidst the digital noise, the organization has embarked on an ambitious project. The development of a dedicated mobile application aims to establish a direct, reliable communication channel to keep the Cheney community informed and connected.
@@ -83,6 +86,12 @@ A mobile app to help connect the citizens of Cheney to their community.
 - We are working on deploying the app to both the Google Play Store and the Apple App Store.
 - **Google Play Store Deployment**: Follow this [guide](https://www.youtube.com/watch?v=Jk4X3EDXi7s&t=202s).
 - **Apple App Store Deployment**: Follow this [guide](https://www.youtube.com/watch?v=0zgDF81ZLrQ&t=651s).
+
+### Application Preview
+Video to walkthrough of app: https://youtu.be/tIm3mtmqK-s?si=tMpPtaETV04wRhum
+Home Page:
+![Home_Page_WTC](https://github.com/user-attachments/assets/4bb11a04-cb44-4cdf-b109-8cf3f78aeedd)
+
 
 ## Known Problems
 None currently.
