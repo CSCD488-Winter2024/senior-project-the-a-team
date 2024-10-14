@@ -89,8 +89,6 @@ A mobile app to help connect the citizens of Cheney to their community.
 
 ### Application Preview
 Video to walkthrough of app: https://youtu.be/tIm3mtmqK-s?si=tMpPtaETV04wRhum
-Home Page:
-![Home_Page_WTC](https://github.com/user-attachments/assets/4bb11a04-cb44-4cdf-b109-8cf3f78aeedd)
 
 
 ## Known Problems
